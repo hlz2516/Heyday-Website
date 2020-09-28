@@ -1,24 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Heyday-Website\\Heyday-Website\\Heyday-Website.csproj": {}
+    "G:\\Heyday-Website\\Heyday-Website\\Heyday-Website.csproj": {}
   },
   "projects": {
-    "D:\\Heyday-Website\\Heyday-Website\\Heyday-Website.csproj": {
+    "G:\\Heyday-Website\\Heyday-Website\\Heyday-Website.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Heyday-Website\\Heyday-Website\\Heyday-Website.csproj",
+        "projectUniqueName": "G:\\Heyday-Website\\Heyday-Website\\Heyday-Website.csproj",
         "projectName": "Heyday-Website",
-        "projectPath": "D:\\Heyday-Website\\Heyday-Website\\Heyday-Website.csproj",
+        "projectPath": "G:\\Heyday-Website\\Heyday-Website\\Heyday-Website.csproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "D:\\Heyday-Website\\Heyday-Website\\obj\\",
+        "outputPath": "G:\\Heyday-Website\\Heyday-Website\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
+          "E:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
           "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -41,6 +43,26 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "dependencies": {
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[3.1.8, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[3.1.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.1.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[3.1.8, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
