@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Heyday_Website.Models;
+using Heyday_Website.Tools;
 using Heyday_Website.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace Heyday_Website.Controllers
 {
@@ -38,7 +40,29 @@ namespace Heyday_Website.Controllers
 
         public IActionResult Login()
         {
+            ViewBag.Title = "登录";
             return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user =await  _userManager.FindByEmailAsync(model.Email);
+                if(user != null)
+                {
+                    var psdhash = new PasswordHasher<ApplicationUser>().
+                        HashPassword(user,model.Password);
+                    var res = await _signInManager.PasswordSignInAsync(user, model.Password, 
+                        model.Remember, false);
+                    if (res.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else Console.WriteLine("登录失败！");
+                }
+            }
+            return View(model);
         }
 
         public IActionResult Register()
@@ -47,11 +71,38 @@ namespace Heyday_Website.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Register(RegisterDto model)
+        public async Task<IActionResult> Register(RegisterDto model)
         {
             if (ModelState.IsValid)
             {
-                return RedirectToAction("Login");
+                HttpContext.Session.TryGetValue(HttpContext.Session.Id,
+                    out byte[] _code);
+                if(_code == null || _code.Length == 0)
+                {
+                    return View(model);
+                }
+                var code = ByteArrayConverter.ToString(_code);
+                if(code != model.Code)
+                {
+                    ModelState.AddModelError("Code", "验证码错误");
+                    return View(model);
+                }
+
+                var user = new ApplicationUser
+                {
+                    UserName = model.Name,
+                    Email = model.Email
+                };
+                var hashPassword = new PasswordHasher<ApplicationUser>()
+                    .HashPassword(user, model.Password);
+                user.PasswordHash = hashPassword;
+                var res =await  _userManager.CreateAsync(user);
+                if (res.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(user, "NormalUser");
+                    await _signInManager.SignInAsync(user, false);
+                }
+                return RedirectToAction("Index","Home");
             }
 
             return View(model);
@@ -65,6 +116,29 @@ namespace Heyday_Website.Controllers
         public IActionResult ChangePassword()
         {
             return View();
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return View();
+        }
+
+        public async Task<JsonResult> IsSameEmail(string email)
+        {
+            bool isSame = false;
+            var user =await  _userManager.FindByEmailAsync(email);
+            if (user != null)
+                isSame = true;
+            return Json(isSame);
+        }
+
+        public  void SendEmail(string email)
+        {
+            var code = Guid.NewGuid().ToString().Substring(0, 5);
+            HttpContext.Session.Set(HttpContext.Session.Id, 
+                ByteArrayConverter.ToByteArray(code));
+            EmailHelper.SendEmail(email, code);
         }
     }
 }

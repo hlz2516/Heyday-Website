@@ -26,8 +26,10 @@ namespace Heyday_Website
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<UserDbContext>(config=> {
-                config.UseSqlServer(_configuration.GetConnectionString("DBConnection"));
+            services.AddDbContext<UserDbContext>(config =>
+            {
+                //config.UseSqlServer(_configuration.GetConnectionString("DBConnection"));
+                config.UseInMemoryDatabase("memory");
             });
 
             services.AddIdentityCore<ApplicationUser>(config =>
@@ -45,6 +47,12 @@ namespace Heyday_Website
                 o.DefaultScheme = IdentityConstants.ApplicationScheme;
             }).AddIdentityCookies(o => { });
 
+            services.AddDistributedMemoryCache();
+            services.AddSession(opt =>
+            {
+                opt.IdleTimeout = new TimeSpan(TimeSpan.TicksPerMinute * 10);
+            });
+
             services.AddControllersWithViews();
         }
 
@@ -57,6 +65,7 @@ namespace Heyday_Website
             }
             app.UseStaticFiles();
             app.UseDefaultFiles();
+            app.UseSession();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
