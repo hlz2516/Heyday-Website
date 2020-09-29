@@ -2,13 +2,15 @@
 
 @section csses{
     <style>
-        .redfont{
-            color : red
+        .redfont {
+            color: red
         }
     </style>
 }
 
-@section scripts{ 
+@section scripts{
+    <script src="~/lib/jquery/jquery.validate.js"></script>
+    <script src="~/lib/jquery/jquery.validate.unobtrusive.js"></script>
     <script>
         var i = 60;
         var timer = null;
@@ -16,18 +18,18 @@
             if (i == 0) {
                 $('#1min').get(0).innerHTML = "";
                 clearInterval(timer);
-                $('#sendmail').attr("disabled", false); 
+                $('#sendmail').attr("disabled", false);
             }
             var text = i + "秒后可再次发送";
             //console.log(text);
-            $('#1min').get(0).innerHTML =text;
+            $('#1min').get(0).innerHTML = text;
             i--;
         };
 
         $('#sendmail').click(function () {
             $.get("/Account/SendEmail?email=" + $('#email').val(),
                 function () {
-                    $('#sendmail').attr("disabled", true); 
+                    $('#sendmail').attr("disabled", true);
                     timer = setInterval(showsec, 1000);
                 });
         });
@@ -36,12 +38,12 @@
 
 <div class="container row">
     <div class="col-3"></div>
-    <form class="col-6" asp-controller="Account" asp-action="Register" method="post">
+    <form id="myform" class="col-6" asp-controller="Account" asp-action="Register" method="post">
         <div class="form-group row">
             <label asp-for="Email" class="col-3 col-form-label"></label>
             <div class="col-9">
                 <input type="email" id="email" class="form-control" asp-for="Email" placeholder="Email">
-                <span asp-validation-for="Email" class="redfont"></span>
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group row">

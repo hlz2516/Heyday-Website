@@ -108,9 +108,18 @@ namespace Heyday_Website.Controllers
             return View(model);
         }
 
-        public IActionResult FindPassword()
+        public IActionResult EmailValidation()
         {
             return View();
+        }
+
+        public IActionResult EmailValidation(EmailValidationDto model)
+        {
+            if (ModelState.IsValid)
+            {
+
+            }
+            return View(model);
         }
 
         public IActionResult ChangePassword()
@@ -123,14 +132,21 @@ namespace Heyday_Website.Controllers
             await _signInManager.SignOutAsync();
             return View();
         }
-
+        [AcceptVerbs("Get", "Post")]
         public async Task<JsonResult> IsSameEmail(string email)
         {
-            bool isSame = false;
             var user =await  _userManager.FindByEmailAsync(email);
             if (user != null)
-                isSame = true;
-            return Json(isSame);
+                return Json("邮箱地址已被注册！");
+            return Json(true);
+        }
+
+        public async Task<JsonResult> HasEmail(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return Json("邮箱地址不存在！");
+            return Json(true);
         }
 
         public  void SendEmail(string email)

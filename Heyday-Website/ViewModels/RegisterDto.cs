@@ -12,7 +12,7 @@ namespace Heyday_Website.ViewModels
         [Display(Name ="邮箱地址")]
         [Required(ErrorMessage ="请填写邮箱地址")]
         [EmailAddress(ErrorMessage ="格式不正确，请正确填写邮箱地址")]
-        [Remote("IsSameEmail","Account",ErrorMessage ="此邮箱已被注册")]
+        [Remote(action: "IsSameEmail",controller:"Account")]
         public string Email { get; set; }
         [Display(Name ="昵称")]
         [Required(ErrorMessage ="请填写昵称")]
