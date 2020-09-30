@@ -102,8 +102,6 @@ D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Heyday-Website.RazorAss
 D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Heyday-Website.TagHelpers.input.cache
 D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Heyday-Website.TagHelpers.output.cache
 D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Heyday-Website.RazorCoreGenerate.cache
-D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Account\ChangePassword.cshtml.g.cs
-D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Account\FindPassword.cshtml.g.cs
 D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Account\Login.cshtml.g.cs
 D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Account\Register.cshtml.g.cs
 D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs
@@ -153,3 +151,5 @@ G:\Heyday-Website\Heyday-Website\bin\Debug\netcoreapp3.1\runtimes\win\lib\netsta
 G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Heyday-Website.csproj.CoreCompileInputs.cache
 G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Heyday-Website.MvcApplicationPartsAssemblyInfo.cache
 G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Account\EmailValidation.cshtml.g.cs
+D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Account\EmailValidation.cshtml.g.cs
+D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Account\ChangePassword.cshtml.g.cs

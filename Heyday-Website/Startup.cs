@@ -28,8 +28,8 @@ namespace Heyday_Website
         {
             services.AddDbContext<UserDbContext>(config =>
             {
-                config.UseSqlServer(_configuration.GetConnectionString("DBConnection"));
-                //config.UseInMemoryDatabase("memory");
+                //config.UseSqlServer(_configuration.GetConnectionString("DBConnection"));
+                config.UseInMemoryDatabase("memory");
             });
 
             services.AddIdentityCore<ApplicationUser>(config =>
