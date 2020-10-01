@@ -1,7 +1,7 @@
 ﻿<!doctype html>
 <html lang="zh-cn">
 <head>
-    <title>user</title>
+    <title>root</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -27,21 +27,21 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <div class="dropdown">
-                            <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Bug管理
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                <a class="dropdown-item" asp-controller="Bug" asp-action="WriteBug">填写Bug</a>
-                                <a class="dropdown-item" asp-controller="Bug" asp-action="BugList">Bug列表</a>
-                            </div>
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Bug管理
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                            <a class="dropdown-item" asp-controller="Bug" asp-action="WriteBug">填写Bug</a>
+                            <a class="dropdown-item" asp-controller="Bug" asp-action="BugList">Bug列表</a>
                         </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Bug管理</a>
-                    </li>
-                </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Bug管理</a>
+                </li>
+            </ul>
 
             <ul class="navbar-nav ml-auto">
                 <!--固定头像-->
@@ -53,7 +53,7 @@
                     </svg>
                 </li>
                 <li class="nav-item text-nowrap">
-                    <label class="btn" style="color:white">@ViewBag.UserName</label>
+                    <label class="btn" style="color:red">@ViewBag.UserName</label>
                 </li>
                 <li class="nav-item text-nowrap">
                     <a class="btn btn-dark" asp-controller="Account" asp-action="Logout">注销</a>
@@ -69,3 +69,4 @@
     @RenderSection("scripts", false)
 </body>
 </html>
+

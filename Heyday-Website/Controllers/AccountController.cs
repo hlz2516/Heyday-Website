@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Heyday_Website.Models;
 using Heyday_Website.Tools;
 using Heyday_Website.ViewModels;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace Heyday_Website.Controllers
 {
@@ -31,12 +32,32 @@ namespace Heyday_Website.Controllers
 
         private async Task InitRoles()
         {
+            //Root管理管理员，管理员管理普通用户
+            //Root的职责：赋予或剔除某个用户的管理员权限（升/降权）
+            //管理员的职责：负责处理玩家提交的bug，编辑游戏相关内容
+
             if (!await _roleManager.RoleExistsAsync("NormalUser"))
                 await _roleManager.CreateAsync(new IdentityRole("NormalUser"));
             if (!await _roleManager.RoleExistsAsync("Admin"))
                 await _roleManager.CreateAsync(new IdentityRole("Admin"));
             if (!await _roleManager.RoleExistsAsync("Root"))
-                await _roleManager.CreateAsync(new IdentityRole("Root"));
+            {
+                var roleRes = await _roleManager.CreateAsync(new IdentityRole("Root"));
+                //有且仅有一个root最高级别管理员
+                var root = new ApplicationUser()
+                {
+                    UserName = "Root",
+                    Email = "hlz2516@sina.com"
+                };
+                var psdhash = new PasswordHasher<ApplicationUser>()
+                    .HashPassword(root, "hlz2516");
+                root.PasswordHash = psdhash;
+               var userRes =  await _userManager.CreateAsync(root);
+                if(userRes.Succeeded && roleRes.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(root, "Root");
+                }
+            }
         }
 
         [AllowAnonymous]
@@ -45,12 +66,12 @@ namespace Heyday_Website.Controllers
             //为了测试方便，这里直接在内存里存一个user对象并登陆
             var user = new ApplicationUser()
             {
-                Email = "714251494@qq.com",
-                UserName = "aaaa"
+                UserName = "aaaa",
+                Email = "714251494@qq.com"
             };
             await _userManager.CreateAsync(user);
-            await _userManager.AddToRoleAsync(user, "NormalUser");
-            await _signInManager.SignInAsync(user, false);
+            await _userManager.AddToRoleAsync(user, "Admin");
+            await _signInManager.SignInAsync(user,false);
         }
 
         public IActionResult Login()
@@ -117,7 +138,7 @@ namespace Heyday_Website.Controllers
                     await _userManager.AddToRoleAsync(user, "NormalUser");
                     await _signInManager.SignInAsync(user, false);
                 }
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("AccountIndex","Home");
             }
 
             return View(model);
@@ -179,7 +200,7 @@ namespace Heyday_Website.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return View();
+            return RedirectToAction("Login");
         }
         [AcceptVerbs("Get", "Post")]
         public async Task<JsonResult> IsSameEmail(string email)

@@ -1,3 +1,24 @@
-﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+﻿@inject Microsoft.AspNetCore.Identity.UserManager<Heyday_Website.Models.ApplicationUser> userManager
+<!--这个注入有点牛逼-->
+@{
+    if(Context.User != null)
+    {
+        var user = await userManager.GetUserAsync(Context.User);
+        if(user == null)
+        {
+            Layout = "~/Views/Shared/_Layout.cshtml";
+        }
+        else if (await userManager.IsInRoleAsync(user, "Root"))
+        {
+            Layout = "~/Views/Shared/Root_Layout.cshtml";
+        }
+        else if (await userManager.IsInRoleAsync(user, "Admin"))
+        {
+            Layout = "~/Views/Shared/Admin_Layout.cshtml";
+        }
+        else if (await userManager.IsInRoleAsync(user, "NormalUser"))
+        {
+            Layout = "~/Views/Shared/AfterLogin_Layout.cshtml";
+        }
+    }
 }
