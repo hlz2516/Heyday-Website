@@ -127,6 +127,12 @@ G:\Heyday-Website\Heyday-Website\bin\Debug\netcoreapp3.1\MailKit.dll
 G:\Heyday-Website\Heyday-Website\bin\Debug\netcoreapp3.1\MimeKit.dll
 G:\Heyday-Website\Heyday-Website\bin\Debug\netcoreapp3.1\BouncyCastle.Crypto.dll
 G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Account\Logout.cshtml.g.cs
+G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Heyday-Website.csproj.CoreCompileInputs.cache
+G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Heyday-Website.MvcApplicationPartsAssemblyInfo.cache
+G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Account\EmailValidation.cshtml.g.cs
+D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Account\EmailValidation.cshtml.g.cs
+D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Account\ChangePassword.cshtml.g.cs
+G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Account\ChangePassword.cshtml.g.cs
 G:\Heyday-Website\Heyday-Website\bin\Debug\netcoreapp3.1\Microsoft.Data.SqlClient.dll
 G:\Heyday-Website\Heyday-Website\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.SqlServer.dll
 G:\Heyday-Website\Heyday-Website\bin\Debug\netcoreapp3.1\Microsoft.Identity.Client.dll
@@ -148,8 +154,5 @@ G:\Heyday-Website\Heyday-Website\bin\Debug\netcoreapp3.1\runtimes\win-x86\native
 G:\Heyday-Website\Heyday-Website\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 G:\Heyday-Website\Heyday-Website\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 G:\Heyday-Website\Heyday-Website\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Heyday-Website.csproj.CoreCompileInputs.cache
-G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Heyday-Website.MvcApplicationPartsAssemblyInfo.cache
-G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Account\EmailValidation.cshtml.g.cs
-D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Account\EmailValidation.cshtml.g.cs
-D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Account\ChangePassword.cshtml.g.cs
+G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Shared\AfterLogin_Layout.cshtml.g.cs
+G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Home\AccountIndex.cshtml.g.cs

@@ -10,8 +10,13 @@ namespace Heyday_Website.Controllers
 {
     public class HomeController : Controller
     {
-        [Authorize]
+        [AllowAnonymous]
         public IActionResult Index()
+        {
+            return View();
+        }
+        [Authorize]
+        public IActionResult AccountIndex()
         {
             ViewBag.UserName = HttpContext.User.Identity.Name;
             return View();

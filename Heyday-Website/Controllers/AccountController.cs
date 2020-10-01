@@ -72,7 +72,7 @@ namespace Heyday_Website.Controllers
                         model.Remember, false);
                     if (res.Succeeded)
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("AccountIndex", "Home");
                     }
                     else Console.WriteLine("登录失败！");
                 }
