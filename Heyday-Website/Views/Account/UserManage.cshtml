@@ -1,0 +1,34 @@
+﻿<!--这一块有个问题：
+    传过来的User列表，对于每个User，怎么让其role属性与radiobutton绑定？
+    或者换个方案
+    -->
+
+@model IEnumerable<Heyday_Website.Models.User>
+
+<form asp-controller="Account" asp-action="UserManage" method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Email</th>
+                <th scope="col">Name</th>
+                <th scope="col">role</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ int i = 0;}
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <th scope="row">@(++i)</th>
+                    <td>@user.Email</td>
+                    <td>@user.Name</td>
+                    <td>
+
+                    </td>
+                </tr>
+            }
+            
+        </tbody>
+    </table>
+</form>

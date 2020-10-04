@@ -1,0 +1,117 @@
+﻿@model Heyday_Website.Tools.PagingList<Heyday_Website.Models.Bug>
+
+@section scripts{
+    <script>
+        $('#submit').keydown(function (event) {
+            if (event.keyCode == 13) {
+                var id = $(this).get(0).value;
+                //alert(id);
+                $('#form1').submit(function () {
+                    if ($(this).valid()) {
+                        $.ajax({
+                            url: $(this).url,
+                            type: this.method,
+                            data: $(this).serialize(),
+                            success: function (data, result) {
+
+                            },
+                            error: function (result) {
+                                alert("提交失败！请联系管理员");
+                            }
+                        });
+                    }
+                    return false;
+                });
+            }
+        })
+    </script>
+}
+@{ int i = 0;}
+<div class="container-fluid">
+    <form method="post" asp-controller="BugGeneral" asp-action="FindPage" id="form1">
+        <div class="accordion" id="accordionExample">
+            @foreach (var bug in Model)
+            {
+                <div class="card">
+                    <div class="card-header" id="heading@(i)">
+                        <div class="mb-0">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse@(i)" aria-expanded="true" aria-controls="collapse@(i)">
+                                @bug.Title
+                            </button>
+                            <div class="float-right">
+                                @bug.Id.ToString().Substring(30, 6)
+                                &nbsp;
+                                提交者：@bug.SubmitTime
+                                &nbsp;
+                                @bug.SubmitTime
+                                &nbsp;
+                                @switch (bug.BugState)
+                                {
+                                    case Heyday_Website.Models.BugState.pending:
+                                        <svg class="bi bi-folder-symlink" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9.828 4a3 3 0 0 1-2.12-.879l-.83-.828A1 1 0 0 0 6.173 2H2.5a1 1 0 0 0-1 .981L1.546 4h-1L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3v1z" />
+                                            <path fill-rule="evenodd" d="M13.81 4H2.19a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4zM2.19 3A2 2 0 0 0 .198 5.181l.637 7A2 2 0 0 0 2.826 14h10.348a2 2 0 0 0 1.991-1.819l.637-7A2 2 0 0 0 13.81 3H2.19z" />
+                                            <path d="M8.616 10.24l3.182-1.969a.443.443 0 0 0 0-.742l-3.182-1.97c-.27-.166-.616.036-.616.372V6.7c-.857 0-3.429 0-4 4.8 1.429-2.7 4-2.4 4-2.4v.769c0 .336.346.538.616.371z" />
+                                        </svg>
+                                        <span>待处理</span>
+                                        break;
+                                    case Heyday_Website.Models.BugState.reject:
+                                        <svg class="bi bi-exclamation-circle-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                                        </svg>
+                                        <span>已拒绝</span>
+                                        break;
+                                    case Heyday_Website.Models.BugState.processing:
+                                        <svg class="bi bi-arrow-repeat" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M2.854 7.146a.5.5 0 0 0-.708 0l-2 2a.5.5 0 1 0 .708.708L2.5 8.207l1.646 1.647a.5.5 0 0 0 .708-.708l-2-2zm13-1a.5.5 0 0 0-.708 0L13.5 7.793l-1.646-1.647a.5.5 0 0 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0 0-.708z" />
+                                            <path fill-rule="evenodd" d="M8 3a4.995 4.995 0 0 0-4.192 2.273.5.5 0 0 1-.837-.546A6 6 0 0 1 14 8a.5.5 0 0 1-1.001 0 5 5 0 0 0-5-5zM2.5 7.5A.5.5 0 0 1 3 8a5 5 0 0 0 9.192 2.727.5.5 0 1 1 .837.546A6 6 0 0 1 2 8a.5.5 0 0 1 .501-.5z" />
+                                        </svg>
+                                        <span>处理中</span>
+                                        break;
+                                    case Heyday_Website.Models.BugState.solved:
+                                        <svg class="bi bi-check2-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L8 9.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+                                            <path fill-rule="evenodd" d="M8 2.5A5.5 5.5 0 1 0 13.5 8a.5.5 0 0 1 1 0 6.5 6.5 0 1 1-3.25-5.63.5.5 0 1 1-.5.865A5.472 5.472 0 0 0 8 2.5z" />
+                                        </svg>
+                                        <span>已解决</span>
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="collapse@(i)" class="collapse" aria-labelledby="heading@(i)" data-parent="#accordionExample">
+                        <div class="card-body">
+                            @bug.Content
+                            <br />
+                        </div>
+                    </div>
+                </div>
+                i++;
+            }
+        </div>
+        <div class="text-center mt-3">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Bug" asp-action="BugGeneral" asp-route-id="0">首页</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Bug" asp-action="BugGeneral" asp-route-id="@(Model.PageIndex-1)">上一页</a>
+                    </li>
+                    <li class="page-item ml-1 mr-1 mt-1">
+                        @Html.TextBox("pageIndex", Model.PageIndex, new { style = "width:30px;", id = "submit" })
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Bug" asp-action="BugGeneral" asp-route-id="@(Model.PageIndex+1)">下一页</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Bug" asp-action="BugGeneral" asp-route-id="@Model.TotalPages">尾页</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </form>
+</div>

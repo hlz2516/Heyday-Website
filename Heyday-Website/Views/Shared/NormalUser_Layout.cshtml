@@ -33,15 +33,13 @@
                                 Bug管理
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                <a class="dropdown-item" asp-controller="Bug" asp-action="WriteBug">填写Bug</a>
-                                <a class="dropdown-item" asp-controller="Bug" asp-action="BugList">Bug列表</a>
+                                <a class="dropdown-item" asp-controller="Bug" asp-action="BugWrite">填写Bug</a>
+                                <a class="dropdown-item" asp-controller="Bug" asp-action="BugGeneral">Bug总览</a>
+                                <a class="dropdown-item" asp-controller="Bug" asp-action="MySubmittedBugs">我提交的Bug</a>
                             </div>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Bug管理</a>
-                    </li>
-                </ul>
+             </ul>
 
             <ul class="navbar-nav ml-auto">
                 <!--固定头像-->

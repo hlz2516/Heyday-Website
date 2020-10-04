@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Heyday_Website.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +26,11 @@ namespace Heyday_Website
             {
                 config.UseSqlServer(_configuration.GetConnectionString("DBConnection"));
                 //config.UseInMemoryDatabase("memory");
+            });
+
+            services.AddDbContext<Models.AppContext>(config =>
+            {
+                config.UseSqlServer(_configuration.GetConnectionString("AppDB"));
             });
 
             services.AddIdentityCore<ApplicationUser>(config =>

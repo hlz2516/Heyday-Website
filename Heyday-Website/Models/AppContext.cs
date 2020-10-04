@@ -9,6 +9,7 @@ namespace Heyday_Website.Models
     public class AppContext : DbContext
     {
         public DbSet<Bug> Bugs { get; set; }
+        public DbSet<Solution> Solutions { get; set; }
 
         public AppContext(DbContextOptions<AppContext> opt) : base(opt)
         {

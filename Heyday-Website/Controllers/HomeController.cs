@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Heyday_Website.Models;
+﻿using Heyday_Website.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace Heyday_Website.Controllers
 {
@@ -31,7 +26,7 @@ namespace Heyday_Website.Controllers
         public IActionResult AccountIndex()
         {
             ViewBag.UserName = HttpContext.User.Identity.Name;
-            //foreach (var item in _signManager.Context.User.Claims)
+            //foreach (var item in HttpContext.User.Claims)
             //{
             //    Debug.WriteLine(item.Type + "," + item.Value);
             //}

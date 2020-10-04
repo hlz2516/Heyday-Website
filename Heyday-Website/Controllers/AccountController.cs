@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Heyday_Website.Models;
 using Heyday_Website.Tools;
 using Heyday_Website.ViewModels;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Heyday_Website.Controllers
 {
@@ -225,6 +224,29 @@ namespace Heyday_Website.Controllers
             HttpContext.Session.Set(HttpContext.Session.Id, 
                 ByteArrayConverter.ToByteArray(code));
             EmailHelper.SendEmail(email, code);
+        }
+        [Authorize(Roles = "Root")]
+        public async Task<IActionResult> UserManage()
+        {
+            //得到所有普通用户和管理员返回给页面
+            IList<User> users = new List<User>();
+            var Users =await _userManager.Users.ToListAsync();
+            foreach (var user in Users)
+            {
+                bool? role = null;
+                var roleName = (await _userManager.GetRolesAsync(user)).First();//这行报错
+                //报错信息:There is already an open DataReader associated with this 
+                //Connection which must be closed first.
+                if (roleName == "NormalUser")
+                    role = false;
+                else if (roleName == "Admin")
+                    role = true;
+
+                if (role.HasValue)
+                    users.Add(new User { Email = user.Email, Name = user.UserName, Role = role });
+            }
+            var res = users.OrderBy(u => u.Role);
+            return View(res);
         }
     }
 }
