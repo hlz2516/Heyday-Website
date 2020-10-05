@@ -2,18 +2,23 @@
 
 @section scripts{
     <script>
+        var curBugId;
         window.onload = function () {
             var btns = document.getElementsByClassName('list-group-item');
             for (var i = 0; i < btns.length; i++) {
                 var jbtn = $(btns[i]);
                 jbtn.click(function () {
-                    var id = $(this).find('span.font-weight-bold')[0].innerText;
-                    $('#bugId').get(0).value = id;
-                    $.getJSON("/Bug/GetTitleAndDetail?bugId=" + id, function (data, status) {
+                    curBugId = $(this).find('span.font-weight-bold')[0].innerText;
+                    $('#bugId').get(0).value = curBugId;
+                    $.getJSON("/Bug/GetTitleAndDetail?bugId=" + curBugId, function (data, status) {
                         if (status == "success") {
-                            alert(data["title"] + "," + data["detail"]);
+                            alert(data["title"] + "," + data["detail"] + "," + data["state"]);
                             $('#title').get(0).value = data["title"];
                             $('#detail').get(0).innerText = data["detail"];
+                            if (data["state"] == 4)
+                                $("#success").attr("disabled", false);
+                            else
+                                $("#success").attr("disabled", true);
                         }
                     })
                 })
@@ -27,6 +32,12 @@
                             alert("删除成功，请重新刷新页面");
                     }
                 });
+            })
+
+            //给已解决按钮绑定事件
+            $('#success').click(function () {
+                alert("已解决");
+                $.get("/Bug/ChangeStateToSolved?bugId=" + curBugId);
             })
 
             //ajax提交表单
@@ -61,33 +72,37 @@
                     <button type="button" class="list-group-item list-group-item-action">
                         #<span class="font-weight-bold">@bug.Id</span>
                         @bug.Title
-                        <div class="float-right">
-                            @switch (bug.BugState)
-                            {
-                                case Heyday_Website.Models.BugState.pending:
-                                    <img src="~/images/BugState_pending.svg" />
-                                    <span>待处理</span>
-                                    break;
-                                case Heyday_Website.Models.BugState.reject:
-                                    <img src="~/images/BugState_reject.svg" />
-                                    <span>已拒绝</span>
-                                    break;
-                                case Heyday_Website.Models.BugState.processing:
-                                    <img src="~/images/BugState_processing.svg" />
-                                    <span>处理中</span>
-                                    break;
-                                case Heyday_Website.Models.BugState.throwback:
-                                    <img src="~/images/BugState_throwback.svg" />
-                                    <span>抛回</span>
-                                    break;
-                                case Heyday_Website.Models.BugState.solved:
-                                    <img src="~/images/BugState_solved.svg" />
-                                    <span>已解决</span>
-                                    break;
-                                default:
-                                    break;
-                            }
-                        </div>
+                    <div class="float-right">
+                        @switch (bug.BugState)
+                        {
+                            case Heyday_Website.Models.BugState.pending:
+                                <img src="~/images/BugState_pending.svg" />
+                                <span>待处理</span>
+                                break;
+                            case Heyday_Website.Models.BugState.reject:
+                                <img src="~/images/BugState_reject.svg" />
+                                <span>已拒绝</span>
+                                break;
+                            case Heyday_Website.Models.BugState.processing:
+                                <img src="~/images/BugState_processing.svg" />
+                                <span>处理中</span>
+                                break;
+                            case Heyday_Website.Models.BugState.throwback:
+                                <img src="~/images/BugState_throwback.svg" />
+                                <span>抛回</span>
+                                break;
+                            case Heyday_Website.Models.BugState.delivered:
+                                <img src="~/images/BugState_delivered.svg" />
+                                <span>已交付</span>
+                                break;
+                            case Heyday_Website.Models.BugState.solved:
+                                <img src="~/images/BugState_solved.svg" />
+                                <span>已解决</span>
+                                break;
+                            default:
+                                break;
+                        }
+                    </div>
                     </button>
                 }
             </div>
@@ -113,6 +128,7 @@
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <button type="button" class="btn btn-primary" id="dltBtn">delete</button>
+                    <button type="button" class="btn btn-primary" id="success">经测试，已解决</button>
                 </form>
             </div>
         </div>

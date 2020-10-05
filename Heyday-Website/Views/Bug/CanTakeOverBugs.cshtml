@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Heyday_Website.Models.Bug>
+@{
+    int i = 0;
+}
+
+@section scripts{
+    <script>
+        function submit(obj) {
+            alert(obj.name);
+            var id = obj.name;
+            $.get("/Bug/AddToFactory?bugId=" + id, null,function (data) {
+                if (data == "OK") {
+                    $('div [name=' + id + ']').remove();
+                }
+            });
+        }
+    </script>
+}
+
+<div class="container-fluid">
+    <div class="accordion" id="accordionExample">
+        @foreach (var bug in Model)
+        {
+            <div class="card" name="@bug.Id.ToString()">
+                <div class="card-header" id="heading@(i)">
+                    <div class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse@(i)" aria-expanded="true" aria-controls="collapse@(i)">
+                            @bug.Title
+                        </button>
+                        <div class="float-right">
+                            @bug.Id.ToString().Substring(30, 6)
+                            &nbsp;
+                            提交者：@bug.SubmitterEmail
+                            &nbsp;
+                            @bug.SubmitTime
+                            &nbsp;
+                            @switch (bug.BugState)
+                            {
+                                case Heyday_Website.Models.BugState.pending:
+                                    <img src="~/images/BugState_pending.svg" />
+                                    <span>待处理</span>
+                                    break;
+                                case Heyday_Website.Models.BugState.throwback:
+                                    <img src="~/images/BugState_throwback.svg" />
+                                    <span>抛回</span>
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            <button class="btn btn-secondary ml-1 mr-1" onclick="submit(this)" name="@bug.Id.ToString()">接手</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="collapse@(i)" class="collapse" aria-labelledby="heading@(i)" data-parent="#accordionExample">
+                    <div class="card-body">
+                        @bug.Content
+                        <br />
+                    </div>
+                </div>
+            </div>
+            i++;
+        }
+    </div>
+</div>
+

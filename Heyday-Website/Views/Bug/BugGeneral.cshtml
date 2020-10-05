@@ -59,6 +59,14 @@
                                         <img src="~/images/BugState_processing.svg" />
                                         <span>处理中</span>
                                         break;
+                                    case Heyday_Website.Models.BugState.delivered:
+                                        <img src="~/images/BugState_delivered.svg" />
+                                        <span>已交付</span>
+                                        break;
+                                    case Heyday_Website.Models.BugState.throwback:
+                                        <img src="~/images/BugState_throwback.svg" />
+                                        <span>抛回</span>
+                                        break;
                                     case Heyday_Website.Models.BugState.solved:
                                         <img src="~/images/BugState_solved.svg" />
                                         <span>已解决</span>

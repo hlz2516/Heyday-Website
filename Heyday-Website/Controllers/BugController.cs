@@ -83,9 +83,18 @@ namespace Heyday_Website.Controllers
         public JsonResult GetTitleAndDetail(string bugId)
         {
             var message = _db.Bugs.Where(b => b.Id.ToString() == bugId)
-                .Select(b => new { Title = b.Title, Detail = b.Content })
+                .Select(b => new { Title = b.Title, Detail = b.Content,State = (int)b.BugState })
                 .FirstOrDefault();
                 
+            return Json(message);
+        }
+
+        public JsonResult GetTitleDetailAndSolution(string bugId)
+        {
+            var message = _db.Solutions.Where(s => s.BugId.ToString() == bugId)
+                .Select(s => new { Title = s.Bug.Title, Detail = s.Bug.Content, 
+                    Solution = s.Context,State = (int)s.Bug.BugState })
+                .FirstOrDefault();
             return Json(message);
         }
 
@@ -95,6 +104,65 @@ namespace Heyday_Website.Controllers
             _db.Bugs.Remove(bug);
             _db.SaveChanges();
             return "OK";
+        }
+
+        public IActionResult CanTakeOverBugs()
+        {
+            //检索出状态为待处理和抛回的bug返回给页面
+            var bugs = _db.Bugs.Where(b => b.BugState == BugState.pending ||
+            b.BugState == BugState.throwback);
+            return View(bugs);
+        }
+
+        public async Task<string> AddToFactory(string bugId)
+        {
+            //new一个solution加入到solutions表中
+            var solverEmail = (await _userManager.GetUserAsync(HttpContext.User)).Email;
+            var sln = new Solution()
+            {
+                Id = Guid.NewGuid(),
+                BugId = new Guid(bugId),
+                Solver = solverEmail
+            };
+            await _db.Solutions.AddAsync(sln);
+            //找到该bug，将其状态改为处理中
+            var bug = _db.Bugs.Where(b => b.Id.ToString() == bugId).FirstOrDefault();
+            if (bug != null)
+                bug.BugState = BugState.processing;
+            _db.Bugs.Update(bug);
+           await  _db.SaveChangesAsync();
+            return "OK";
+        }
+
+        public IActionResult BugFactory()
+        {
+            var receivedBugs = _db.Solutions.Select(s => s.Bug);
+            return View(receivedBugs);
+        }
+
+        public string BugSubmit(string bugId,string solution)
+        {
+            //更新solution
+            var thisSln = _db.Solutions.Where(s => s.BugId.ToString() == bugId).FirstOrDefault();
+            if (thisSln != null)
+                thisSln.Context = solution;
+            _db.Solutions.Update(thisSln);
+            //改变bug状态为已交付
+            var thisBug = _db.Bugs.Where(b => b.Id.ToString() == bugId).FirstOrDefault();
+            if (thisBug != null)
+                thisBug.BugState = BugState.delivered;
+            _db.Bugs.Update(thisBug);
+
+            _db.SaveChanges();
+            return "OK";
+        }
+
+        public void ChangeStateToSolved(string bugId)
+        {
+            var bug = _db.Bugs.Where(b => b.Id.ToString() == bugId).FirstOrDefault();
+            if (bug != null)
+                bug.BugState = BugState.solved;
+            _db.SaveChanges();
         }
     }
 }
