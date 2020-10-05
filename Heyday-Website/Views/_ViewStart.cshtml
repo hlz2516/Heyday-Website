@@ -4,7 +4,9 @@
     if(Context.User != null)
     {
         var user = await userManager.GetUserAsync(Context.User);
-        if(user == null)
+        if(user != null)
+            ViewBag.UserName = user.UserName;
+        if (user == null)
         {
             Layout = "~/Views/Shared/_Layout.cshtml";
         }

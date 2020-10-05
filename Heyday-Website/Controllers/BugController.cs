@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Heyday_Website.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Heyday_Website.Controllers
 {
@@ -27,12 +28,12 @@ namespace Heyday_Website.Controllers
                 id = 1;
             var bugs = _db.Bugs.AsEnumerable();
             var bugList = new PagingList<Bug>(bugs,(int)id,10);
+
             return View(bugList);
         }
 
         public IActionResult BugWrite()
         {
-            ViewBag.UserName = HttpContext.User.Identity.Name;
             return View();
         }
 
@@ -53,14 +54,47 @@ namespace Heyday_Website.Controllers
                 };
                 await _db.Bugs.AddAsync(bug);
                 await _db.SaveChangesAsync();
-                return RedirectToAction("AccountIndex", "Home");
+                ViewBag.IsSubmitted = 1;
+                return View("BugWrite");
             }
             return View(model);
         }
 
-        public IActionResult BugListOfUser()
+        public async Task<IActionResult> BugListOfUser()
         {
-            return View();
+            var email = (await _userManager.GetUserAsync(HttpContext.User)).Email;
+            var bugs =await _db.Bugs.Where(b => b.SubmitterEmail == email).ToListAsync();
+            return View(bugs);
+        }
+
+        public IActionResult EditMySubmitBug()
+        {
+            var id = Request.Form["bugId"].ToString();
+            var bug = _db.Bugs.Where(b => b.Id.ToString() == id).FirstOrDefault();
+            bug.Title = Request.Form["bugTitle"].ToString();
+            bug.Content = Request.Form["bugDetail"].ToString();
+            bug.SubmitTime = Convert.ToDateTime(Request.Form["submitTime"].ToString());
+            _db.Bugs.Update(bug);
+            _db.SaveChanges();
+
+            return RedirectToAction("BugListOfUser");
+        }
+
+        public JsonResult GetTitleAndDetail(string bugId)
+        {
+            var message = _db.Bugs.Where(b => b.Id.ToString() == bugId)
+                .Select(b => new { Title = b.Title, Detail = b.Content })
+                .FirstOrDefault();
+                
+            return Json(message);
+        }
+
+        public string DeleteMyBug(string bugId)
+        {
+            var bug = _db.Bugs.Where(b => b.Id.ToString() == bugId).FirstOrDefault();
+            _db.Bugs.Remove(bug);
+            _db.SaveChanges();
+            return "OK";
         }
     }
 }

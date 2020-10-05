@@ -24,13 +24,14 @@ namespace Heyday_Website
         {
             services.AddDbContext<UserDbContext>(config =>
             {
-                config.UseSqlServer(_configuration.GetConnectionString("DBConnection"));
-                //config.UseInMemoryDatabase("memory");
+                //config.UseSqlServer(_configuration.GetConnectionString("DBConnection"));
+                config.UseInMemoryDatabase("memory");
             });
 
             services.AddDbContext<Models.AppContext>(config =>
             {
-                config.UseSqlServer(_configuration.GetConnectionString("AppDB"));
+                //config.UseSqlServer(_configuration.GetConnectionString("AppDB"));
+                config.UseInMemoryDatabase("AppDB");
             });
 
             services.AddIdentityCore<ApplicationUser>(config =>

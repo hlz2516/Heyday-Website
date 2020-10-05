@@ -25,7 +25,7 @@ namespace Heyday_Website.Controllers
         [Authorize]
         public IActionResult AccountIndex()
         {
-            ViewBag.UserName = HttpContext.User.Identity.Name;
+            //ViewBag.UserName = HttpContext.User.Identity.Name;
             //foreach (var item in HttpContext.User.Claims)
             //{
             //    Debug.WriteLine(item.Type + "," + item.Value);

@@ -1,0 +1,121 @@
+﻿@model IEnumerable<Heyday_Website.Models.Bug>
+
+@section scripts{
+    <script>
+        window.onload = function () {
+            var btns = document.getElementsByClassName('list-group-item');
+            for (var i = 0; i < btns.length; i++) {
+                var jbtn = $(btns[i]);
+                jbtn.click(function () {
+                    var id = $(this).find('span.font-weight-bold')[0].innerText;
+                    $('#bugId').get(0).value = id;
+                    $.getJSON("/Bug/GetTitleAndDetail?bugId=" + id, function (data, status) {
+                        if (status == "success") {
+                            alert(data["title"] + "," + data["detail"]);
+                            $('#title').get(0).value = data["title"];
+                            $('#detail').get(0).innerText = data["detail"];
+                        }
+                    })
+                })
+            }
+            //给删除按钮绑定事件
+            $('#dltBtn').click(function () {
+                var id = $('#bugId').get(0).value;
+                $.get("/Bug/DeleteMyBug?bugId=" + id, function (data, status) {
+                    if (status == "success") {
+                        if (data == "OK")
+                            alert("删除成功，请重新刷新页面");
+                    }
+                });
+            })
+
+            //ajax提交表单
+            $('#form1').submit(function () {
+                if ($(this).valid()) {
+                    $.ajax({
+                        url: this.action,
+                        type: this.method,
+                        data: $(this).serialize(),
+                        dataType: String,
+                        success: function (data, result) {
+
+                        },
+                        error: function (result) {
+                            alert("提交失败！请联系管理员");
+                        }
+                    });
+                }
+                return false;
+            });
+
+        }
+    </script>
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3 pre-scrollable" style="height:inherit">
+            <div class="list-group">
+                @foreach (var bug in Model)
+                {
+                    <button type="button" class="list-group-item list-group-item-action">
+                        #<span class="font-weight-bold">@bug.Id</span>
+                        @bug.Title
+                        <div class="float-right">
+                            @switch (bug.BugState)
+                            {
+                                case Heyday_Website.Models.BugState.pending:
+                                    <img src="~/images/BugState_pending.svg" />
+                                    <span>待处理</span>
+                                    break;
+                                case Heyday_Website.Models.BugState.reject:
+                                    <img src="~/images/BugState_reject.svg" />
+                                    <span>已拒绝</span>
+                                    break;
+                                case Heyday_Website.Models.BugState.processing:
+                                    <img src="~/images/BugState_processing.svg" />
+                                    <span>处理中</span>
+                                    break;
+                                case Heyday_Website.Models.BugState.throwback:
+                                    <img src="~/images/BugState_throwback.svg" />
+                                    <span>抛回</span>
+                                    break;
+                                case Heyday_Website.Models.BugState.solved:
+                                    <img src="~/images/BugState_solved.svg" />
+                                    <span>已解决</span>
+                                    break;
+                                default:
+                                    break;
+                            }
+                        </div>
+                    </button>
+                }
+            </div>
+        </div>
+
+        <div class="col-9 pl-2">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h5>Bug编辑</h5>
+                </div>
+                <form class="card-body" id="form1" method="post" asp-controller="Bug" asp-action="EditMySubmitBug">
+                    <div class="form-group">
+                        <label>Bug概述</label>
+                        <input type="text" class="form-control" id="title" name="bugTitle">
+                        <input type="hidden" id="bugId" name="bugId" />
+                    </div>
+                    <div class="form-group">
+                        <label>Bug详细描述</label>
+                        <textarea class="form-control" id="detail" rows="3" name="bugDetail"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" id="submitTime" name="submitTime" value="@DateTime.Now" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-primary" id="dltBtn">delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
