@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Heyday_Website.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
 
 namespace Heyday_Website.Controllers
 {
@@ -161,8 +162,43 @@ namespace Heyday_Website.Controllers
         {
             var bug = _db.Bugs.Where(b => b.Id.ToString() == bugId).FirstOrDefault();
             if (bug != null)
+            {
                 bug.BugState = BugState.solved;
+                //获取该Bug所有信息并写入txt
+                var solution = _db.Solutions.Where(s => s.BugId.ToString() == bugId).FirstOrDefault();
+                var fullPath = System.IO.Path.Combine(RootPathHelper.hostEnvironment.ContentRootPath, @"Logs\SolvedBugs.txt");
+                //Console.WriteLine(fullPath);
+                FileStream stream = null;
+                if (!System.IO.File.Exists(fullPath))
+                    stream = System.IO.File.Create(fullPath);
+                else stream = System.IO.File.Open(fullPath, FileMode.Append);
+                using (var sw = new StreamWriter(stream))
+                {
+                    sw.WriteLine("==============================");
+                    sw.WriteLine("bug message:");
+                    sw.WriteLine("id:" + bug.Id.ToString());
+                    sw.WriteLine("title:" + bug.Title);
+                    sw.WriteLine("content:" + bug.Content);
+                    sw.WriteLine("submitter email:" + bug.SubmitterEmail);
+                    sw.WriteLine("submit time:" + bug.SubmitTime);
+                    sw.WriteLine("solution message:");
+                    sw.WriteLine("id:" + solution.Id);
+                    sw.WriteLine("solver email:" + solution.Solver);
+                    sw.WriteLine("content:" + solution.Context);
+                    sw.WriteLine("==============================");
+                    sw.Flush();
+                }
+            }
             _db.SaveChanges();
+        }
+
+        public string ThrowIt(string bugId)
+        {
+            var bug = _db.Bugs.Where(b => b.Id.ToString() == bugId).FirstOrDefault();
+            if (bug != null)
+                bug.BugState = BugState.throwback;
+            _db.SaveChanges();
+            return "OK";
         }
     }
 }

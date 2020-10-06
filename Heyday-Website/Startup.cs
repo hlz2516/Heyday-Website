@@ -1,5 +1,6 @@
 using System;
 using Heyday_Website.Models;
+using Heyday_Website.Tools;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -61,6 +62,8 @@ namespace Heyday_Website
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            RootPathHelper.hostEnvironment = env;
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -6,9 +6,18 @@
 @section scripts{
     <script>
         function submit(obj) {
-            alert(obj.name);
+            //alert(obj.name);
             var id = obj.name;
             $.get("/Bug/AddToFactory?bugId=" + id, null,function (data) {
+                if (data == "OK") {
+                    $('div [name=' + id + ']').remove();
+                }
+            });
+        }
+
+        function throwit(obj) {
+            var id = obj.name;
+            $.get("/Bug/ThrowIt?bugId=" + id, null, function (data) {
                 if (data == "OK") {
                     $('div [name=' + id + ']').remove();
                 }
@@ -49,6 +58,7 @@
                             }
 
                             <button class="btn btn-secondary ml-1 mr-1" onclick="submit(this)" name="@bug.Id.ToString()">接手</button>
+                            <button class="btn btn-secondary ml-1 mr-1" onclick="throwit(this)" name="@bug.Id.ToString()">抛回</button>
                         </div>
                     </div>
                 </div>

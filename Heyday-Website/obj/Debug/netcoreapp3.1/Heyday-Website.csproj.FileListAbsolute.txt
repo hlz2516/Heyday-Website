@@ -152,3 +152,5 @@ G:\Heyday-Website\Heyday-Website\bin\Debug\netcoreapp3.1\Microsoft.EntityFramewo
 G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Bug\BugFactory.cshtml.g.cs
 G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Bug\BugListOfUser.cshtml.g.cs
 G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Bug\CanTakeOverBugs.cshtml.g.cs
+D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Bug\BugFactory.cshtml.g.cs
+D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Bug\CanTakeOverBugs.cshtml.g.cs

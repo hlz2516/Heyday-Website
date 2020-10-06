@@ -1,0 +1,24 @@
+==============================
+bug message:
+id:252a6eb7-6655-4288-aa07-6ec8ff13842e
+title:123
+content:111111111111
+submitter email:hlz2516@sina.com
+submit time:2020/10/6 11:25:49
+solution message:
+id:fd8ae3fd-dd9a-4351-9197-128b581f127a
+solver email:hlz2516@sina.com
+content:aaaaaaaaaaaaaaaaaaaaaaaaa
+==============================
+==============================
+bug message:
+id:a8c1e55e-ff1f-4c0a-a486-50369c248f08
+title:经典款付师傅说
+content:aaaaaaa
+submitter email:hlz2516@sina.com
+submit time:2020/10/6 11:30:03
+solution message:
+id:067ee58a-2b11-4baf-84a8-b5092a32d648
+solver email:hlz2516@sina.com
+content:asasasaasasa
+==============================
