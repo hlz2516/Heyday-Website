@@ -1,0 +1,41 @@
+﻿@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment host
+@section scripts{
+    <script src="~/lib/marked/marked.min.js"></script>
+    <script>
+        $("body").removeClass("text-center");
+        var path = "@host.WebRootPath.Trim()";
+        //console.log(path);
+        //"G:\Heyday-Website\Heyday-Website\wwwroot\md\test.md"
+        function readTxt() {
+
+            var xhr = new XMLHttpRequest();
+
+                xhr.open("get", "~/md/test.txt", true);
+
+            xhr.send();
+
+            xhr.onreadystatechange = function () {
+
+                if (xhr.readyState == 4 && xhr.status == 200) {
+
+                    console.log(xhr);
+
+                    console.log(xhr.responseText);
+
+                } else if (xhr.status == 404) {
+
+                    console.log(xhr.status);
+
+                }
+
+            };
+
+        }
+
+        readTxt()
+        //document.getElementById('content').innerHTML =
+        //    marked('# Marked in the browser\n\nRendered by **marked**.');
+    </script>
+}
+
+<div id="content"></div>

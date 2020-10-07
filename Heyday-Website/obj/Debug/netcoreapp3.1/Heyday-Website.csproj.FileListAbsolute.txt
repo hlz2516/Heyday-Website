@@ -154,3 +154,4 @@ G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Bug\BugList
 G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Bug\CanTakeOverBugs.cshtml.g.cs
 D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Bug\BugFactory.cshtml.g.cs
 D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Bug\CanTakeOverBugs.cshtml.g.cs
+G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\Index.cshtml.g.cs
