@@ -9,6 +9,7 @@ using Heyday_Website.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Heyday_Website.Controllers
 {
@@ -22,7 +23,7 @@ namespace Heyday_Website.Controllers
             _db = context;
             _userManager = userManager;
         }
-
+        [Authorize]
         public IActionResult BugGeneral(int? id)
         {
             if (!id.HasValue || id == 0)
@@ -32,7 +33,7 @@ namespace Heyday_Website.Controllers
 
             return View(bugList);
         }
-
+        [Authorize]
         public IActionResult BugWrite()
         {
             return View();
@@ -60,14 +61,14 @@ namespace Heyday_Website.Controllers
             }
             return View(model);
         }
-
+        [Authorize]
         public async Task<IActionResult> BugListOfUser()
         {
             var email = (await _userManager.GetUserAsync(HttpContext.User)).Email;
             var bugs =await _db.Bugs.Where(b => b.SubmitterEmail == email).ToListAsync();
             return View(bugs);
         }
-
+        [Authorize]
         public IActionResult EditMySubmitBug()
         {
             var id = Request.Form["bugId"].ToString();
@@ -80,7 +81,7 @@ namespace Heyday_Website.Controllers
 
             return RedirectToAction("BugListOfUser");
         }
-
+        [Authorize]
         public JsonResult GetTitleAndDetail(string bugId)
         {
             var message = _db.Bugs.Where(b => b.Id.ToString() == bugId)
@@ -89,7 +90,7 @@ namespace Heyday_Website.Controllers
                 
             return Json(message);
         }
-
+        [Authorize(Roles ="Admin,Root")]
         public JsonResult GetTitleDetailAndSolution(string bugId)
         {
             var message = _db.Solutions.Where(s => s.BugId.ToString() == bugId)
@@ -98,7 +99,7 @@ namespace Heyday_Website.Controllers
                 .FirstOrDefault();
             return Json(message);
         }
-
+        [Authorize]
         public string DeleteMyBug(string bugId)
         {
             var bug = _db.Bugs.Where(b => b.Id.ToString() == bugId).FirstOrDefault();
@@ -106,7 +107,7 @@ namespace Heyday_Website.Controllers
             _db.SaveChanges();
             return "OK";
         }
-
+        [Authorize(Roles ="Admin,Root")]
         public IActionResult CanTakeOverBugs()
         {
             //检索出状态为待处理和抛回的bug返回给页面
@@ -114,7 +115,7 @@ namespace Heyday_Website.Controllers
             b.BugState == BugState.throwback);
             return View(bugs);
         }
-
+        [Authorize(Roles ="Admin,Root")]
         public async Task<string> AddToFactory(string bugId)
         {
             //new一个solution加入到solutions表中
@@ -134,13 +135,13 @@ namespace Heyday_Website.Controllers
            await  _db.SaveChangesAsync();
             return "OK";
         }
-
+        [Authorize(Roles = "Admin,Root")]
         public IActionResult BugFactory()
         {
             var receivedBugs = _db.Solutions.Select(s => s.Bug);
             return View(receivedBugs);
         }
-
+        [Authorize(Roles ="Admin,Root")]
         public string BugSubmit(string bugId,string solution)
         {
             //更新solution
@@ -157,7 +158,7 @@ namespace Heyday_Website.Controllers
             _db.SaveChanges();
             return "OK";
         }
-
+        [Authorize]
         public void ChangeStateToSolved(string bugId)
         {
             var bug = _db.Bugs.Where(b => b.Id.ToString() == bugId).FirstOrDefault();
@@ -191,7 +192,7 @@ namespace Heyday_Website.Controllers
             }
             _db.SaveChanges();
         }
-
+        [Authorize(Roles ="Admin,Root")]
         public string ThrowIt(string bugId)
         {
             var bug = _db.Bugs.Where(b => b.Id.ToString() == bugId).FirstOrDefault();

@@ -22,3 +22,15 @@ id:067ee58a-2b11-4baf-84a8-b5092a32d648
 solver email:hlz2516@sina.com
 content:asasasaasasa
 ==============================
+==============================
+bug message:
+id:45d2a97e-7cf8-4c75-bb71-2aab4d6af643
+title:经典款付师傅说
+content:123123
+submitter email:hlz2516@sina.com
+submit time:2020/10/7 8:43:57
+solution message:
+id:26316929-32af-4726-a840-08d9574954b2
+solver email:hlz2516@sina.com
+content:kkkkkkkkkkkkkkkk
+==============================
