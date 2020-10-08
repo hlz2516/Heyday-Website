@@ -60,7 +60,7 @@ namespace Heyday_Website.Controllers
         }
 
         [AllowAnonymous]
-        public async Task Test()
+        public async Task Test([FromServices]Models.AppContext context)
         {
             //为了测试方便，这里直接在内存里存一个user对象并登陆
             var user = new ApplicationUser()
@@ -71,6 +71,29 @@ namespace Heyday_Website.Controllers
             await _userManager.CreateAsync(user);
             await _userManager.AddToRoleAsync(user, "Admin");
             await _signInManager.SignInAsync(user,false);
+
+            //在这里添加测试数据
+            Guid[] id = new Guid[3]
+            {
+                Guid.NewGuid(),
+                Guid.NewGuid(),
+                Guid.NewGuid(),
+            };
+            context.Categories.AddRange(
+                new Category { Id = id[0], CategoryName = "入门" },
+                new Category { Id = id[1], CategoryName = "活动" },
+                new Category { Id = id[2], CategoryName = "其他" }
+                );
+            context.Articles.Add(new Article
+            {
+                Id = Guid.NewGuid(),
+                Title = "主题1",
+                Content = "# 二级主题 \n **ttt**",
+                Author = "714251494@qq.com",
+                HasPublished = false,
+                CategoryId = id[0]
+            });
+            context.SaveChanges();
         }
 
         public IActionResult Login()

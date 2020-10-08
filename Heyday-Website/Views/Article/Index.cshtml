@@ -1,41 +1,27 @@
-﻿@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment host
-@section scripts{
+﻿@*@section scripts{
     <script src="~/lib/marked/marked.min.js"></script>
     <script>
         $("body").removeClass("text-center");
-        var path = "@host.WebRootPath.Trim()";
-        //console.log(path);
-        //"G:\Heyday-Website\Heyday-Website\wwwroot\md\test.md"
-        function readTxt() {
-
-            var xhr = new XMLHttpRequest();
-
-                xhr.open("get", "~/md/test.txt", true);
-
-            xhr.send();
-
-            xhr.onreadystatechange = function () {
-
-                if (xhr.readyState == 4 && xhr.status == 200) {
-
-                    console.log(xhr);
-
-                    console.log(xhr.responseText);
-
-                } else if (xhr.status == 404) {
-
-                    console.log(xhr.status);
-
-                }
-
-            };
-
-        }
-
-        readTxt()
-        //document.getElementById('content').innerHTML =
-        //    marked('# Marked in the browser\n\nRendered by **marked**.');
+        $.get("/Article/Getmd", function (data, status) {
+            if (status == "success") {
+                $('#content').get(0).innerHTML = marked(data);
+            }
+        });
     </script>
-}
+}*@
 
-<div id="content"></div>
+<div class="container">
+    <div class="row nav flex-column justify-content-center" style="height:600px;">
+        <a class="btn btn-dark text-white col-md-3 m-3 nav flex-column justify-content-center" asp-controller="Article" asp-action="Introduction">
+                <h1 class="text-center">入门</h1>
+        </a>
+
+        <a class="btn btn-dark text-white col-md-3 m-3 nav flex-column justify-content-center" asp-controller="Article" asp-action="Activity">
+            <h1 class="text-center">活动</h1>
+        </a>
+
+        <a class="btn btn-dark text-white col-md-3 m-3 nav flex-column justify-content-center" asp-controller="Article" asp-action="Others">
+            <h1 class="text-center">其他</h1>
+        </a>
+    </div>
+</div>
