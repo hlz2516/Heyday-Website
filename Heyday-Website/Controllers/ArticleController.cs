@@ -51,8 +51,10 @@ namespace Heyday_Website.Controllers
             IEnumerable<Article> articles=null;
             if (user != null)
             {
+                var categoryId = _db.Categories.Where(c => c.CategoryName == "入门")
+                    .Select(c=>c.Id).FirstOrDefault();
                 articles = _db.Articles.Where(a=>a.Author == user.Email)
-                    .Where(a=>a.Category.CategoryName == "入门");
+                    .Where(a=>a.CategoryId== categoryId);
             }
             return View(articles);
         }
@@ -60,6 +62,45 @@ namespace Heyday_Website.Controllers
         public IActionResult NewArticle()
         {
             return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> NewArticle(Article article)
+        {
+            //Console.WriteLine(article.Content);
+            //先检测md/intro下有没有这个标题的md文件
+            //如果有，直接覆盖
+            //Console.WriteLine(_webHost.WebRootPath);
+            var fullPath = Path.Combine(_webHost.WebRootPath, @"md\intro\" + article.Title + ".md");
+            //Console.WriteLine(fullPath);
+            if (System.IO.File.Exists(fullPath))
+            {
+                var writer = new StreamWriter(fullPath);
+                await writer.WriteAsync(article.Content);
+                await writer.FlushAsync();
+                writer.Close();
+            }
+            //如果没有，新建一个article存入数据库，写入对应位置
+            else
+            {
+                var stream = System.IO.File.Create(fullPath);
+                var writer = new StreamWriter(stream);
+                await writer.WriteAsync(article.Content);
+                await writer.FlushAsync();
+                writer.Close();
+
+                article.Id = Guid.NewGuid();
+
+                var catagory = _db.Categories.Where(c => c.CategoryName == "入门").FirstOrDefault();
+                article.CategoryId = catagory.Id;
+
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                article.Author = user.Email;
+
+                article.HasPublished = false;
+                await _db.AddAsync(article);
+                await _db.SaveChangesAsync();
+            }
+            return View(article);
         }
     }
 }

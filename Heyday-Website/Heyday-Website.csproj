@@ -16,6 +16,9 @@
     <Folder Include="wwwroot\js\" />
     <Folder Include="wwwroot\lib\" />
     <Folder Include="Logs\" />
+    <Folder Include="wwwroot\md\activity\" />
+    <Folder Include="wwwroot\md\intro\" />
+    <Folder Include="wwwroot\md\others\" />
   </ItemGroup>
 
   <ItemGroup>
