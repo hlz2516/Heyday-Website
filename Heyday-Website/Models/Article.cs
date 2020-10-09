@@ -15,6 +15,7 @@ namespace Heyday_Website.Models
         public string Content { get; set; }
         public string Author { get; set; }
         public bool HasPublished { get; set; }
+        public string URL { get; set; }
         public Guid CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }

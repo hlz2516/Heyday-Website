@@ -96,11 +96,36 @@ namespace Heyday_Website.Controllers
                 var user = await _userManager.GetUserAsync(HttpContext.User);
                 article.Author = user.Email;
 
-                article.HasPublished = false;
+                article.URL = fullPath;
+
                 await _db.AddAsync(article);
                 await _db.SaveChangesAsync();
             }
             return View(article);
+        }
+        [HttpPost]
+        public async Task<string> Publish(Article article)
+        {
+            article.HasPublished = true;
+            await NewArticle(article);
+            return "OK";
+        }
+
+        public IActionResult Show(string title)
+        {
+            //Console.WriteLine(title);
+            //根据title在数据库中查找该article所有信息
+            //读取md文件放入content，然后传到页面上
+            var article = _db.Articles.Where(a => a.Title == title).FirstOrDefault();
+            StringBuilder builder = new StringBuilder();
+            string tmp=null;
+            var reader = new StreamReader(article.URL);
+            while((tmp = reader.ReadLine()) != null)
+            {
+                builder.Append(tmp+'\n');
+            }
+            ViewBag.Text = builder.ToString();
+            return View();
         }
     }
 }

@@ -82,16 +82,43 @@ namespace Heyday_Website.Controllers
             context.Categories.AddRange(
                 new Category { Id = id[0], CategoryName = "入门" },
                 new Category { Id = id[1], CategoryName = "活动" },
-                new Category { Id = id[2], CategoryName = "其他" }
+                new Category { Id = id[2], CategoryName = "其它" }
                 );
             context.Articles.Add(new Article
             {
                 Id = Guid.NewGuid(),
                 Title = "主题1",
-                Content = "# 二级主题 \n **ttt**",
+                Content = "# 二级主题 \n **第一**",
                 Author = "714251494@qq.com",
-                HasPublished = false,
-                CategoryId = id[0]
+                HasPublished = true,
+                CategoryId = id[1]
+            });
+            context.Articles.Add(new Article
+            {
+                Id = Guid.NewGuid(),
+                Title = "主题2",
+                Content = "# 二级主题 \n **第二**",
+                Author = "714251494@qq.com",
+                HasPublished = true,
+                CategoryId = id[1]
+            });
+            context.Articles.Add(new Article
+            {
+                Id = Guid.NewGuid(),
+                Title = "主题1",
+                Content = "# 二级主题 \n **第三**",
+                Author = "714251494@qq.com",
+                HasPublished = true,
+                CategoryId = id[2]
+            });
+            context.Articles.Add(new Article
+            {
+                Id = Guid.NewGuid(),
+                Title = "主题1",
+                Content = "# 二级主题 \n **第四**",
+                Author = "714251494@qq.com",
+                HasPublished = true,
+                CategoryId = id[2]
             });
             context.SaveChanges();
         }

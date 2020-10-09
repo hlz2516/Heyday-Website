@@ -1,0 +1,17 @@
+﻿@{
+    var text = ViewBag.Text;
+}
+
+<div class="container">
+    <div id="content">@text</div>
+</div>
+
+@section scripts{
+    <script src="~/lib/marked/marked.min.js"></script>
+    <script>
+        window = function () {
+            console.log($('#content').get(0).innnerText);
+            //$('#content').get(0).innnerText = marked($('#content').get(0).innnerText);
+        }
+    </script>
+}

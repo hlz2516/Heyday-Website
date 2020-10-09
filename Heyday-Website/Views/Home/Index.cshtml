@@ -1,5 +1,31 @@
-﻿@section csses{ 
+﻿@model IEnumerable<ArticlesOfIndexDto>
+
+@section csses{ 
     <link href="~/css/carousel.css" rel="stylesheet" />
+}
+
+@section scripts{ 
+    <script>
+
+    </script>
+}
+
+@{
+    //在这里对文章进行分类整理
+    IList<ArticlesOfIndexDto> intros = new List<ArticlesOfIndexDto>();
+    IList<ArticlesOfIndexDto> activities = new List<ArticlesOfIndexDto>();
+    IList<ArticlesOfIndexDto> otherss = new List<ArticlesOfIndexDto>();
+    foreach (var article in Model)
+    {
+        switch (article.CategoryName)
+        {
+            case "入门":intros.Add(article);break;
+            case "活动": activities.Add(article); break;
+            case "其它": otherss.Add(article); break;
+            default:
+                break;
+        }
+    }
 }
 
 <main role="main">
@@ -41,16 +67,13 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header text-center">
-                        <h4>新 闻</h4>
+                        <h4>入 门</h4>
                     </div>
-                    <div class="list-group">
-                        <a href="#" class="list-group-item list-group-item-action">
-                            Cras justo odio
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-                        <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
-                        <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
-                        <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
+                    <div class="list-group text-left">
+                        @foreach (var item in intros)
+                        {
+                            <a asp-controller="Article" asp-action="Show" asp-route-title="@item.Title" class="list-group-item list-group-item-action">@item.Title</a>
+                        }
                     </div>
                 </div>
             </div>
@@ -60,14 +83,11 @@
                     <div class="card-header text-center">
                         <h4>活 动</h4>
                     </div>
-                    <div class="list-group">
-                        <a href="#" class="list-group-item list-group-item-action">
-                            Cras justo odio
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-                        <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
-                        <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
-                        <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
+                    <div class="list-group text-left">
+                        @foreach (var item in activities)
+                        {
+                            <a asp-controller="Article" asp-action="Show" asp-route-title="@item.Title" class="list-group-item list-group-item-action">@item.Title</a>
+                        }
                     </div>
                 </div>
             </div>
@@ -75,16 +95,13 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header text-center">
-                        <h4>其 他</h4>
+                        <h4>其 它</h4>
                     </div>
-                    <div class="list-group">
-                        <a href="#" class="list-group-item list-group-item-action">
-                            Cras justo odio
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-                        <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
-                        <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
-                        <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
+                    <div class="list-group text-left">
+                        @foreach (var item in otherss)
+                        {
+                            <a class="list-group-item list-group-item-action">@item.Title</a>
+                        }
                     </div>
                 </div>
             </div>
