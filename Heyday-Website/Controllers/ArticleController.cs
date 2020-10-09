@@ -122,8 +122,10 @@ namespace Heyday_Website.Controllers
             var reader = new StreamReader(article.URL);
             while((tmp = reader.ReadLine()) != null)
             {
-                builder.Append(tmp+'\n');
+                //在markdown中，<br>表示转义
+                builder.Append(tmp + "<br>");
             }
+            Console.WriteLine(builder.ToString());
             ViewBag.Text = builder.ToString();
             return View();
         }

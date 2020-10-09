@@ -1,17 +1,15 @@
-﻿@{
-    var text = ViewBag.Text;
-}
-
-<div class="container">
-    <div id="content">@text</div>
-</div>
-
-@section scripts{
+﻿@section scripts{
     <script src="~/lib/marked/marked.min.js"></script>
     <script>
-        window = function () {
-            console.log($('#content').get(0).innnerText);
-            //$('#content').get(0).innnerText = marked($('#content').get(0).innnerText);
+        window.onload = function () {
+            //raw可以防止传过来的字符串转义
+            var text = "@Html.Raw(ViewBag.Text)";
+            console.log(text);
+            $('#content').get(0).innerHTML = marked(text);
         }
     </script>
 }
+
+<div class="container">
+    <div id="content"></div>
+</div>

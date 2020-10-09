@@ -1,4 +1,6 @@
 using System;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 using Heyday_Website.Models;
 using Heyday_Website.Tools;
 using Microsoft.AspNetCore.Builder;
@@ -55,6 +57,8 @@ namespace Heyday_Website
             {
                 opt.IdleTimeout = new TimeSpan(TimeSpan.TicksPerMinute * 10);
             });
+
+            services.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
 
             services.AddControllersWithViews();
         }
