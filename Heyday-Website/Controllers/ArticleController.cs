@@ -1,5 +1,5 @@
 ﻿using Heyday_Website.Models;
-using Microsoft.AspNetCore.Authorization;
+using Heyday_Website.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,13 +18,18 @@ namespace Heyday_Website.Controllers
         private IWebHostEnvironment _webHost;
         private UserManager<ApplicationUser> _userManager;
 
-        public ArticleController(Models.AppContext context,IWebHostEnvironment webHost,UserManager<ApplicationUser> userManager)
+        public ArticleController(Models.AppContext context,
+            IWebHostEnvironment webHost,
+            UserManager<ApplicationUser> userManager)
         {
             _db = context;
             _webHost = webHost;
             _userManager = userManager;
         }
-
+        //get请求
+        //Article/Introduction
+        //article/activities
+        //article/others
         public IActionResult Index()
         {
             return View();
@@ -32,7 +37,7 @@ namespace Heyday_Website.Controllers
 
         public string Getmd()
         {
-            var mdpath = Path.Combine(_webHost.WebRootPath + @"\md\test.md");
+            var mdpath = Path.Combine(_webHost.WebRootPath, @"md\test.md");
             Console.WriteLine(mdpath);
             var reader = new StreamReader(mdpath,Encoding.Default);
             var res = new StringBuilder();
@@ -43,74 +48,147 @@ namespace Heyday_Website.Controllers
             }
             return res.ToString();
         }
-
+        //get请求:
+        //新建文章：article/writearticle/?cateName="intro"&title=""
+        //编辑文章：article/writearticle/?cateName="intro"&title="XXX"
         public async Task<IActionResult> Introduction()
         {
-            //查询该用户所有的入门类别的文章返回给视图
+            //查询该用户所有的Introduction类别的文章标题返回给视图
             var user =await _userManager.GetUserAsync(HttpContext.User);
-            IEnumerable<Article> articles=null;
+            IEnumerable<string> titles=null;
             if (user != null)
             {
-                var categoryId = _db.Categories.Where(c => c.CategoryName == "入门")
+                var categoryId = _db.Categories.Where(c => c.CategoryName == "intro")
                     .Select(c=>c.Id).FirstOrDefault();
-                articles = _db.Articles.Where(a=>a.Author == user.Email)
-                    .Where(a=>a.CategoryId== categoryId);
+                titles = _db.Articles.Where(a=>a.Author == user.Email)
+                    .Where(a=>a.CategoryId== categoryId)
+                    .Select(a=>a.Title);
             }
-            return View(articles);
+            return View(titles);
         }
 
-        public IActionResult NewArticle()
+        public async Task<IActionResult> Activity()
         {
-            return View();
+            //查询该用户所有的activity类别的文章返回给视图
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            IEnumerable<string> titles = null;
+            if (user != null)
+            {
+                var categoryId = _db.Categories.Where(c => c.CategoryName == "activity")
+                    .Select(c => c.Id).FirstOrDefault();
+                titles = _db.Articles.Where(a => a.Author == user.Email)
+                    .Where(a => a.CategoryId == categoryId)
+                    .Select(a => a.Title);
+            }
+            return View(titles);
         }
-        [HttpPost]
-        public async Task<IActionResult> NewArticle(Article article)
+
+        public async Task<IActionResult> Others()
         {
-            //Console.WriteLine(article.Content);
-            //先检测md/intro下有没有这个标题的md文件
-            //如果有，直接覆盖
-            //Console.WriteLine(_webHost.WebRootPath);
-            var fullPath = Path.Combine(_webHost.WebRootPath, @"md\intro\" + article.Title + ".md");
+            //查询该用户所有的others类别的文章返回给视图
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            IEnumerable<string> titles = null;
+            if (user != null)
+            {
+                var categoryId = _db.Categories.Where(c => c.CategoryName == "others")
+                    .Select(c => c.Id).FirstOrDefault();
+                titles = _db.Articles.Where(a => a.Author == user.Email)
+                    .Where(a => a.CategoryId == categoryId)
+                    .Select(a => a.Title);
+            }
+            return View(titles);
+        }
+
+        public IActionResult WriteArticle(string cateName,string Title)
+        {
+            var model = new WriteArticleDto();
+            //如果title为空，说明是新建文章，返回一个指定文章类别的模型
+            //如果title不为空，则说明是编辑文章，根据title找到文章并返回有效模型
+            if (!string.IsNullOrEmpty(Title))
+            {
+                model = _db.Articles.Where(a => a.Title == Title)
+                    .Select(a=>new WriteArticleDto { 
+                        Title=a.Title,
+                        Category = cateName
+                    })
+                    .FirstOrDefault();
+                var fullpath = Path.Combine(_webHost.WebRootPath, "md\\" 
+                    + cateName + "\\"+Title+".md");
+                
+                var res = new StringBuilder();
+                using (var reader = new StreamReader(fullpath)) 
+                {
+                    string content;
+                    while ((content = reader.ReadLine()) != null)
+                    {
+                        res.Append(content + '\n');
+                    }
+                }
+                model.Content = res.ToString();
+            }
+            else
+            {
+                model.Category = cateName;
+            }
+            return View(model);
+        }
+        //点击保存
+        [HttpPost]
+        public async Task<IActionResult> WriteArticle(WriteArticleDto model)
+        {
+            //根据model中的category来决定存储的文件路径
+            var fullPath = Path.Combine(_webHost.WebRootPath,
+                "md\\" + model.Category + "\\" + model.Title + ".md");
             //Console.WriteLine(fullPath);
+            //先检测md/{category}下有没有这个标题的md文件
+            //如果有，直接覆盖
             if (System.IO.File.Exists(fullPath))
             {
-                var writer = new StreamWriter(fullPath);
-                await writer.WriteAsync(article.Content);
-                await writer.FlushAsync();
-                writer.Close();
+                using (var writer = new StreamWriter(fullPath))
+                {
+                    await writer.WriteAsync(model.Content);
+                    await writer.FlushAsync();
+                }
             }
             //如果没有，新建一个article存入数据库，写入对应位置
             else
             {
-                var stream = System.IO.File.Create(fullPath);
-                var writer = new StreamWriter(stream);
-                await writer.WriteAsync(article.Content);
-                await writer.FlushAsync();
-                writer.Close();
+                using (var writer = new StreamWriter(fullPath))
+                {
+                    await writer.WriteAsync(model.Content);
+                    await writer.FlushAsync();
+                }
 
+                var article = new Article();
                 article.Id = Guid.NewGuid();
-
-                var catagory = _db.Categories.Where(c => c.CategoryName == "入门").FirstOrDefault();
+                article.Title = model.Title;
+                var catagory = _db.Categories.Where(c => c.CategoryName == model.Category).FirstOrDefault();
                 article.CategoryId = catagory.Id;
-
+                article.Category = catagory;
                 var user = await _userManager.GetUserAsync(HttpContext.User);
                 article.Author = user.Email;
-
                 article.URL = fullPath;
 
                 await _db.AddAsync(article);
                 await _db.SaveChangesAsync();
             }
-            return View(article);
+            return View(model);
         }
+        //点击发布，为了避免用户点了保存又点发布导致重复写入
+        //在WriteArticleDto中加入一个保存时间属性用来判定用户是否在短时间内
+        //点了保存按钮又点发布。
         [HttpPost]
-        public async Task<string> Publish(Article article)
+        public async Task<string> Publish(WriteArticleDto model)
         {
-            article.HasPublished = true;
-            await NewArticle(article);
+            //通过传进来的model找到数据库中的这篇文章
+            //将haspublish改为true
+            //记录当前时间为Publish Time
+
+            //最后考虑重复写入的问题
+            //
             return "OK";
         }
-
+        //在主页面上点击文章链接后显示
         public IActionResult Show(string title)
         {
             //Console.WriteLine(title);

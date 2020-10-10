@@ -13,8 +13,8 @@ namespace Heyday_Website.Controllers
 {
     public class HomeController : Controller
     {
-        private Models.AppContext _db;
-        private SignInManager<ApplicationUser> _signManager;
+        private readonly Models.AppContext _db;
+        private readonly SignInManager<ApplicationUser> _signManager;
 
         public HomeController(Models.AppContext context,SignInManager<ApplicationUser> signManager)
         {

@@ -2,7 +2,6 @@
 using Heyday_Website.Tools;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Heyday_Website.ViewModels;
@@ -15,8 +14,8 @@ namespace Heyday_Website.Controllers
 {
     public class BugController:Controller
     {
-        private Models.AppContext _db;
-        private UserManager<ApplicationUser> _userManager;
+        private readonly Models.AppContext _db;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public BugController(Models.AppContext context,UserManager<ApplicationUser> userManager)
         {

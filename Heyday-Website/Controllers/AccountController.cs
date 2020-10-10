@@ -73,17 +73,14 @@ namespace Heyday_Website.Controllers
             await _signInManager.SignInAsync(user,false);
 
             //在这里添加测试数据
-            Guid[] id = new Guid[3]
+            Category[] categories = new Category[3]
             {
-                Guid.NewGuid(),
-                Guid.NewGuid(),
-                Guid.NewGuid(),
+                new Category{Id = Guid.NewGuid(),CategoryName="intro"},
+                new Category{Id = Guid.NewGuid(),CategoryName="activity"},
+                new Category{Id = Guid.NewGuid(),CategoryName="others"},
             };
-            context.Categories.AddRange(
-                new Category { Id = id[0], CategoryName = "入门" },
-                new Category { Id = id[1], CategoryName = "活动" },
-                new Category { Id = id[2], CategoryName = "其它" }
-                );
+
+            context.Categories.AddRange(categories);
             context.Articles.Add(new Article
             {
                 Id = Guid.NewGuid(),
@@ -91,7 +88,8 @@ namespace Heyday_Website.Controllers
                 Content = "# 二级主题 \n **第一**",
                 Author = "714251494@qq.com",
                 HasPublished = true,
-                CategoryId = id[1]
+                CategoryId = categories[0].Id,
+                Category = categories[0]
             });
             context.Articles.Add(new Article
             {
@@ -100,7 +98,8 @@ namespace Heyday_Website.Controllers
                 Content = "# 二级主题 \n **第二**",
                 Author = "714251494@qq.com",
                 HasPublished = true,
-                CategoryId = id[1]
+                CategoryId = categories[1].Id,
+                Category = categories[1]
             });
             context.Articles.Add(new Article
             {
@@ -109,7 +108,8 @@ namespace Heyday_Website.Controllers
                 Content = "# 二级主题 \n **第三**",
                 Author = "714251494@qq.com",
                 HasPublished = true,
-                CategoryId = id[2]
+                CategoryId = categories[2].Id,
+                Category = categories[2]
             });
             context.Articles.Add(new Article
             {
@@ -118,7 +118,8 @@ namespace Heyday_Website.Controllers
                 Content = "# 二级主题 \n **第四**",
                 Author = "714251494@qq.com",
                 HasPublished = true,
-                CategoryId = id[2]
+                CategoryId = categories[2].Id,
+                Category = categories[2]
             });
             context.SaveChanges();
         }
@@ -136,8 +137,8 @@ namespace Heyday_Website.Controllers
                 var user =await  _userManager.FindByEmailAsync(model.Email);
                 if(user != null)
                 {
-                    var psdhash = new PasswordHasher<ApplicationUser>().
-                        HashPassword(user,model.Password);
+                    //var psdhash = new PasswordHasher<ApplicationUser>().
+                    //    HashPassword(user,model.Password);
                     var res = await _signInManager.PasswordSignInAsync(user, model.Password, 
                         model.Remember, false);
                     if (res.Succeeded)

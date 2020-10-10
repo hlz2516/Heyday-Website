@@ -1,0 +1,16 @@
+﻿@model IEnumerable<string>
+
+<div class="container">
+    <a href="/Article/WriteArticle/?cateName=others&title=" class="btn btn-light float-left">新建文章</a>
+    <br />
+    <ul class="list-group list-group-flush">
+        @foreach (var title in Model)
+        {
+            <li class="list-group-item">
+                <a class="float-left">@title</a>
+                <a class="float-right mr-2">删除</a>
+                <a href="/Article/WriteArticle/?cateName=others&title=@title" class="float-right mr-2">编辑</a>
+            </li>
+        }
+    </ul>
+</div>

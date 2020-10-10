@@ -6,13 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\**" />
-    <Content Remove="Migrations\**" />
-    <EmbeddedResource Remove="Migrations\**" />
-    <None Remove="Migrations\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Attribute\" />
     <Folder Include="wwwroot\js\" />
     <Folder Include="wwwroot\lib\" />
@@ -20,6 +13,7 @@
     <Folder Include="wwwroot\md\activity\" />
     <Folder Include="wwwroot\md\intro\" />
     <Folder Include="wwwroot\md\others\" />
+	  <Folder Include="Migrations\"/>
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿@model Heyday_Website.Models.Article
+﻿@model Heyday_Website.ViewModels.WriteArticleDto
 
 @section csses{
     <style>
@@ -30,12 +30,12 @@
                 }
             });
         }
-        $('#form1').attr("action", "/Article/NewArticle");
+        $('#form1').attr("action", "/Article/WriteArticle");
     </script>
 }
 
 <div class="container-fluid">
-    <form asp-controller="Article" asp-action="NewArticle" method="post" id="form1">
+    <form asp-controller="Article" asp-action="WriteArticle" method="post" id="form1">
         <div class="form-group">
             <label asp-for="Title">标题</label>
             <input type="text" class="form-control" asp-for="Title">
@@ -45,7 +45,9 @@
             <br />
             <textarea class="comments" rows="20" asp-for="Content"></textarea>
         </div>
-
+        <div>
+            <input type="hidden" asp-for="Category" />
+        </div>
         <button type="button" class="btn btn-primary" onclick="publish()">发布</button>
         <button type="submit" class="btn btn-primary">保存</button>
         <button type="button" class="btn btn-primary">返回</button>
