@@ -1,4 +1,21 @@
-﻿@section scripts{
+﻿@model Heyday_Website.Models.Article
+
+@section csses{ 
+    <style>
+        .db-content {
+            order: 1;
+        }
+
+        .bd-bd-toc {
+            position: sticky;
+            top: 4rem;
+            height: calc(100vh-4rem);
+            overflow-y: auto;
+        }
+    </style>
+}
+
+@section scripts{
     <script src="~/lib/marked/marked.min.js"></script>
     <script>
         window.onload = function () {
@@ -10,6 +27,22 @@
     </script>
 }
 
-<div class="container">
-    <div id="content"></div>
+<div class="container-fluid">
+    <div class="row flex-xl-nowarp">
+        <div class="col-12 col-md-3 col-xl-2 bd-sidebar bg-dark"></div>
+        <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content bg-white" role="main">
+            <p class="h2 text-center">标题</p>
+            <div class="text-left" id="content">
+                文本内容
+            </div>
+            <br>
+            <br>
+            <div class="text-right">
+                edit by XXX
+                <br>
+                2020/1/1 22:22:22
+            </div>
+        </main>
+        <div class="d-none d-xl-block col-xl-2 bd-toc bg-dark"></div>
+    </div>
 </div>

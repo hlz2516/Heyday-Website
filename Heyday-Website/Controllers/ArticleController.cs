@@ -122,7 +122,7 @@ namespace Heyday_Website.Controllers
             var reader = new StreamReader(article.URL);
             while((tmp = reader.ReadLine()) != null)
             {
-                //在markdown中，<br>表示转义
+                //在markdown中，<br>表示换行
                 builder.Append(tmp + "<br>");
             }
             Console.WriteLine(builder.ToString());
