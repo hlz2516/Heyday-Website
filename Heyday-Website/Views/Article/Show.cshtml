@@ -22,8 +22,7 @@
             //raw可以防止传过来的字符串转义
             var text = '@Html.Raw(Model.Content)';
             //console.log(text);
-
-            $('#content').get(0).innerHTML = marked(text);
+            $('#content').html(marked(text));
         }
     </script>
 }

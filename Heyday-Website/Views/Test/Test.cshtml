@@ -1,0 +1,21 @@
+﻿@section scripts{
+    <script src="~/lib/marked/marked.min.js"></script>
+    <script>
+        window.onload = function () {
+            console.log('@Html.Raw(ViewBag.Text)');
+        };
+        $('test').click(function () {
+            console.log($('#content').val());
+            console.log(marked($('#content').val()));
+            $('#show').append(marked($('#content').val()));
+        })
+    </script>
+}
+
+<div class="container">
+    <form action="/Test/Test" method="post">
+        <textarea id="content" name="content" style="width:100%" rows="10"></textarea>
+        <div id="show" name="show"></div>
+        <button type="submit" id="test">测试</button>
+    </form>
+</div>

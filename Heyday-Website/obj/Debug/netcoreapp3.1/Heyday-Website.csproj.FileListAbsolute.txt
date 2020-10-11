@@ -248,3 +248,4 @@ G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\Act
 G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\Others.cshtml.g.cs
 G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\Show.cshtml.g.cs
 G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\WriteArticle.cshtml.g.cs
+G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Test\Test.cshtml.g.cs

@@ -220,8 +220,8 @@ namespace Heyday_Website.Controllers
             var reader = new StreamReader(article.URL);
             while((tmp = reader.ReadLine()) != null)
             {
-                //在markdown中，<br>表示换行
-                builder.Append(tmp + '☆');
+                //之所以加入\\n是因为这里的字符串是传给js，为了不让js中直接翻译换行，所以对\进行转义
+                builder.Append(tmp + "\\n");
             }
             //Console.WriteLine(builder.ToString());
             model.Content = builder.ToString();
