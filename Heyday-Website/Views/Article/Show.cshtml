@@ -1,4 +1,4 @@
-﻿@model Heyday_Website.Models.Article
+﻿@model Heyday_Website.ViewModels.ShowArticle
 
 @section csses{ 
     <style>
@@ -20,8 +20,9 @@
     <script>
         window.onload = function () {
             //raw可以防止传过来的字符串转义
-            var text = "@Html.Raw(ViewBag.Text)";
-            console.log(text);
+            var text = '@Html.Raw(Model.Content)';
+            //console.log(text);
+
             $('#content').get(0).innerHTML = marked(text);
         }
     </script>
@@ -31,16 +32,16 @@
     <div class="row flex-xl-nowarp">
         <div class="col-12 col-md-3 col-xl-2 bd-sidebar bg-dark"></div>
         <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content bg-white" role="main">
-            <p class="h2 text-center">标题</p>
+            <p class="h2 text-center">@Model.Title</p>
             <div class="text-left" id="content">
-                文本内容
+                
             </div>
             <br>
             <br>
             <div class="text-right">
-                edit by XXX
+                edit by @Model.AuthorName
                 <br>
-                2020/1/1 22:22:22
+                @Model.PublishTime
             </div>
         </main>
         <div class="d-none d-xl-block col-xl-2 bd-toc bg-dark"></div>

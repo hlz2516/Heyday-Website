@@ -20,7 +20,10 @@ namespace Heyday_Website.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            //设置article的title为不重复
+            modelBuilder.Entity<Article>()
+                .HasIndex(a => a.Title)
+                .IsUnique();
         }
     }
 }

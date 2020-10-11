@@ -102,18 +102,19 @@ namespace Heyday_Website.Controllers
         public IActionResult WriteArticle(string cateName,string Title)
         {
             var model = new WriteArticleDto();
-            //如果title为空，说明是新建文章，返回一个指定文章类别的模型
+            //如果title为空，说明是新建文章，返回一个指定id和文章类别的模型
             //如果title不为空，则说明是编辑文章，根据title找到文章并返回有效模型
             if (!string.IsNullOrEmpty(Title))
             {
                 model = _db.Articles.Where(a => a.Title == Title)
                     .Select(a=>new WriteArticleDto { 
+                        Id = a.Id,
                         Title=a.Title,
                         Category = cateName
                     })
                     .FirstOrDefault();
                 var fullpath = Path.Combine(_webHost.WebRootPath, "md\\" 
-                    + cateName + "\\"+Title+".md");
+                    + cateName + "\\"+model.Id+".md");
                 
                 var res = new StringBuilder();
                 using (var reader = new StreamReader(fullpath)) 
@@ -128,6 +129,7 @@ namespace Heyday_Website.Controllers
             }
             else
             {
+                model.Id = Guid.NewGuid();
                 model.Category = cateName;
             }
             return View(model);
@@ -138,29 +140,13 @@ namespace Heyday_Website.Controllers
         {
             //根据model中的category来决定存储的文件路径
             var fullPath = Path.Combine(_webHost.WebRootPath,
-                "md\\" + model.Category + "\\" + model.Title + ".md");
+                "md\\" + model.Category + "\\" + model.Id + ".md");
             //Console.WriteLine(fullPath);
-            //先检测md/{category}下有没有这个标题的md文件
-            //如果有，直接覆盖
-            if (System.IO.File.Exists(fullPath))
+            //如果没有这个md文件，新建一个article存入数据库，写入对应位置
+            if (!System.IO.File.Exists(fullPath))
             {
-                using (var writer = new StreamWriter(fullPath))
-                {
-                    await writer.WriteAsync(model.Content);
-                    await writer.FlushAsync();
-                }
-            }
-            //如果没有，新建一个article存入数据库，写入对应位置
-            else
-            {
-                using (var writer = new StreamWriter(fullPath))
-                {
-                    await writer.WriteAsync(model.Content);
-                    await writer.FlushAsync();
-                }
-
                 var article = new Article();
-                article.Id = Guid.NewGuid();
+                article.Id = model.Id;
                 article.Title = model.Title;
                 var catagory = _db.Categories.Where(c => c.CategoryName == model.Category).FirstOrDefault();
                 article.CategoryId = catagory.Id;
@@ -172,6 +158,11 @@ namespace Heyday_Website.Controllers
                 await _db.AddAsync(article);
                 await _db.SaveChangesAsync();
             }
+            using (var writer = new StreamWriter(fullPath))
+            {
+                await writer.WriteAsync(model.Content);
+                await writer.FlushAsync();
+            }
             return View(model);
         }
         //点击发布，为了避免用户点了保存又点发布导致重复写入
@@ -180,32 +171,61 @@ namespace Heyday_Website.Controllers
         [HttpPost]
         public async Task<string> Publish(WriteArticleDto model)
         {
-            //通过传进来的model找到数据库中的这篇文章
-            //将haspublish改为true
-            //记录当前时间为Publish Time
-
-            //最后考虑重复写入的问题
-            //
-            return "OK";
+            var now = DateTime.Now;
+            //先根据Model里的id从数据库中找文章，
+            var article = _db.Articles.Find(model.Id);
+            //如果没找到，说明这是第一次保存（新建文章且没有按过保存），直接调用上一个方法
+            if (article == null)
+            {
+                await WriteArticle(model);
+            }
+            //如果找到了，说明之前保存过了，需要比较两个时间来决定是否再次写入md
+            else
+            {
+                //Console.WriteLine("now:" + now);
+                //Console.WriteLine("save time:" + model.SaveTime);
+                TimeSpan saves = new TimeSpan(model.SaveTime.Ticks);
+                TimeSpan nows = new TimeSpan(now.Ticks);
+                TimeSpan diff = saves.Subtract(nows).Duration();
+                //Console.WriteLine(diff.TotalSeconds);
+                if(diff.TotalSeconds > 5.0)
+                {
+                    await WriteArticle(model);
+                }
+            }
+            //无论找没找到，都要更新数据库(经过上面的操作，能保证再次根据Id一定能找到文章),并传回一个时间作为savetime
+            var _article = _db.Articles.Find(model.Id);
+            _article.HasPublished = true;
+            _article.PublishTime = now;
+            _db.Articles.Update(_article);
+            _db.SaveChanges();
+            return now.ToString();
         }
         //在主页面上点击文章链接后显示
-        public IActionResult Show(string title)
+        public async Task<IActionResult> Show(string title)
         {
             //Console.WriteLine(title);
             //根据title在数据库中查找该article所有信息
-            //读取md文件放入content，然后传到页面上
+            //封装Model返回页面
             var article = _db.Articles.Where(a => a.Title == title).FirstOrDefault();
+            var authorName = (await _userManager.FindByEmailAsync(article.Author)).UserName;
+            var model = new ShowArticle()
+            {
+                Title = article.Title,
+                AuthorName = authorName,
+                PublishTime = article.PublishTime
+            };
             StringBuilder builder = new StringBuilder();
             string tmp=null;
             var reader = new StreamReader(article.URL);
             while((tmp = reader.ReadLine()) != null)
             {
                 //在markdown中，<br>表示换行
-                builder.Append(tmp + "<br>");
+                builder.Append(tmp + '☆');
             }
-            Console.WriteLine(builder.ToString());
-            ViewBag.Text = builder.ToString();
-            return View();
+            //Console.WriteLine(builder.ToString());
+            model.Content = builder.ToString();
+            return View(model);
         }
     }
 }

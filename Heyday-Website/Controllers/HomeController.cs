@@ -45,6 +45,7 @@ namespace Heyday_Website.Controllers
             foreach (var item in articleTitles)
             {
                 var category = _db.Categories.Find(item.CategoryId);
+                Console.WriteLine($"{item.Title}的目录:{category.CategoryName}");
                 list.Add(new ArticlesOfIndexDto { Title = item.Title, CategoryName = category.CategoryName });
             }
             return list;

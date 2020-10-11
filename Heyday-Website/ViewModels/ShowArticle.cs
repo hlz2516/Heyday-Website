@@ -5,12 +5,11 @@ using System.Threading.Tasks;
 
 namespace Heyday_Website.ViewModels
 {
-    public class WriteArticleDto
+    public class ShowArticle
     {
-        public Guid Id { get; set; }
-        public string Category { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
-        public DateTime SaveTime { get; set; }
+        public string AuthorName { get; set; }
+        public DateTime PublishTime { get; set; }
     }
 }

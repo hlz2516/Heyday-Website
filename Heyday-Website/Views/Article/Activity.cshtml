@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<string>
 
 <div class="container">
-    <a href="article/writearticle/?cateName=activity&title=" class="btn btn-light float-left">新建文章</a>
+    <a href="/article/writearticle/?cateName=activity&title=" class="btn btn-light float-left">新建文章</a>
     <br />
     <ul class="list-group list-group-flush">
         @foreach (var title in Model)
@@ -9,7 +9,7 @@
             <li class="list-group-item">
                 <a class="float-left">@title</a>
                 <a class="float-right mr-2">删除</a>
-                <a href="article/writearticle/?cateName=activity&title=@title" class="float-right mr-2">编辑</a>
+                <a href="/article/writearticle/?cateName=activity&title=@title" class="float-right mr-2">编辑</a>
             </li>
         }
     </ul>

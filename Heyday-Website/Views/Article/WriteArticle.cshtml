@@ -22,15 +22,17 @@
                 url: "/Article/Publish",
                 data: $('#form1').serialize(),
                 success: function (result) {
-                    if (result == "OK")
+                    if (result != null) {
+                        $('#SaveTime').val(result);
                         alert("您的文章已发布！请去主页查看");
+                        $('#form1').attr("action", "/Article/WriteArticle");
+                    }
                 },
                 error: function () {
                     console.log("发布失败，请联系管理员");
                 }
             });
         }
-        $('#form1').attr("action", "/Article/WriteArticle");
     </script>
 }
 
@@ -46,7 +48,9 @@
             <textarea class="comments" rows="20" asp-for="Content"></textarea>
         </div>
         <div>
+            <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="Category" />
+            <input type="hidden"  asp-for="SaveTime" value="@DateTime.Now" />
         </div>
         <button type="button" class="btn btn-primary" onclick="publish()">发布</button>
         <button type="submit" class="btn btn-primary">保存</button>
