@@ -34,3 +34,15 @@ id:26316929-32af-4726-a840-08d9574954b2
 solver email:hlz2516@sina.com
 content:kkkkkkkkkkkkkkkk
 ==============================
+==============================
+bug message:
+id:bf8c1854-2a93-45e4-aa9a-1b3b16d10d2d
+title:gggggggg
+content:ggggggggggggggggggggggggggggggg
+submitter email:714251494@qq.com
+submit time:2020/10/12 21:33:54
+solution message:
+id:f768ae19-820e-47f1-9ff1-1e882c54a354
+solver email:714251494@qq.com
+content:sdfsdfsfdsfdfsdfdsfsd
+==============================

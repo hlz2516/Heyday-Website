@@ -69,7 +69,7 @@ namespace Heyday_Website.Controllers
                 Email = "714251494@qq.com"
             };
             await _userManager.CreateAsync(user);
-            await _userManager.AddToRoleAsync(user, "Admin");
+            await _userManager.AddToRoleAsync(user, "Root");
             await _signInManager.SignInAsync(user,false);
 
             //在这里添加测试数据
@@ -81,46 +81,6 @@ namespace Heyday_Website.Controllers
             };
 
             context.Categories.AddRange(categories);
-            //context.Articles.Add(new Article
-            //{
-            //    Id = Guid.NewGuid(),
-            //    Title = "主题1",
-            //    Content = "# 二级主题 \n **第一**",
-            //    Author = "714251494@qq.com",
-            //    HasPublished = true,
-            //    CategoryId = categories[0].Id,
-            //    Category = categories[0]
-            //});
-            //context.Articles.Add(new Article
-            //{
-            //    Id = Guid.NewGuid(),
-            //    Title = "主题2",
-            //    Content = "# 二级主题 \n **第二**",
-            //    Author = "714251494@qq.com",
-            //    HasPublished = true,
-            //    CategoryId = categories[1].Id,
-            //    Category = categories[1]
-            //});
-            //context.Articles.Add(new Article
-            //{
-            //    Id = Guid.NewGuid(),
-            //    Title = "主题1",
-            //    Content = "# 二级主题 \n **第三**",
-            //    Author = "714251494@qq.com",
-            //    HasPublished = true,
-            //    CategoryId = categories[2].Id,
-            //    Category = categories[2]
-            //});
-            //context.Articles.Add(new Article
-            //{
-            //    Id = Guid.NewGuid(),
-            //    Title = "主题1",
-            //    Content = "# 二级主题 \n **第四**",
-            //    Author = "714251494@qq.com",
-            //    HasPublished = true,
-            //    CategoryId = categories[2].Id,
-            //    Category = categories[2]
-            //});
             context.SaveChanges();
         }
 
@@ -285,9 +245,7 @@ namespace Heyday_Website.Controllers
             foreach (var user in Users)
             {
                 bool? role = null;
-                var roleName = (await _userManager.GetRolesAsync(user)).First();//这行报错
-                //报错信息:There is already an open DataReader associated with this 
-                //Connection which must be closed first.
+                var roleName = (await _userManager.GetRolesAsync(user)).First();
                 if (roleName == "NormalUser")
                     role = false;
                 else if (roleName == "Admin")
@@ -298,6 +256,47 @@ namespace Heyday_Website.Controllers
             }
             var res = users.OrderBy(u => u.Role);
             return View(res);
+        }
+        [Authorize(Roles ="Root")]
+        public async Task<IActionResult> EditUser(string email)
+        {
+            var user =await _userManager.FindByEmailAsync(email);
+            var roleName = (await _userManager.GetRolesAsync(user))[0];
+            bool role = false;
+            if (roleName == "Admin")
+                role = true;
+            var res = new User
+            {
+                Email = user.Email,
+                Name = user.UserName,
+                Role = role
+            };
+            return View(res);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditUser(User model)
+        {
+            //System.Diagnostics.Debug.WriteLine(model.Role);
+            ApplicationUser user = null;
+            if (ModelState.IsValid)
+            {
+                user = await _userManager.FindByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    if (model.Role == true)
+                    {
+                        await _userManager.RemoveFromRoleAsync(user, "NormalUser");
+                        await _userManager.AddToRoleAsync(user, "Admin");
+                    }
+                    else
+                    {
+                        await _userManager.RemoveFromRoleAsync(user, "Admin");
+                        await _userManager.AddToRoleAsync(user, "NormalUser");
+                    }
+                    await _userManager.UpdateAsync(user);
+                }
+            }
+            return View(model);
         }
     }
 }

@@ -1,34 +1,45 @@
-﻿<!--这一块有个问题：
-    传过来的User列表，对于每个User，怎么让其role属性与radiobutton绑定？
-    或者换个方案
-    -->
+﻿@model IEnumerable<Heyday_Website.Models.User>
 
-@model IEnumerable<Heyday_Website.Models.User>
+    <div>
+        <h2 class="text-center">用户列表</h2>
+        <p class="text-left">总用户数：@Model.Count()人</p>
+    </div>
 
-<form asp-controller="Account" asp-action="UserManage" method="post">
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Email</th>
-                <th scope="col">Name</th>
-                <th scope="col">role</th>
-            </tr>
-        </thead>
-        <tbody>
-            @{ int i = 0;}
-            @foreach (var user in Model)
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">用户邮箱</th>
+            <th scope="col">用户名</th>
+            <th scope="col">角色</th>
+            <th scope="col">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int i = 0;
+            foreach (var user in Model)
             {
                 <tr>
                     <th scope="row">@(++i)</th>
                     <td>@user.Email</td>
                     <td>@user.Name</td>
                     <td>
-
+                        @if ((bool)user.Role)
+                        {
+                            <text>管理员</text>
+                        }
+                        else
+                        {
+                            <text>普通用户</text>
+                        }
+                     </td>
+                    <td>
+                        <a class="mr-2" asp-controller="Account" asp-action="EditUser" asp-route-email="@user.Email">编辑</a>
+                        <a  asp-controller="Account" asp-action="DeleteUser" asp-route-email="@user.Email">删除</a>
                     </td>
                 </tr>
             }
-            
-        </tbody>
-    </table>
-</form>
+        }
+    </tbody>
+</table>

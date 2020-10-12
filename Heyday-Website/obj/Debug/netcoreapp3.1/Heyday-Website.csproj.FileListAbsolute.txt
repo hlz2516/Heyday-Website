@@ -157,7 +157,6 @@ D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Bug\CanTake
 G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\Index.cshtml.g.cs
 D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\Index.cshtml.g.cs
 D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\Introduction.cshtml.g.cs
-G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\Introduction.cshtml.g.cs
 D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\Show.cshtml.g.cs
 E:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Heyday-Website.csprojAssemblyReference.cache
 E:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Heyday-Website.AssemblyInfoInputs.cache
@@ -252,3 +251,5 @@ D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\Act
 D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\Others.cshtml.g.cs
 D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\WriteArticle.cshtml.g.cs
 D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Test\Test.cshtml.g.cs
+G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\Intro.cshtml.g.cs
+G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Account\EditUser.cshtml.g.cs

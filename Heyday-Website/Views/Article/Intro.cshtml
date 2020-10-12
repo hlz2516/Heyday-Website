@@ -2,6 +2,7 @@
 
 <div class="container">
     <a href="/Article/WriteArticle/?cateName=intro&title=" class="btn btn-light float-left">新建文章</a>
+    <a href="/Article/Index" class="btn btn-light float-right">返回</a>
     <br />
     <ul class="list-group list-group-flush">
         @if (Model != null)
@@ -9,8 +10,8 @@
             foreach (var title in Model)
             {
                 <li class="list-group-item">
-                    <a class="float-left">@title</a>
-                    <a class="float-right mr-2">删除</a>
+                    <a href="/Article/WriteArticle/?cateName=intro&title=@title" class="float-left">@title</a>
+                    <a class="float-right mr-2" asp-controller="Article" asp-action="Delete" asp-route-title="@title">删除</a>
                     <a href="/Article/WriteArticle/?cateName=intro&title=@title" class="float-right mr-2">编辑</a>
                 </li>
             }

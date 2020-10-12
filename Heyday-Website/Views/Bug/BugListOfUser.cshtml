@@ -12,7 +12,7 @@
                     $('#bugId').get(0).value = curBugId;
                     $.getJSON("/Bug/GetTitleAndDetail?bugId=" + curBugId, function (data, status) {
                         if (status == "success") {
-                            alert(data["title"] + "," + data["detail"] + "," + data["state"]);
+                            //alert(data["title"] + "," + data["detail"] + "," + data["state"]);
                             $('#title').get(0).value = data["title"];
                             $('#detail').get(0).innerText = data["detail"];
                             var state = data["state"];
@@ -66,7 +66,7 @@
             //给已解决按钮绑定事件
             $('#success').click(function () {
                 $.get("/Bug/ChangeStateToSolved?bugId=" + curBugId);
-                alert("已解决");
+                //alert("已解决");
                 $("#success").attr("disabled", true);
             })
 

@@ -65,7 +65,7 @@
         <button type="button" class="btn btn-primary" onclick="publish()">发布</button>
         <button type="submit" class="btn btn-primary">保存</button>
         <button type="button" class="btn btn-primary" onclick="Preview()">预览</button>
-        <button type="button" class="btn btn-primary">返回</button>
+        <a asp-controller="Article" asp-action="@Model.Category" class="btn btn-primary">返回</a>
     </form>
     <hr />
     <div id="preview-title" class="text-center h2">

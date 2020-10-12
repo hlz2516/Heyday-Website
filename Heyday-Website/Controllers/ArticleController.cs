@@ -1,5 +1,6 @@
 ﻿using Heyday_Website.Models;
 using Heyday_Website.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -30,28 +31,16 @@ namespace Heyday_Website.Controllers
         //Article/Introduction
         //article/activities
         //article/others
+        [Authorize(Roles ="Admin,Root")]
         public IActionResult Index()
         {
             return View();
         }
-
-        public string Getmd()
-        {
-            var mdpath = Path.Combine(_webHost.WebRootPath, @"md\test.md");
-            Console.WriteLine(mdpath);
-            var reader = new StreamReader(mdpath,Encoding.Default);
-            var res = new StringBuilder();
-            string content;
-            while ((content = reader.ReadLine()) != null)
-            {
-                res.Append(content + '\n');
-            }
-            return res.ToString();
-        }
         //get请求:
         //新建文章：article/writearticle/?cateName="intro"&title=""
         //编辑文章：article/writearticle/?cateName="intro"&title="XXX"
-        public async Task<IActionResult> Introduction()
+        [Authorize(Roles = "Admin,Root")]
+        public async Task<IActionResult> Intro()
         {
             //查询该用户所有的Introduction类别的文章标题返回给视图
             var user =await _userManager.GetUserAsync(HttpContext.User);
@@ -66,7 +55,7 @@ namespace Heyday_Website.Controllers
             }
             return View(titles);
         }
-
+        [Authorize(Roles = "Admin,Root")]
         public async Task<IActionResult> Activity()
         {
             //查询该用户所有的activity类别的文章返回给视图
@@ -82,7 +71,7 @@ namespace Heyday_Website.Controllers
             }
             return View(titles);
         }
-
+        [Authorize(Roles = "Admin,Root")]
         public async Task<IActionResult> Others()
         {
             //查询该用户所有的others类别的文章返回给视图
@@ -98,7 +87,7 @@ namespace Heyday_Website.Controllers
             }
             return View(titles);
         }
-
+        [Authorize(Roles = "Admin,Root")]
         public IActionResult WriteArticle(string cateName,string Title)
         {
             var model = new WriteArticleDto();
@@ -201,7 +190,7 @@ namespace Heyday_Website.Controllers
             _db.SaveChanges();
             return now.ToString();
         }
-        //在主页面上点击文章链接后显示
+        //在主页面上点击文章链接后显示,谁都可以查看
         public async Task<IActionResult> Show(string title)
         {
             //Console.WriteLine(title);
@@ -226,6 +215,25 @@ namespace Heyday_Website.Controllers
             //Console.WriteLine(builder.ToString());
             model.Content = builder.ToString();
             return View(model);
+        }
+        [Authorize(Roles = "Admin,Root")]
+        public IActionResult Delete(string title)
+        {
+            var thisArt = _db.Articles.Where(a => a.Title == title).FirstOrDefault();
+            var thisCate = _db.Categories.Where(c => c.Id == thisArt.CategoryId)
+                .Select(c=>c.CategoryName).FirstOrDefault();
+            try
+            {
+                System.IO.File.Delete(thisArt.URL);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            _db.Articles.Remove(thisArt);
+            _db.SaveChanges();
+            return RedirectToAction(thisCate);
         }
     }
 }
