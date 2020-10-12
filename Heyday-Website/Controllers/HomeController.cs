@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Heyday_Website.Controllers
@@ -41,8 +39,23 @@ namespace Heyday_Website.Controllers
         public IEnumerable<ArticlesOfIndexDto> GetArticles()
         {
             IList<ArticlesOfIndexDto> list = new List<ArticlesOfIndexDto>();
-            var articleTitles = _db.Articles.Where(a => a.HasPublished).AsEnumerable();
-            foreach (var item in articleTitles)
+            var introArticles = _db.Articles.Where(a => a.HasPublished)
+                .Where(a => a.Category.CategoryName == "intro")
+                .OrderByDescending(a => a.PublishTime)
+                .AsEnumerable().Take(5);
+
+            var actArticles = _db.Articles.Where(a => a.HasPublished)
+                .Where(a => a.Category.CategoryName == "activity")
+                .OrderByDescending(a => a.PublishTime)
+                .AsEnumerable().Take(5);
+
+            var allArticles = _db.Articles.Where(a => a.HasPublished)
+                .Where(a => a.Category.CategoryName == "others")
+                .OrderByDescending(a => a.PublishTime)
+                .AsEnumerable().Take(5)
+                .Concat(introArticles).Concat(actArticles);
+
+            foreach (var item in allArticles)
             {
                 var category = _db.Categories.Find(item.CategoryId);
                 Console.WriteLine($"{item.Title}的目录:{category.CategoryName}");

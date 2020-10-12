@@ -81,46 +81,46 @@ namespace Heyday_Website.Controllers
             };
 
             context.Categories.AddRange(categories);
-            context.Articles.Add(new Article
-            {
-                Id = Guid.NewGuid(),
-                Title = "主题1",
-                Content = "# 二级主题 \n **第一**",
-                Author = "714251494@qq.com",
-                HasPublished = true,
-                CategoryId = categories[0].Id,
-                Category = categories[0]
-            });
-            context.Articles.Add(new Article
-            {
-                Id = Guid.NewGuid(),
-                Title = "主题2",
-                Content = "# 二级主题 \n **第二**",
-                Author = "714251494@qq.com",
-                HasPublished = true,
-                CategoryId = categories[1].Id,
-                Category = categories[1]
-            });
-            context.Articles.Add(new Article
-            {
-                Id = Guid.NewGuid(),
-                Title = "主题1",
-                Content = "# 二级主题 \n **第三**",
-                Author = "714251494@qq.com",
-                HasPublished = true,
-                CategoryId = categories[2].Id,
-                Category = categories[2]
-            });
-            context.Articles.Add(new Article
-            {
-                Id = Guid.NewGuid(),
-                Title = "主题1",
-                Content = "# 二级主题 \n **第四**",
-                Author = "714251494@qq.com",
-                HasPublished = true,
-                CategoryId = categories[2].Id,
-                Category = categories[2]
-            });
+            //context.Articles.Add(new Article
+            //{
+            //    Id = Guid.NewGuid(),
+            //    Title = "主题1",
+            //    Content = "# 二级主题 \n **第一**",
+            //    Author = "714251494@qq.com",
+            //    HasPublished = true,
+            //    CategoryId = categories[0].Id,
+            //    Category = categories[0]
+            //});
+            //context.Articles.Add(new Article
+            //{
+            //    Id = Guid.NewGuid(),
+            //    Title = "主题2",
+            //    Content = "# 二级主题 \n **第二**",
+            //    Author = "714251494@qq.com",
+            //    HasPublished = true,
+            //    CategoryId = categories[1].Id,
+            //    Category = categories[1]
+            //});
+            //context.Articles.Add(new Article
+            //{
+            //    Id = Guid.NewGuid(),
+            //    Title = "主题1",
+            //    Content = "# 二级主题 \n **第三**",
+            //    Author = "714251494@qq.com",
+            //    HasPublished = true,
+            //    CategoryId = categories[2].Id,
+            //    Category = categories[2]
+            //});
+            //context.Articles.Add(new Article
+            //{
+            //    Id = Guid.NewGuid(),
+            //    Title = "主题1",
+            //    Content = "# 二级主题 \n **第四**",
+            //    Author = "714251494@qq.com",
+            //    HasPublished = true,
+            //    CategoryId = categories[2].Id,
+            //    Category = categories[2]
+            //});
             context.SaveChanges();
         }
 

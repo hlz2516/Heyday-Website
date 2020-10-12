@@ -12,6 +12,7 @@
 }
 
 @section scripts{ 
+    <script src="~/lib/marked/marked.js"></script>
     <script>
         $("body").removeClass("text-center");
         function publish() {
@@ -32,6 +33,15 @@
                     console.log("发布失败，请联系管理员");
                 }
             });
+        }
+
+        function Preview() {
+            var title = $('#Title').val();
+            console.log(title);
+            $('#preview-title').html(title);
+            var text = $('#Content').val();
+            console.log(text);
+            $('#preview-content').html(marked(text));
         }
     </script>
 }
@@ -54,6 +64,14 @@
         </div>
         <button type="button" class="btn btn-primary" onclick="publish()">发布</button>
         <button type="submit" class="btn btn-primary">保存</button>
+        <button type="button" class="btn btn-primary" onclick="Preview()">预览</button>
         <button type="button" class="btn btn-primary">返回</button>
     </form>
+    <hr />
+    <div id="preview-title" class="text-center h2">
+
+    </div>
+    <div id="preview-content" class="text-left">
+
+    </div>
 </div>

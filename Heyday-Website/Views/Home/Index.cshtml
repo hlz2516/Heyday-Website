@@ -100,7 +100,7 @@
                     <div class="list-group text-left">
                         @foreach (var item in otherss)
                         {
-                            <a class="list-group-item list-group-item-action">@item.Title</a>
+                            <a asp-controller="Article" asp-action="Show" asp-route-title="@item.Title" class="list-group-item list-group-item-action">@item.Title</a>
                         }
                     </div>
                 </div>

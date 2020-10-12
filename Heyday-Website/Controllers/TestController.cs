@@ -11,7 +11,7 @@ namespace Heyday_Website.Controllers
     {
         public IActionResult Test()
         {
-            ViewBag.Text = "a\\nb";
+            ViewBag.Text = "a\nb";
             return View();
         }
         [HttpPost]

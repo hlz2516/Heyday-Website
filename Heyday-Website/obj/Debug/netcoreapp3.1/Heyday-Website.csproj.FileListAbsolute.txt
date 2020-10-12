@@ -158,7 +158,6 @@ G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\Ind
 D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\Index.cshtml.g.cs
 D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\Introduction.cshtml.g.cs
 G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\Introduction.cshtml.g.cs
-D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\NewArticle.cshtml.g.cs
 D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\Show.cshtml.g.cs
 E:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Heyday-Website.csprojAssemblyReference.cache
 E:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Heyday-Website.AssemblyInfoInputs.cache
@@ -249,3 +248,7 @@ G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\Oth
 G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\Show.cshtml.g.cs
 G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\WriteArticle.cshtml.g.cs
 G:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Test\Test.cshtml.g.cs
+D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\Activity.cshtml.g.cs
+D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\Others.cshtml.g.cs
+D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Article\WriteArticle.cshtml.g.cs
+D:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Test\Test.cshtml.g.cs
