@@ -11,10 +11,10 @@ namespace Heyday_Website.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly Models.AppContext _db;
+        private readonly Models.AppDbContext _db;
         private readonly SignInManager<ApplicationUser> _signManager;
 
-        public HomeController(Models.AppContext context,SignInManager<ApplicationUser> signManager)
+        public HomeController(Models.AppDbContext context,SignInManager<ApplicationUser> signManager)
         {
             _db = context;
             _signManager = signManager;

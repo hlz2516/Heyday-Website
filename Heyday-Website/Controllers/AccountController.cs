@@ -60,7 +60,7 @@ namespace Heyday_Website.Controllers
         }
 
         [AllowAnonymous]
-        public async Task Test([FromServices]Models.AppContext context)
+        public async Task Test([FromServices]Models.AppDbContext context)
         {
             //为了测试方便，这里直接在内存里存一个user对象并登陆
             var user = new ApplicationUser()

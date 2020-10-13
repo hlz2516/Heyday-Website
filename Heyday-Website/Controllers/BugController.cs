@@ -14,10 +14,10 @@ namespace Heyday_Website.Controllers
 {
     public class BugController:Controller
     {
-        private readonly Models.AppContext _db;
+        private readonly Models.AppDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public BugController(Models.AppContext context,UserManager<ApplicationUser> userManager)
+        public BugController(Models.AppDbContext context,UserManager<ApplicationUser> userManager)
         {
             _db = context;
             _userManager = userManager;

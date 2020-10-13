@@ -15,11 +15,11 @@ namespace Heyday_Website.Controllers
 {
     public class ArticleController : Controller
     {
-        private Models.AppContext _db;
+        private Models.AppDbContext _db;
         private IWebHostEnvironment _webHost;
         private UserManager<ApplicationUser> _userManager;
 
-        public ArticleController(Models.AppContext context,
+        public ArticleController(Models.AppDbContext context,
             IWebHostEnvironment webHost,
             UserManager<ApplicationUser> userManager)
         {
