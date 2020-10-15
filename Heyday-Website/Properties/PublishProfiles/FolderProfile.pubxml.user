@@ -5,5 +5,14 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_PublishTargetUrl>E:\heyday_publish</_PublishTargetUrl>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
   </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="AccountDB">
+      <Value>Server=LAPTOP-TN332LOF\SQLEXPRESS%3bDatabase=heyday_act%3bUser Id=sa%3bPassword=123456%3b </Value>
+    </DestinationConnectionStrings>
+    <DestinationConnectionStrings Include="AppDB">
+      <Value>Server=LAPTOP-TN332LOF\SQLEXPRESS%3bDatabase=heyday_app%3bUser Id=sa%3bPassword=123456%3b </Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
 </Project>
