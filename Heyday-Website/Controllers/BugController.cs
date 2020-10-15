@@ -68,7 +68,7 @@ namespace Heyday_Website.Controllers
             return View(bugs);
         }
         [Authorize]
-        public IActionResult EditMySubmitBug()
+        public async Task<IActionResult> EditMySubmitBug()
         {
             var id = Request.Form["bugId"].ToString();
             var bug = _db.Bugs.Where(b => b.Id.ToString() == id).FirstOrDefault();
@@ -76,7 +76,7 @@ namespace Heyday_Website.Controllers
             bug.Content = Request.Form["bugDetail"].ToString();
             bug.SubmitTime = Convert.ToDateTime(Request.Form["submitTime"].ToString());
             _db.Bugs.Update(bug);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
 
             return RedirectToAction("BugListOfUser");
         }
@@ -99,11 +99,11 @@ namespace Heyday_Website.Controllers
             return Json(message);
         }
         [Authorize]
-        public string DeleteMyBug(string bugId)
+        public async Task<string> DeleteMyBug(string bugId)
         {
             var bug = _db.Bugs.Where(b => b.Id.ToString() == bugId).FirstOrDefault();
             _db.Bugs.Remove(bug);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return "OK";
         }
         [Authorize(Roles ="Admin,Root")]
@@ -141,7 +141,7 @@ namespace Heyday_Website.Controllers
             return View(receivedBugs);
         }
         [Authorize(Roles ="Admin,Root")]
-        public string BugSubmit(string bugId,string solution)
+        public async Task<string> BugSubmit(string bugId,string solution)
         {
             //更新solution
             var thisSln = _db.Solutions.Where(s => s.BugId.ToString() == bugId).FirstOrDefault();
@@ -154,7 +154,7 @@ namespace Heyday_Website.Controllers
                 thisBug.BugState = BugState.delivered;
             _db.Bugs.Update(thisBug);
 
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return "OK";
         }
         [Authorize]
@@ -192,12 +192,12 @@ namespace Heyday_Website.Controllers
             _db.SaveChanges();
         }
         [Authorize(Roles ="Admin,Root")]
-        public string ThrowIt(string bugId)
+        public async Task<string> ThrowIt(string bugId)
         {
             var bug = _db.Bugs.Where(b => b.Id.ToString() == bugId).FirstOrDefault();
             if (bug != null)
                 bug.BugState = BugState.throwback;
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return "OK";
         }
     }

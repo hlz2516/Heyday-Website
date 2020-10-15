@@ -206,18 +206,20 @@ namespace Heyday_Website.Controllers
             };
             StringBuilder builder = new StringBuilder();
             string tmp=null;
-            var reader = new StreamReader(article.URL);
-            while((tmp = reader.ReadLine()) != null)
+            using (var reader = new StreamReader(article.URL))
             {
-                //之所以加入\\n是因为这里的字符串是传给js，为了不让js中直接翻译换行，所以对\进行转义
-                builder.Append(tmp + "\\n");
+                while ((tmp = reader.ReadLine()) != null)
+                {
+                    //之所以加入\\n是因为这里的字符串是传给js，为了不让js中直接翻译换行，所以对\进行转义
+                    builder.Append(tmp + "\\n");
+                }
             }
             //Console.WriteLine(builder.ToString());
             model.Content = builder.ToString();
             return View(model);
         }
         [Authorize(Roles = "Admin,Root")]
-        public IActionResult Delete(string title)
+        public async Task<IActionResult> Delete(string title)
         {
             var thisArt = _db.Articles.Where(a => a.Title == title).FirstOrDefault();
             var thisCate = _db.Categories.Where(c => c.Id == thisArt.CategoryId)
@@ -232,7 +234,7 @@ namespace Heyday_Website.Controllers
                 throw;
             }
             _db.Articles.Remove(thisArt);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return RedirectToAction(thisCate);
         }
     }
