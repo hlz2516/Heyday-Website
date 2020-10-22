@@ -2,12 +2,21 @@
 
 @section csses{ 
     <link href="~/css/carousel.css" rel="stylesheet" />
+    <style>
+        .div1 {
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+        .img1{
+            width:100%;
+            height:auto;
+        }
+    </style>
 }
 
 @section scripts{ 
-    <script>
 
-    </script>
 }
 
 @{
@@ -19,9 +28,9 @@
     {
         switch (article.CategoryName)
         {
-            case "intro": intros.Add(article);break;
-            case "activity": activities.Add(article); break;
-            case "others": otherss.Add(article); break;
+            case "intro": if(intros.Count < 6) intros.Add(article);break;
+            case "activity": if(activities.Count < 6) activities.Add(article); break;
+            case "others": if(otherss.Count < 6) otherss.Add(article); break;
             default:
                 break;
         }
@@ -37,13 +46,13 @@
         </ol>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="~/images/1.jpg" class="d-block w-100" alt="...">
+                <img src="~/images/page1.png" class="d-block w-100" alt="...">
             </div>
             <div class="carousel-item">
-                <img src="~/images/2.jpg" class="d-block w-100" alt="...">
+                <img src="~/images/page2.png" class="d-block w-100" alt="...">
             </div>
             <div class="carousel-item">
-                <img src="~/images/3.jpg" class="d-block w-100" alt="...">
+                <img src="~/images/page3.png" class="d-block w-100" alt="...">
             </div>
         </div>
         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -113,11 +122,11 @@
 
         <div class="row featurette">
             <div class="col-md-7">
-                <h2 class="featurette-heading">First featurette heading. <span class="text-muted">It’ll blow your mind.</span></h2>
-                <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+                <h1>体验原滋原味的生存</h1>
+                <p class="lead">&emsp;&emsp;如果您想找几个基友一起来体验新版1.16的Minecraft探险之旅，那么heyday将是您的不二之选！想跟猪灵交换物品吗？想在岩浆湖中骑着炽足兽漫游吗？想一览玄武岩三角洲的风光吗？那就赶紧加入我们吧！</p>
             </div>
-            <div class="col-md-5">
-                <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 500x500"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee" /><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
+            <div class="col-md-5 div1">
+                <img class="img1" src="~/images/adventure.png" alt="图片加载失败，请找管理员" />
             </div>
         </div>
 
@@ -125,11 +134,11 @@
 
         <div class="row featurette">
             <div class="col-md-7 order-md-2">
-                <h2 class="featurette-heading">Oh yeah, it’s that good. <span class="text-muted">See for yourself.</span></h2>
-                <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+                <h1>共建heyday，一起快乐</h1>
+                <p class="lead">&emsp;&emsp;目前，heyday服务器处于发展阶段，很多区块都没有被开发。因此您可以大胆发挥想象力和创造力，在heyday服务器里建造属于你的建筑和红石器械！</p>
             </div>
-            <div class="col-md-5 order-md-1">
-                <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 500x500"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee" /><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
+            <div class="col-md-5 order-md-1 div1">
+                <img class="img1" src="~/images/development.png" alt="图片加载失败，请找管理员" />
             </div>
         </div>
 
@@ -137,11 +146,11 @@
 
         <div class="row featurette">
             <div class="col-md-7">
-                <h2 class="featurette-heading">And lastly, this one. <span class="text-muted">Checkmate.</span></h2>
-                <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+                <h1>加入我们，构建未来</h1>
+                <p class="lead">&emsp;&emsp;在不久的将来，我们将实施“建造者计划”，给heyday量身打造“飞猪”插件，但目前我们比较缺人手，因此欢迎有志之士加入我们，携手共建heyday的未来！</p>
             </div>
-            <div class="col-md-5">
-                <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 500x500"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee" /><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
+            <div class="col-md-5 div1">
+                <img class="img1" src="~/images/build_future.png" alt="图片加载失败，请找管理员" width="500" />
             </div>
         </div>
 
@@ -152,7 +161,7 @@
     </div><!-- /.container -->
     <!-- FOOTER -->
     <footer class="container">
-        <p class="float-right"><a href="#">Back to top</a></p>
-        <p>&copy; 2017-2020 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+        <p class="float-right"><a href="#">返回到顶部</a></p>
+        <p>&copy; 2020 Heyday Studio</p>
     </footer>
 </main>

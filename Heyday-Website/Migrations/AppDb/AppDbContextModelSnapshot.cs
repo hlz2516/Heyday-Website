@@ -95,6 +95,23 @@ namespace Heyday_Website.Migrations.AppDb
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("561ed884-8a7f-4066-a37d-8528530310e5"),
+                            CategoryName = "intro"
+                        },
+                        new
+                        {
+                            Id = new Guid("fa7c278d-0aa1-4304-9076-92d5d796cfac"),
+                            CategoryName = "activity"
+                        },
+                        new
+                        {
+                            Id = new Guid("ab79a777-6937-42f0-a7d6-ee6ae71ae07a"),
+                            CategoryName = "others"
+                        });
                 });
 
             modelBuilder.Entity("Heyday_Website.Models.Solution", b =>

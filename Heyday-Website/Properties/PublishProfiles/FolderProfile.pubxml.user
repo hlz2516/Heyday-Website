@@ -7,12 +7,4 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <_PublishTargetUrl>E:\heyday_publish</_PublishTargetUrl>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
   </PropertyGroup>
-  <ItemGroup>
-    <DestinationConnectionStrings Include="AccountDB">
-      <Value>Server=LAPTOP-TN332LOF\SQLEXPRESS%3bDatabase=heyday_act%3bUser Id=sa%3bPassword=123456%3b </Value>
-    </DestinationConnectionStrings>
-    <DestinationConnectionStrings Include="AppDB">
-      <Value>Server=LAPTOP-TN332LOF\SQLEXPRESS%3bDatabase=heyday_app%3bUser Id=sa%3bPassword=123456%3b </Value>
-    </DestinationConnectionStrings>
-  </ItemGroup>
 </Project>

@@ -15,7 +15,7 @@ namespace Heyday_Website.Controllers
 {
     public class ArticleController : Controller
     {
-        private Models.AppDbContext _db;
+        private AppDbContext _db;
         private IWebHostEnvironment _webHost;
         private UserManager<ApplicationUser> _userManager;
 

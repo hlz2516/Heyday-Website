@@ -24,6 +24,15 @@ namespace Heyday_Website.Models
             modelBuilder.Entity<Article>()
                 .HasIndex(a => a.Title)
                 .IsUnique();
+            //初始化文章类别
+            Category[] categories = new Category[3]
+            {
+                new Category{Id = Guid.NewGuid(),CategoryName="intro"},
+                new Category{Id = Guid.NewGuid(),CategoryName="activity"},
+                new Category{Id = Guid.NewGuid(),CategoryName="others"},
+            };
+
+            modelBuilder.Entity<Category>().HasData(categories);
         }
     }
 }

@@ -41,21 +41,9 @@ namespace Heyday_Website.Controllers
         public async Task<IEnumerable<ArticlesOfIndexDto>> GetArticles()
         {
             IList<ArticlesOfIndexDto> list = new List<ArticlesOfIndexDto>();
-            var introArticles = _db.Articles.Where(a => a.HasPublished)
-                .Where(a => a.Category.CategoryName == "intro")
-                .OrderByDescending(a => a.PublishTime)
-                .AsEnumerable().Take(5);
 
-            var actArticles = _db.Articles.Where(a => a.HasPublished)
-                .Where(a => a.Category.CategoryName == "activity")
-                .OrderByDescending(a => a.PublishTime)
-                .AsEnumerable().Take(5);
-
-            var allArticles =await  _db.Articles.Where(a => a.HasPublished)
-                .Where(a => a.Category.CategoryName == "others")
-                .OrderByDescending(a => a.PublishTime)
-                .Take(5)
-                .Concat(introArticles).Concat(actArticles).ToListAsync();
+            var allArticles = await _db.Articles.Where(a => a.HasPublished)
+                .OrderByDescending(a => a.PublishTime).ToListAsync();
 
             foreach (var item in allArticles)
             {
