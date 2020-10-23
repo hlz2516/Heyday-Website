@@ -1,0 +1,26 @@
+1. 应用程序管道和中间件
+    首先，要了解什么是应用程序管道，这是个抽象概念。首先用户的每个http请求流程都是线性的，对应到程序中就是一个
+请求管道，在这个请求管道中我们可以配置各种各样的中间件，从而达到服务端可以针对不同用户做出不同的请求响应。
+    而中间件，就是组装到应用程序管道中的处理请求和响应的软件。
+
+本系统使用到的中间件以及执行顺序：
+UseDeveloperExceptionPage(开发环境下)->UseStaticFiles->UseDefaultFiles->UseSession->UseRouting->UseAuthentication
+->UseAuthorization->UseEndpoints
+
+2. startup类的config和configservice方法是干什么的
+
+configservice是配置各种服务的，即注册各种中间件，注册好了后才可以在config方法中加入中间件使用。所以configservice会在
+config之前由Host类调用。
+config方法通过将中间件组件添加到IApplicationBuilder实例（这个实例是托管创建的）来配置请求管道。
+
+3. 依赖注入（控制反转的思想）
+（最直观的感受，不用自己去new了）
+何为依赖，一个类A需要另一个类B才能协调完成工作，那么就称A依赖于B
+何为注入，把依赖的创建丢给其它人，自己只负责使用，其它人丢给你依赖的这个过程理解为注入
+何为容器，容器就是管理依赖的一个东西，主要负责绑定服务与实例之间的关系，设置实例的生命周期，对实例进行管理。
+
+讲到生命周期，这里详细讲下singleton,scope,transient三者的区别
+经过测试，singleton一旦创建，在整个应用程序周期中都使用这一个实例
+scope在每次请求时被创建，整个请求过程中都贯穿使用这个创建的服务
+transient 服务在每次请求时被创建
+

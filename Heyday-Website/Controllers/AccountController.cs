@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Heyday_Website.Models;
 using Heyday_Website.Tools;
@@ -297,6 +298,16 @@ namespace Heyday_Website.Controllers
                 }
             }
             return View(model);
+        }
+
+        public async Task<IActionResult> DeleteUser(string email)
+        {
+            var user =await _userManager.FindByEmailAsync(email);
+            if (user != null)
+            {
+                await _userManager.DeleteAsync(user);
+            }
+            return View("DeleteUser");
         }
     }
 }

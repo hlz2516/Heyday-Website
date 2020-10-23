@@ -402,3 +402,4 @@ D:\MyProject\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\staticwebasse
 D:\MyProject\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Heyday-Website.dll
 D:\MyProject\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Heyday-Website.pdb
 D:\MyProject\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Heyday-Website.genruntimeconfig.cache
+D:\MyProject\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Account\DeleteUser.cshtml.g.cs
