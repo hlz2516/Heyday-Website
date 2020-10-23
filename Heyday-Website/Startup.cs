@@ -74,11 +74,10 @@ namespace Heyday_Website
             }
             app.UseStaticFiles();
             app.UseDefaultFiles();
-            app.UseSession();
-            app.UseRouting();
             app.UseAuthentication();
+            app.UseRouting();
             app.UseAuthorization();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();

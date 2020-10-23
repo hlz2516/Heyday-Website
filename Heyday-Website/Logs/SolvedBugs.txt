@@ -46,3 +46,15 @@ id:f768ae19-820e-47f1-9ff1-1e882c54a354
 solver email:714251494@qq.com
 content:sdfsdfsfdsfdfsdfdsfsd
 ==============================
+==============================
+bug message:
+id:bb1d36f7-5405-4708-ac3c-509b31733a27
+title:很高心来到贵公司面试
+content:橙树科技棒棒的
+submitter email:714251494@qq.com
+submit time:2020/10/23 21:22:51
+solution message:
+id:37913d50-651e-43de-98c1-c8a48be26e30
+solver email:714251494@qq.com
+content:123
+==============================

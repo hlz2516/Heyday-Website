@@ -200,5 +200,14 @@ namespace Heyday_Website.Controllers
             await _db.SaveChangesAsync();
             return "OK";
         }
+        [Authorize(Roles = "Admin,Root")]
+        public async Task<string> Rejectit(string bugId)
+        {
+            var bug = _db.Bugs.Where(b => b.Id.ToString() == bugId).FirstOrDefault();
+            if (bug != null)
+                bug.BugState = BugState.reject;
+            await _db.SaveChangesAsync();
+            return "OK";
+        }
     }
 }

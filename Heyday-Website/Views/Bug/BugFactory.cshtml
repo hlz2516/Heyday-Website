@@ -33,13 +33,20 @@
                 var solution = $('#solution').get(0).value;
                 $.get("/Bug/BugSubmit?bugId=" + id + "&solution=" + solution, function (data) {
                     if (data == "OK") {
-                        $('#exampleModal').modal({
-                            keyboard: false
-                        })
+                        alert('已交付');
                     }
                 });
             })
 
+            $('#dltBtn').click(function () {
+                var id = $('#bugId').get(0).value;
+                var solution = $('#solution').get(0).value;
+                $.get("/Bug/ThrowIt?bugId=" + id, function (data) {
+                    if (data == "OK") {
+                        alert('已抛回');
+                    }
+                });
+            })
         }
     </script>
 }
