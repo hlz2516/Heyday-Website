@@ -5,11 +5,6 @@
 @model Heyday_Website.ViewModels.LoginDto
 @section csses{
     <link href="~/css/signin.css" rel="stylesheet" />
-    <style>
-        .redfont {
-            color: red
-        }
-    </style>
 }
 
 <div class="container">
@@ -30,11 +25,11 @@
         </div>
 
         <div>
-            <span class="redfont" asp-validation-for="Email"></span>
-            <span class="redfont" asp-validation-for="Password"></span>
+            <span class="text-danger" asp-validation-for="Email"></span>
+            <span class="text-danger" asp-validation-for="Password"></span>
         </div>
 
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        <p class="mt-5 mb-3 text-muted">&copy; 2017-2020</p>
+        <p class="mt-5 mb-3 text-muted">&copy; 2020 Heyday Studio</p>
     </form>
 </div>

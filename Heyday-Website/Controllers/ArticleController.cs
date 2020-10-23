@@ -26,6 +26,16 @@ namespace Heyday_Website.Controllers
             _db = context;
             _webHost = webHost;
             _userManager = userManager;
+            if(!System.IO.Directory.Exists(webHost.WebRootPath + "\\md"))
+            {
+                System.IO.Directory.CreateDirectory(webHost.WebRootPath + "\\md");
+                string introDirPath = Path.Combine(webHost.WebRootPath, "md\\intro");
+                string actDirPath = Path.Combine(webHost.WebRootPath, "md\\activity");
+                string otherDirPath = Path.Combine(webHost.WebRootPath, "md\\others");
+                System.IO.Directory.CreateDirectory(introDirPath);
+                System.IO.Directory.CreateDirectory(actDirPath);
+                System.IO.Directory.CreateDirectory(otherDirPath);
+            }
         }
         //get请求
         //Article/Introduction

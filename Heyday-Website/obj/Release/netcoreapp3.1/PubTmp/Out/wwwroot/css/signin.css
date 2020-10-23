@@ -4,7 +4,6 @@ body {
 }
 
 body {
-  display: -ms-flexbox;
   -ms-flex-align: center;
   align-items: center;
   padding-bottom: 40px;

@@ -27,9 +27,8 @@ namespace Heyday_Website.Controllers
         {
             if (!id.HasValue || id == 0)
                 id = 1;
-            var bugs = _db.Bugs.AsEnumerable();
+            var bugs = _db.Bugs.OrderByDescending(bug=>bug.SubmitTime).AsEnumerable();
             var bugList = new PagingList<Bug>(bugs,(int)id,10);
-
             return View(bugList);
         }
         [Authorize]
@@ -135,9 +134,10 @@ namespace Heyday_Website.Controllers
             return "OK";
         }
         [Authorize(Roles = "Admin,Root")]
-        public IActionResult BugFactory()
+        public async Task<IActionResult> BugFactory()
         {
-            var receivedBugs = _db.Solutions.Select(s => s.Bug);
+            var email = (await _userManager.FindByNameAsync(HttpContext.User.Identity.Name)).Email;
+            var receivedBugs = _db.Solutions.Where(s=>s.Solver == email).Select(s => s.Bug);
             return View(receivedBugs);
         }
         [Authorize(Roles ="Admin,Root")]

@@ -55,7 +55,7 @@ namespace Heyday_Website
             services.AddDistributedMemoryCache();
             services.AddSession(opt =>
             {
-                opt.IdleTimeout = new TimeSpan(TimeSpan.TicksPerMinute * 10);
+                opt.IdleTimeout = new TimeSpan(TimeSpan.TicksPerMinute * 20);
             });
 
             services.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
