@@ -40,7 +40,85 @@ transient:每一次请求不同的实例
 在本系统中注册了默认的identitycore中间件以及采用默认的cookie身份认证的方案,通过在controller中注入identity core三大对象usermanager,signinmanager,rolemanager来完成登录注册，修改密码，然后
 不同的用户可以看到不同的菜单栏,就是说不同权限的用户，能使用的功能也会有所差异。
 
+5.设计模式
+   单例模式
+   特点：只能生成一个实例，由该类自己创建，向外部提供一个全局访问点
+   优点：只有一个实例，减少了内存的开销
+   缺点：不易于扩展
+	懒汉式（只有调用时才创建）
+     class Singleton
+    {
+        private static Singleton singleton;
+        private Singleton()
+        {
 
+        }
+        public static Singleton GetInstance()
+        {
+            if (singleton == null)
+                singleton = new Singleton();
+            return singleton;
+        }
+    }
 
+	饿汉式（程序加载时就创建）
+     class Singleton
+    {
+        private static Singleton singleton = new Singleton();
+        private Singleton()
+        {
 
+        }
+        public static Singleton GetInstance()
+        {
+            return singleton;
+        }
+    }
+
+	工厂方法模式
+	结构：一个抽象工厂（接口），多个具体工厂（对抽象工厂的具体实现），
+	      一个抽象产品（接口），多个具体产品（对抽象产品的具体实现）。
+	
+	abstract class Factory{
+    		public abstract Product Manufacture();
+	}
+
+	abstract class Product{
+    		public abstract void Show();
+	}
+        //具体产品A类
+	class  ProductA extends  Product{
+    		@Override
+    		public void Show() {
+        		System.out.println("生产出了产品A");
+    		}
+	}
+ 
+	//具体产品B类
+	class  ProductB extends  Product{
+ 
+    	@Override
+    	public void Show() {
+        	System.out.println("生产出了产品B");
+    		}
+	}
+	//工厂A类 - 生产A类产品
+	class  FactoryA extends Factory{
+	    @Override
+	    public Product Manufacture() {
+	        return new ProductA();
+	    }
+	}
+ 
+	//工厂B类 - 生产B类产品
+	class  FactoryB extends Factory{
+	    @Override
+	    public Product Manufacture() {
+	        return new ProductB();
+	    }
+	}
+
+	优点：新增一种产品时，只需要增加相应的具体产品类和相应的工厂子类即可
+	缺点：添加新产品时，除了增加新产品类外，还要提供与之对应的具体工厂类，系统类的个数将成对增加，
+	在一定程度上增加了系统的复杂度；同时，有更多的类需要编译和运行，会给系统带来一些额外的开销；
 
