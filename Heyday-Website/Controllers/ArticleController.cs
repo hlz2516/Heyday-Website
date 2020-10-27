@@ -44,6 +44,7 @@ namespace Heyday_Website.Controllers
         [Authorize(Roles ="Admin,Root")]
         public IActionResult Index()
         {
+            ViewBag.Title = "Heyday-主题";
             return View();
         }
         //get请求:
@@ -63,6 +64,7 @@ namespace Heyday_Website.Controllers
                     .Where(a=>a.CategoryId== categoryId)
                     .Select(a=>a.Title);
             }
+            ViewBag.Title = "Heyday-您的入门主题文章";
             return View(titles);
         }
         [Authorize(Roles = "Admin,Root")]
@@ -79,6 +81,7 @@ namespace Heyday_Website.Controllers
                     .Where(a => a.CategoryId == categoryId)
                     .Select(a => a.Title);
             }
+            ViewBag.Title = "Heyday-您的活动主题文章";
             return View(titles);
         }
         [Authorize(Roles = "Admin,Root")]
@@ -95,6 +98,7 @@ namespace Heyday_Website.Controllers
                     .Where(a => a.CategoryId == categoryId)
                     .Select(a => a.Title);
             }
+            ViewBag.Title = "Heyday-您的其他主题文章";
             return View(titles);
         }
         [Authorize(Roles = "Admin,Root")]
@@ -131,6 +135,7 @@ namespace Heyday_Website.Controllers
                 model.Id = Guid.NewGuid();
                 model.Category = cateName;
             }
+            ViewBag.Title = "Heyday-编辑文章";
             return View(model);
         }
         //点击保存
@@ -226,6 +231,7 @@ namespace Heyday_Website.Controllers
             }
             //Console.WriteLine(builder.ToString());
             model.Content = builder.ToString();
+            ViewBag.Title = "Heyday-"+ title;
             return View(model);
         }
         [Authorize(Roles = "Admin,Root")]

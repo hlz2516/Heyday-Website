@@ -7,7 +7,7 @@
             for (var i = 0; i < btns.length; i++) {
                 var jbtn = $(btns[i]);
                 jbtn.click(function () {
-                    var id = $(this).find('span.font-weight-bold')[0].innerText;
+                    var id = $(this).find('#thisId').get(0).innerText;
                     $('#bugId').get(0).value = id;
                     $.getJSON("/Bug/GetTitleDetailAndSolution?bugId=" + id, function (data, status) {
                         if (status == "success") {
@@ -15,14 +15,6 @@
                             $('#title').get(0).value = data["title"];
                             $('#detail').get(0).innerText = data["detail"];
                             $('#solution').get(0).innerText = data["solution"];
-                            var state;
-                            switch (data["state"]) {
-                                case 2: state = "处理中"; break;
-                                case 4: state = "已交付"; break;
-                                case 5: state = "已解决"; break;
-                                default: state = "出了点状况，请找管理员及时修复~"; break;
-                            }
-                            $('#state').get(0).innerText = state;
                         }
                     })
                 })
@@ -33,7 +25,10 @@
                 var solution = $('#solution').get(0).value;
                 $.get("/Bug/BugSubmit?bugId=" + id + "&solution=" + solution, function (data) {
                     if (data == "OK") {
-                        alert('已交付');
+                        $('#state').text('已交付');
+                        $('#exampleModal').modal({
+                            keyboard: false
+                        })
                     }
                 });
             })
@@ -43,7 +38,10 @@
                 var solution = $('#solution').get(0).value;
                 $.get("/Bug/ThrowIt?bugId=" + id, function (data) {
                     if (data == "OK") {
-                        alert('已抛回');
+                        $('#state').text('已抛回');
+                        $('#exampleModal').modal({
+                            keyboard: false
+                        })
                     }
                 });
             })
@@ -57,13 +55,42 @@
             <div class="list-group">
                 @foreach (var bug in Model)
                 {
-                    <button type="button" class="list-group-item list-group-item-action">
-                        #<span class="font-weight-bold">@bug.Id.ToString()</span>
-                        @bug.Title
-                        @*<div class="float-right">
-
-                            </div>*@
-                    </button>
+                <button type="button" class="list-group-item list-group-item-action text-left">
+                    <span>#@bug.Id.ToString().Substring(30, 6)</span>
+                    <span id="thisId" class="ml-4" style="display:none">@bug.Id</span>
+                    @bug.Title
+                <div class="float-right">
+                    @switch (bug.BugState)
+                    {
+                        case Heyday_Website.Models.BugState.pending:
+                            <img src="~/images/BugState_pending.svg" />
+                            <span>待处理</span>
+                            break;
+                        case Heyday_Website.Models.BugState.reject:
+                            <img src="~/images/BugState_reject.svg" />
+                            <span>已拒绝</span>
+                            break;
+                        case Heyday_Website.Models.BugState.processing:
+                            <img src="~/images/BugState_processing.svg" />
+                            <span>处理中</span>
+                            break;
+                        case Heyday_Website.Models.BugState.throwback:
+                            <img src="~/images/BugState_throwback.svg" />
+                            <span>抛回</span>
+                            break;
+                        case Heyday_Website.Models.BugState.delivered:
+                            <img src="~/images/BugState_delivered.svg" />
+                            <span>已交付</span>
+                            break;
+                        case Heyday_Website.Models.BugState.solved:
+                            <img src="~/images/BugState_solved.svg" />
+                            <span>已解决</span>
+                            break;
+                        default:
+                            break;
+                    }
+                </div>
+                </button>
                 }
             </div>
         </div>
@@ -71,26 +98,25 @@
         <div class="col-9 pl-2">
             <div class="card">
                 <div class="card-header text-center">
-                    <h5>Bug修复</h5>
+                    <h4>Bug修复</h4>
                 </div>
                 <form class="card-body" id="form1" method="post">
-                    <div class="form-group">
-                        <label>Bug概述</label>
+                    <div class="form-group text-left">
+                        <h5>Bug概述</h5>
                         <input type="text" class="form-control" id="title" name="bugTitle">
                         <input type="hidden" id="bugId" name="bugId" />
                     </div>
-                    <div class="form-group">
-                        <label>Bug详细描述</label>
-                        <textarea class="form-control" id="detail" rows="3" name="bugDetail"></textarea>
+                    <div class="form-group text-left">
+                        <h5>详细描述</h5>
+                        <textarea class="form-control" id="detail" rows="5" name="bugDetail"></textarea>
                     </div>
                     <div class="form-group">
                         <input type="hidden" id="submitTime" name="submitTime" value="@DateTime.Now" />
                     </div>
-                    <div class="form-group">
-                        <label>解决方案</label>
+                    <div class="form-group text-left">
+                        <h5>解决方案</h5>
                         <textarea class="form-control" rows="5" id="solution"></textarea>
                     </div>
-                    <span id="state"></span>
                     <button type="button" class="btn btn-primary" id="submitBtn">交付</button>
                     <button type="button" class="btn btn-primary" id="dltBtn">抛回</button>
                 </form>
@@ -109,10 +135,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                已交付
+                <span id="state"></span>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-primary">确定 </a>
+                <a class="btn btn-primary" asp-controller="Bug" asp-action="BugFactory">确定 </a>
             </div>
         </div>
     </div>

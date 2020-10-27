@@ -29,11 +29,13 @@ namespace Heyday_Website.Controllers
                 id = 1;
             var bugs = _db.Bugs.OrderByDescending(bug=>bug.SubmitTime).AsEnumerable();
             var bugList = new PagingList<Bug>(bugs,(int)id,10);
+            ViewBag.Title = "Heyday-Bug总览";
             return View(bugList);
         }
         [Authorize]
         public IActionResult BugWrite()
         {
+            ViewBag.Title = "Heyday-Bug填写";
             return View();
         }
 
@@ -55,6 +57,7 @@ namespace Heyday_Website.Controllers
                 await _db.Bugs.AddAsync(bug);
                 await _db.SaveChangesAsync();
                 ViewBag.IsSubmitted = 1;
+                ViewBag.Title = "Heyday-Bug填写";
                 return View("BugWrite");
             }
             return View(model);
@@ -64,6 +67,15 @@ namespace Heyday_Website.Controllers
         {
             var email = (await _userManager.GetUserAsync(HttpContext.User)).Email;
             var bugs =await _db.Bugs.Where(b => b.SubmitterEmail == email).ToListAsync();
+            //处理“用户已提交bug列表”的每个Bug的标题
+            foreach (var bug in bugs)
+            {
+                if(bug.Title.Length > 6)
+                {
+                    bug.Title = bug.Title.Substring(0, 6) + "...";
+                }
+            }
+            ViewBag.Title = "您已提交的Bug列表";
             return View(bugs);
         }
         [Authorize]
@@ -111,6 +123,7 @@ namespace Heyday_Website.Controllers
             //检索出状态为待处理和抛回的bug返回给页面
             var bugs = _db.Bugs.Where(b => b.BugState == BugState.pending ||
             b.BugState == BugState.throwback);
+            ViewBag.Title = "Heyday-可以接手的Bug列表";
             return View(bugs);
         }
         [Authorize(Roles ="Admin,Root")]
@@ -138,6 +151,14 @@ namespace Heyday_Website.Controllers
         {
             var email = (await _userManager.FindByNameAsync(HttpContext.User.Identity.Name)).Email;
             var receivedBugs = _db.Solutions.Where(s=>s.Solver == email).Select(s => s.Bug);
+            foreach (var bug in receivedBugs)
+            {
+                if (bug.Title.Length > 6)
+                {
+                    bug.Title = bug.Title.Substring(0, 6) + "...";
+                }
+            }
+            ViewBag.Title = "Heyday-Bug修复";
             return View(receivedBugs);
         }
         [Authorize(Roles ="Admin,Root")]

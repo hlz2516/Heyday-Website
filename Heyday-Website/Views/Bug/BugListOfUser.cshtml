@@ -8,7 +8,8 @@
             for (var i = 0; i < btns.length; i++) {
                 var jbtn = $(btns[i]);
                 jbtn.click(function () {
-                    curBugId = $(this).find('span.font-weight-bold')[0].innerText;
+                    curBugId = $(this).find('#thisId').get(0).innerText;
+                    //console.log(curBugId);
                     $('#bugId').get(0).value = curBugId;
                     $.getJSON("/Bug/GetTitleAndDetail?bugId=" + curBugId, function (data, status) {
                         if (status == "success") {
@@ -99,8 +100,9 @@
             <div class="list-group">
                 @foreach (var bug in Model)
                 {
-                    <button type="button" class="list-group-item list-group-item-action" name="@bug.Id">
-                        #<span class="font-weight-bold">@bug.Id</span>
+                    <button type="button" class="list-group-item list-group-item-action text-left" name="@bug.Id">
+                        <span>#@bug.Id.ToString().Substring(30,6)</span>
+                         <span id="thisId" class="ml-4" style="display:none">@bug.Id</span>
                         @bug.Title
                         <div class="float-right">
                             @switch (bug.BugState)
@@ -151,16 +153,16 @@
         <div class="col-9 pl-2">
             <div class="card">
                 <div class="card-header text-center">
-                    <h5>Bug编辑</h5>
+                    <h4>Bug编辑</h4>
                 </div>
                 <form class="card-body" id="form1" method="post" asp-controller="Bug" asp-action="EditMySubmitBug">
-                    <div class="form-group">
-                        <label>Bug概述</label>
+                    <div class="form-group text-left">
+                        <h5>Bug概述</h5>
                         <input type="text" class="form-control" id="title" name="bugTitle">
                         <input type="hidden" id="bugId" name="bugId" />
                     </div>
-                    <div class="form-group">
-                        <label>Bug详细描述</label>
+                    <div class="form-group text-left">
+                        <h5>详细描述</h5>
                         <textarea class="form-control" id="detail" rows="3" name="bugDetail"></textarea>
                     </div>
                     <div class="form-group">

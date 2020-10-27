@@ -211,3 +211,4 @@ D:\MyProject\Heyday-Website\Heyday-Website\obj\Release\netcoreapp3.1\Heyday-Webs
 D:\MyProject\Heyday-Website\Heyday-Website\obj\Release\netcoreapp3.1\Heyday-Website.pdb
 D:\MyProject\Heyday-Website\Heyday-Website\obj\Release\netcoreapp3.1\Heyday-Website.genruntimeconfig.cache
 D:\MyProject\Heyday-Website\Heyday-Website\obj\Release\netcoreapp3.1\Razor\Views\Account\DeleteUser.cshtml.g.cs
+E:\Heyday-Website\Heyday-Website\obj\Release\netcoreapp3.1\Razor\Views\Account\DeleteUser.cshtml.g.cs

@@ -25,7 +25,7 @@ namespace Heyday_Website.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            
+            ViewBag.Title = "Heyday-服务中心";
             if (_signManager.IsSignedIn(HttpContext.User))
                 return RedirectToAction("AccountIndex");
             return View(await GetArticles());
@@ -34,7 +34,7 @@ namespace Heyday_Website.Controllers
         [Authorize]
         public async Task<IActionResult> AccountIndex()
         {
-
+            ViewBag.Title = "Heyday-服务中心";
             return View("Index",await GetArticles());
         }
 

@@ -86,7 +86,7 @@ namespace Heyday_Website.Controllers
 
         public IActionResult Login()
         {
-            ViewBag.Title = "登录";
+            ViewBag.Title = "Heyday-登录";
             return View();
         }
         [HttpPost]
@@ -113,7 +113,7 @@ namespace Heyday_Website.Controllers
 
         public IActionResult Register()
         {
-            ViewBag.Title = "注册";
+            ViewBag.Title = "Heyday-注册";
             return View();
         }
         [HttpPost]
@@ -189,6 +189,7 @@ namespace Heyday_Website.Controllers
         {
             var model = new ChangePasswordDto();
             model.Email = (await _userManager.GetUserAsync(HttpContext.User)).Email;
+            ViewBag.Title = "Heyday-重置密码";
             return View(model);
         }
         [HttpPost]
@@ -210,6 +211,7 @@ namespace Heyday_Website.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
+            ViewBag.Title = "Heyday-注销";
             return RedirectToAction("Login");
         }
         [AcceptVerbs("Get", "Post")]
@@ -255,6 +257,7 @@ namespace Heyday_Website.Controllers
                     users.Add(new User { Email = user.Email, Name = user.UserName, Role = role });
             }
             var res = users.OrderBy(u => u.Role);
+            ViewBag.Title = "Heyday-用户管理";
             return View(res);
         }
         [Authorize(Roles ="Root")]
@@ -271,6 +274,7 @@ namespace Heyday_Website.Controllers
                 Name = user.UserName,
                 Role = role
             };
+            ViewBag.Title = "Heyday-编辑用户";
             return View(res);
         }
         [HttpPost]

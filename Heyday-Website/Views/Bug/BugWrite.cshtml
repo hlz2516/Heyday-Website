@@ -1,5 +1,9 @@
 ﻿@model Heyday_Website.ViewModels.BugWriteDto
 
+@section csses{ 
+    <link href="~/css/center.css" rel="stylesheet" />
+}
+
 @section scripts{
     <script>
         window.onload = function () {
@@ -11,7 +15,8 @@
         }
     </script>
 }
-<div class="container-fluid">
+
+@*<div class="container-fluid ">
     <div class="card">
         <div class="card-header text-center">
             <h5>Bug填写</h5>
@@ -33,11 +38,39 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
-</div>
+</div>*@
 
-@*<button type="button" class="btn btn-primary" onclick="ShowModal()">
-        触发模态框
-    </button>*@
+<div id="wrap" class="container-fluid">
+    <div id="subwrap">
+        <div id="content" class="row">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <div class="card text-left mt-4">
+                    <div class="card-header">
+                        <h4>Bug填写</h4>
+                    </div>
+                    <form class="card-body" asp-controller="Bug" asp-action="BugWrite" method="post">
+                        <div class="form-group">
+                            <h5><label asp-for="Title">Bug概述</label></h5>
+                            <input type="text" class="form-control" asp-for="Title" placeholder="示例：世界高度64层以上无法倒岩浆桶">
+                            <span asp-validation-for="Title"></span>
+                        </div>
+                        <div class="form-group">
+                            <h5><label asp-for="Content">Bug详细描述</label></h5>
+                            <textarea class="form-control" asp-for="Content" rows="6" placeholder="示例：在世界高度64层以下用空桶取得岩浆后来到64层以上，右键岩浆桶无法倒出，系统给出提示'您的权限不够'"></textarea>
+                            <span asp-validation-for="Content"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" asp-for="SubmitTime" id="submitTime" value="@DateTime.Now" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">提交</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -53,7 +86,7 @@
                 提交成功！
             </div>
             <div class="modal-footer">
-                <a class="btn btn-secondary" id="continue" asp-controller="Bug" asp-action="BugWrite">继续填写bug</a>
+                <a class="btn btn-primary" id="continue" asp-controller="Bug" asp-action="BugWrite">继续填写bug</a>
                 <a class="btn btn-primary" id="checkbug" asp-controller="Bug" asp-action="BugGeneral">查看Bug列表 </a>
             </div>
         </div>

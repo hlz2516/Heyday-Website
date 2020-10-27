@@ -20,5 +20,13 @@ namespace Heyday_Website.Controllers
             
             return View();
         }
+
+        public async Task Asynchronoustesting()
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                Console.WriteLine(i);
+            }
+        }
     }
 }

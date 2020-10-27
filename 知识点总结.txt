@@ -17,7 +17,7 @@ config·½·¨Í¨¹ý½«ÖÐ¼ä¼þ×é¼þÌí¼Óµ½IApplicationBuilderÊµÀý£¨Õâ¸öÊµÀýÊÇÍÐ¹Ü´´½¨µÄ£©À
 £¨×îÖ±¹ÛµÄ¸ÐÊÜ£¬²»ÓÃ×Ô¼ºÈ¥newÁË£©
 ºÎÎªÒÀÀµ£¬Ò»¸öÀàAÐèÒªÁíÒ»¸öÀàB²ÅÄÜÐ­µ÷Íê³É¹¤×÷£¬ÄÇÃ´¾Í³ÆAÒÀÀµÓÚB
 ºÎÎª×¢Èë£¬°ÑÒÀÀµµÄ´´½¨¶ª¸øÆäËüÈË£¬×Ô¼ºÖ»¸ºÔðÊ¹ÓÃ£¬ÆäËüÈË¶ª¸øÄãÒÀÀµµÄÕâ¸ö¹ý³ÌÀí½âÎª×¢Èë
-ºÎÎªÈÝÆ÷£¬ÈÝÆ÷¾ÍÊÇ¹ÜÀíÒÀÀµµÄÒ»¸ö¶«Î÷£¬Ö÷Òª¸ºÔð°ó¶¨·þÎñÓëÊµÀýÖ®¼äµÄ¹ØÏµ£¬ÉèÖÃÊµÀýµÄÉúÃüÖÜÆÚ£¬¶ÔÊµÀý½øÐÐ¹ÜÀí¡£
+ºÎÎªÈÝÆ÷£¬ÈÝÆ÷¾ÍÊÇ¹ÜÀíÒÀÀµµÄÒ»¸ö¶«Î÷£¬Ö÷Òª¸ºÔð°ó¶¨·þÎñÓëÊµÀýÖ®¼äµÄ¹ØÏµ£¬ÉèÖÃÊµÀýµÄÉúÃüÖÜÆÚ£¬¶ÔÊµÀý½øÐÐ¹ÜÀí¡£¶Ô.net coreÀ´Ëµ£¬iservicecollition¾ÍÊÇÈÝÆ÷¡£
 
 ½²µ½ÉúÃüÖÜÆÚ£¬ÕâÀïÏêÏ¸½²ÏÂsingleton,scope,transientÈýÕßµÄÇø±ð
 ¾­¹ý²âÊÔ£¬singletonÒ»µ©´´½¨£¬ÔÚÕû¸öÓ¦ÓÃ³ÌÐòÖÜÆÚÖÐ¶¼Ê¹ÓÃÕâÒ»¸öÊµÀý
@@ -122,3 +122,14 @@ transient:Ã¿Ò»´ÎÇëÇó²»Í¬µÄÊµÀý
 	È±µã£ºÌí¼ÓÐÂ²úÆ·Ê±£¬³ýÁËÔö¼ÓÐÂ²úÆ·ÀàÍâ£¬»¹ÒªÌá¹©ÓëÖ®¶ÔÓ¦µÄ¾ßÌå¹¤³§Àà£¬ÏµÍ³ÀàµÄ¸öÊý½«³É¶ÔÔö¼Ó£¬
 	ÔÚÒ»¶¨³Ì¶ÈÉÏÔö¼ÓÁËÏµÍ³µÄ¸´ÔÓ¶È£»Í¬Ê±£¬ÓÐ¸ü¶àµÄÀàÐèÒª±àÒëºÍÔËÐÐ£¬»á¸øÏµÍ³´øÀ´Ò»Ð©¶îÍâµÄ¿ªÏú£»
 
+httpÁùÖÖÇëÇó·½Ê½
+get == head  post ~ put  delete options 
+
+ÏîÄ¿ÖÐÓöµ½µÄÎÊÌâ
+1.ÔÚ´î½¨È¨ÏÞ¹ÜÀíÕâ¿é£¬±¾À´ÎÒÊÇÓÃÒ»ÖÖºÜÔ­Ê¼µÄ¸øÃ¿¸öÓÃ»§¹¹Ôìcookie£¬sessionµÄ·½·¨£¬È»ºóÃ¿´ÎÒª·ÃÎÊÒ»¸öactionÊ±¶¼Òª×Ô¼ºÈ¡³öÕâ¸öcookie»òÕß
+sessionÔÙ¾ö¶¨ÏÂÒ»²½£¬×ÜÖ®ÓÃÆðÀ´ºÜÂé·³£¬×îºóÔÚÊµÏÖ¸ù¾ÝÓÃ»§Àà±ðÊµÏÖ²»Í¬µÄ²Ëµ¥À¸ÕâÀï¿çÁË£¬È»ºóÎÒ¾Í×¨ÃÅÑ§Ï°ÁËÏÂidentity core£¬Êµ»°Ëµ¹úÄÚÕâ¿é
+µÄ×ÊÔ´ºÜÉÙ£¬¹Ù·½ÎÄµµÐ´µÄÒ²²»Õ¦µØ£¬·´Õý¾ÍÊÇÑÐ¾¿ÁË´ó¸ÅÒ»¸öÀñ°Ý£¬²Å´ó¸ÅÖªµÀÔõÃ´ÓÃ£¬È»ºó¾Í¿ªÊ¼ÖØ¹¹Õâ¸öÏîÄ¿¡£
+2.js»ù´¡²»Ì«ÔúÊµ£¬µ¼ÖÂÃ¿´ÎÐ´jsµÄÊ±ºòÐ§ÂÊºÜµÍ,¶øÇÒÐ´µÄºÜÀÃ¡£È»ºóÎÒ´òËã½ÓÏÂÀ´¾ÍÊÇºÃºÃ¹®¹ÌÏÂjs¡£
+3.ÔÚ²¿ÊðÏîÄ¿µÄÊ±ºòÒ²Óöµ½Ò»Ð©ÆæÆæ¹Ö¹ÖµÄÎÊÌâ£¬±ÈÈçÔÚ±¾µØ²¿ÊðµÄÊ±ºòÎÒ°ÑÖ÷»úÃûÐ´³ÉXX.com£¬È»ºó¾Íµ¼ÖÂÒ»Ö±·ÃÎÊ²»ÁË£¬ºóÀ´ÔÚÍ¬Ñ§µÄÌáÐÑÏÂ
+²ÅÖªµÀÕâÀïÒªÐ´localhost¡£»¹ÓÐemail·¢ËÍµÄ¶Ë¿Ú±¾À´ÊÇ25µÄ£¬È»ºóÎÒÓÃµÄ°¢ÀïÔÆ·þÎñÆ÷£¬¾ÍÒ»Ö±·¢ËÍ²»ÁË£¬ºóÀ´²ÅÖªµÀ25¶Ë¿Ú±»·âÁË£¬ÏÖÔÚ¶¼ÊÇ
+ÓÃ465¶Ë¿Ú¡£
