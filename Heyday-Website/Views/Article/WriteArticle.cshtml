@@ -43,6 +43,26 @@
             console.log(text);
             $('#preview-content').html(marked(text));
         }
+
+        var i = 0;
+        var timer = null;
+        function AutoSave() {
+            var title = $('#Title').val();
+            var content = $('#Content').val();
+            var id = $('#Id').val();
+            var category = $('#Category').val();
+            var saveTime = $('#SaveTime').val();
+            if (title != null) {
+                $.post("/Article/WriteArticle", { Id: id, Category: category, Title: title, Content: content, SaveTime: saveTime });
+                //console.log("had posted");
+            }
+        }
+        window.onload = function () {
+            timer = setInterval(AutoSave, 1000*30);
+        }
+        window.onunload = function () {
+            clearInterval(timer);
+        }
     </script>
 }
 

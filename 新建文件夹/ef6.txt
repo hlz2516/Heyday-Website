@@ -1,0 +1,394 @@
+关系
+1对1
+分两种，主键关联和外键关联。
+主键关联就是两个表的主键相同，以此建立1对1关系。
+例如：
+person_t:  
+	person_id primaryKey
+	persion_name
+
+address_t
+    　　person_id	primaryKey
+	address_name
+外键关联就是一个表的字段是指向另一个表的外键，这个外键参考另一个表的主键。
+例如：
+person_t:
+ 　　person_id    primaryKey
+     address_id   non-primaryKey
+
+address_t
+    　　 address_id   primaryKey
+     　　address_name non-primaryKey
+
+外键关联也可以是主键关联，在第一个例子中，person_id也可以作为外键参考address_t表中的person_id，同时person_id作为本表的主键。也就是说第一个例子既可以是主键关联也可以是外键关联。
+
+一对多
+在一对多中，外键总是在多的那一方，且外键是另外设的字段，这样外键字段就可以参考另一个表的主键来取值，不加约束的情况下可重复，这样在这张表中相同的外键的记录（多）都与另一张表的那个字段（1）相联系。
+
+多对多
+Ef自动生成的多对多关系，其第三张表（关联表）只包含两个外键（主键）字段来关联两张表。如果需要在关联表上添加其他信息需要自己手动生成。
+
+
+
+在实体框架中，一个实体可以通过关联或关系与其他实体相关。每个关系包含两个端点，分别描述实体类型和该关系中两个实体的类型多样性（一个，零个或一个或多个）。为了更好理解，我创建了一个student类和class类然后想创建一个association，在弹出的窗口中显示了两个端点的特性：
+
+如果一端是*即many，那么代表着另一端的实体可以有多个该端的实体引用，即另一端是包含一个set集合；如果一端是1或者0..1，那么代表着另一端的实体只能有一个或者0个该端的实体引用，那么另一端是包含一个entity。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+连接字符串格式：
+Name=”XX”
+connectionString=”Data Source=ABC;database=XXX;Integrated Security=true”//data source表示服务器，database表示数据库名
+providerName=”System.Data.SqlClient”
+
+数据库初始化策略
+四种初始化器
+1.CreateDatabaseIfNotExists:这是默认的初始化器。这种初始化器在第一次运行程序时会创建数据库，再次运行不会再创建新的数据库。但是如果我们改变了领域类，运行程序时会抛出一个异常。
+2.DropCreateDatabaseIfModelChanges:如果领域类发生了改变，删除以前的数据库，然后重建一个新的。采用这种初始化器我们不用再担心领域类改变影响数据库架构的问题。
+3.DropCreateDatabaseAlways:使用这种初始化器，我们每次运行程序都会删除以前的数据库，重建新的数据库。如果在开发过程中每次都想使用最新的数据库，那么可以采用这种初始化器。
+4.Custom DB Initializer:自定义初始化器，如果上边几种都不能满足要求，那么我们可以自己定义一个初始化器。
+
+使用上边四种任意一个初始化策略我们都要使用Database类，如下：
+public class SchoolDBContext: DbContext 
+{
+    public SchoolDBContext(): base("School") 
+    {
+        Database.SetInitializer<SchoolDBContext>(new CreateDatabaseIfNotExists<SchoolDBContext>());
+
+        //Database.SetInitializer<SchoolDBContext>(new DropCreateDatabaseIfModelChanges<SchoolDBContext>());
+        //Database.SetInitializer<SchoolDBContext>(new DropCreateDatabaseAlways<SchoolDBContext>());
+        //Database.SetInitializer<SchoolDBContext>(new SchoolDBInitializer());//自定义初始化器    }
+
+    public DbSet<Student> Students { get; set; }
+    public DbSet<Standard> Standards { get; set; }
+}
+
+如果要自定义初始化器，可以继承上述任一初始化器，并可以重写seed方法来种植数据库。
+
+关闭初始化器
+要关闭初始化器只需将SetInitializer方法参数设为null即可。
+数据注解属性
+一些常用的数据注释属性
+Key	数据库中对应列为主键
+Timestamp	数据库中对应列为timestamp类型，主要用于解决高并发问题
+注：一个类只能用一次，且修饰的属性必须为byte[]类型
+ConcurrencyCheck	数据库中对应列进行乐观并发检测，主要用于解决高并发问题
+Required	属性不为空，数据中对应列
+MinLength/MaxLength	属性和数据库中的最小/最大的string长度
+StringLength	属性和数据库中的最小，最大
+架构属性
+Table	用于实体，配置实体对应的数据库表名和表结构
+Column	用于属性，配置属性对应数据库列名，顺序和数据类型
+Index	用于属性，配置对应数据库的列为索引
+ForeignKey	用于属性，指定属性为一个外键
+NotMapped	用于实体/属性，不在数据库中生成映射
+DataBaseGernerated	用于属性，设置数据库对应列值的生成，如identity,computed或者none
+
+EF6中通过Key和Column属性可以实现复合主键，一个栗子：
+public class Student
+{
+    [Key]
+    [Column(Order=1)]
+    public int StudentKey { get; set; }
+     
+    [Key]
+    [Column(Order=2)]
+    public int AdmissionNum { get; set; }
+     
+    public string StudentName { get; set; }
+}
+
+Foreign key的三种形式
+1.[ForeignKey(导航属性名)]? 给外键字段指定导航属性名
+public class Student
+{
+    public int StudentID { get; set; }
+    public string StudentName { get; set; }
+        
+    [ForeignKey("Standard")]
+    public int StandardRefId { get; set; }
+    public Standard Standard { get; set; }
+}
+
+public class Standard
+{
+    public int StandardId { get; set; }
+    public string StandardName { get; set; }
+    
+    public ICollection<Student> Students { get; set; }
+}
+
+2.[ForeignKey(外键属性名)]? 给导航属性指定外键名
+public class Student
+{
+    public int StudentID { get; set; }
+    public string StudentName { get; set; }
+        
+    public int StandardRefId { get; set; }
+    
+    [ForeignKey("StandardRefId")]
+    public Standard Standard { get; set; }
+}
+
+public class Standard
+{
+    public int StandardId { get; set; }
+    public string StandardName { get; set; }
+    
+    public ICollection<Student> Students { get; set; }
+}
+
+3.主实体中在导航属性上指定属性名（不推荐）
+public class Student
+{
+    public int StudentID { get; set; }
+    public string StudentName { get; set; }
+        
+    public int StandardRefId { get; set; }
+    public Standard Standard { get; set; }
+}
+
+public class Standard
+{
+    public int StandardId { get; set; }
+    public string StandardName { get; set; }
+    
+    [ForeignKey("StandardRefId")]
+    public ICollection<Student> Students { get; set; }
+}
+
+Fluent API
+使用FluentApi时，我们在context类的OnModelCreating()方法中重写配置项,如：
+public class SchoolContext: DbContext 
+{
+
+    public DbSet<Student> Students { get; set; }
+        
+    protected override void OnModelCreating(DbModelBuilder modelBuilder)
+    {
+        //Write Fluent API configurations here
+
+    }
+}
+
+我们可以把FluentApi和数据注释属性一起使用，当FluentApi和数据注释属性都配置了同一个项时，采用FluentApi中的配置。
+在EF6中FluentApi可以配置领域类的以下几个方面，下表也列出了一些常用的FluentApi方法及其作用：
+配置	Fluent API?方法	作用
+架构相关配置	HasDefaultSchema()	数据库的默认架构
+	ComplexType()	把一个类配置为复杂类型
+实体相关配置	HasIndex()	实体的的索引
+	HasKey()	实体的主键（可其实现复合主键，[Key]在EF?core中不能实现复合主键）
+	HasMany()	1对多的或者?多对多关系?
+	HasOptional()	一个可选的关系，这样配置会在数据库中生成一个可空的外键
+	HasRequired()	一个必有的关系，这样配置会在数据库中生成一个不能为空的外键
+	Ignore()	实体或者实体的属性不映射到数据库
+	Map()	设置一些优先的配置
+	MapToStoredProcedures()	实体的CUD操作使用存储过程
+	ToTable()	为实体设置表名
+属性相关配置	HasColumnAnnotation()	给属性设置注释
+	IsRequired()	在调用SaveChanges()方法时，属性不能为空
+	IsOptional()	可选的，在数据库生成可空的列
+	HasParameterName()	配置用于该属性的存储过程的参数名
+	HasDatabaseGeneratedOption()	配置数据库中对应列的值怎样生成的，如计算，自增等
+	HasColumnOrder()	配置数据库中对应列的排列顺序
+	HasColumnType()	配置数据库中对应列的数据类型
+	HasColumnName()	配置数据库中对应列的列名
+	IsConcurrencyToken()	配置数据库中对应列用于乐观并发检测
+
+属性配置例子：
+public class Student
+{
+    public int StudentKey { get; set; }//主键
+    public string StudentName { get; set; }//姓名
+    public DateTime DateOfBirth { get; set; }//生日
+    public byte[]  Photo { get; set; }//照片
+    public decimal Height { get; set; }//身高
+    public float Weight { get; set; }//体重
+        
+    public Grade Grade{ get; set; }//年级
+}
+    
+public class Grade
+{
+    public int GradeKey { get; set; }//主键
+    public string GradeName { get; set; }//年级名
+    
+    public ICollection<Student> Students { get; set; }
+}
+
+public class SchoolContext : DbContext
+    {
+        public SchoolContext() : base()
+        {
+        }
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Grade> Grades { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            //设置默认架构
+            modelBuilder.HasDefaultSchema("Admin");
+            //设置主键
+            modelBuilder.Entity<Student>().HasKey<int>(s => s.StudentKey);
+            
+            //设置不映射的属性
+            modelBuilder.Entity<Student>().Ignore(s => s.Height);
+            
+            //设置DateOfBirth
+            modelBuilder.Entity<Student>().Property(p => p.DateOfBirth)
+                .HasColumnName("birthday")    //列名为birthday
+                .HasColumnType("datetime2")   //数据类型是datetime类型
+                .HasColumnOrder(3)            //顺序编号是3
+                .IsOptional();                //可以为null
+
+            //设置姓名
+            modelBuilder.Entity<Student>().Property(s => s.StudentName)
+                .HasMaxLength(20)             //最长20
+                .IsRequired()                 //不能为null
+                .IsConcurrencyToken();        //用于乐观并发检测,delete或者update时，这个属性添加到where上判断是否并发              
+        }
+}
+
+
+
+种植数据库
+我们可以在初始化数据库的过程中给数据库添加一些数据。为了实现初始化数据（seed data）我们必须创建一个自定义的数据库初始化器（DB?initializer），并重写其中的Seed方法。
+
+第一步：创建自定义初始化器
+//继承三种内置的初始化器中的DropCreateDatabaseAlways
+public class SchoolDBInitializer : DropCreateDatabaseAlways<SchoolDBContext>
+{
+    protected override void Seed(SchoolDBContext context)
+    {
+        IList<Standard> defaultStandards = new List<Standard>();
+
+        defaultStandards.Add(new Standard() { StandardName = "Standard 1", Description = "First Standard" });
+        defaultStandards.Add(new Standard() { StandardName = "Standard 2", Description = "Second Standard" });
+        defaultStandards.Add(new Standard() { StandardName = "Standard 3", Description = "Third Standard" });
+
+        context.Standards.AddRange(defaultStandards);
+　　　　 //初始化数据
+        base.Seed(context);
+    }
+}
+第二步.将自定义的数据库初始化器添加到context中
+public class SchoolContext: DbContext 
+{
+    public SchoolContext(): base("SchoolDB") 
+    {
+        Database.SetInitializer(new SchoolDBInitializer());
+    }
+    
+    public DbSet<Student> Students { get; set; }
+    public DbSet<Standard> Standards { get; set; }
+}
+
+
+数据库迁移策略
+EF中的数据库迁移策略（CreateDatabaseIfNotExists,DropCreateDatabaseIfModelChanges, and DropCreateDatabaseAlways.），因为这些策略都是删除旧的数据库然后创建一个新的数据库，所以使用这些策略会造成数据库中的数据（不是seed?data的数据）、存储过程、触发器等内容丢失。针对这个问题，EF提供了数据库迁移策略来保证更新数据库的同时不会造成数据丢失。
+分为自动迁移和代码迁移两种，这里只介绍常用的代码迁移
+1.在PM控制台输入Enable-Migrations [-f]
+这条命令会生成一个Configuration文件,当配置文件存在时可通过-f后缀强制覆盖旧文件。执行成功后添加了Migrations文件夹，文件夹中包含一个Configuration配置类。Configuration配置类代码如下：
+internal sealed class Configuration : DbMigrationsConfiguration<EF6Demo.SchoolContext>
+    {
+        public Configuration()
+        {
+            AutomaticMigrationsEnabled = false;
+            ContextKey = "EF6Demo.SchoolContext";
+        }
+
+        protected override void Seed(EF6Demo.SchoolContext context)
+        {
+            //  This method will be called after migrating to the latest version.
+
+            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
+            //  to avoid creating duplicate seed data.
+        }
+}
+
+2.Add-Migration [MigName]
+　首先在context类中指定初始化器是MigrateDatabaseToLatestVersion初始化器，如下：
+public class SchoolContext : DbContext
+    {
+        public SchoolContext() {
+            //添加MigrateDatabaseToLatestVersion数据库初始化器
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<SchoolContext, Configuration>());
+  
+        }
+        public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<Standard> Standards { get; set; }
+        
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
+}
+
+在包管理器控制台执行：Add-Migration FirstInit
+这会在Migration文件夹中生成一个<stamp>_name的迁移类：
+public partial class FirstInit : DbMigration
+    {
+        //升级
+        public override void Up()
+        {
+            CreateTable(
+                "dbo.Standards",
+                c => new
+                    {
+                        StandardId = c.Int(nullable: false, identity: true),
+                        StandardName = c.String(),
+                    })
+                .PrimaryKey(t => t.StandardId);
+            
+            CreateTable(
+                "dbo.Students",
+                c => new
+                    {
+                        StudentId = c.Int(nullable: false, identity: true),
+                        StudentName = c.String(),
+                        Standard_StandardId = c.Int(),
+                    })
+                .PrimaryKey(t => t.StudentId)
+                .ForeignKey("dbo.Standards", t => t.Standard_StandardId)
+                .Index(t => t.Standard_StandardId);
+            
+        }
+        //降级
+        public override void Down()
+        {
+            DropForeignKey("dbo.Students", "Standard_StandardId", "dbo.Standards");
+            DropIndex("dbo.Students", new[] { "Standard_StandardId" });
+            DropTable("dbo.Students");
+            DropTable("dbo.Standards");
+        }
+}
+
+我们可以看到迁移类中包含Up()和Down()方法，分别用于数据库的更新和回退。
+
+3.Update-Database?
+①?updata-database?[-verbose]
+　　在程序包控制台中执行这条命令时，会执行Add-Migration命令创建的最新的迁移文件，并更新数据库。
+执行完上边三步数据库就生成了，以后当我们修改实体类时，执行Add-Migration [MigName]后再执行Update-Database [-verbose]，就可方便地根据模型的变化更新数据库。
+②?update-database -TargetMigration：xxx
+如果我们想回退到某一个版本时执行：
+update-database -TargetMigration:FirstInit//数据库回退到第一次的版本

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,17 +27,22 @@ namespace Heyday_Website.Controllers
             _db = context;
             _webHost = webHost;
             _userManager = userManager;
-            if(!System.IO.Directory.Exists(webHost.WebRootPath + "\\md"))
+            HasCategory().Wait();
+        }
+
+        public async Task HasCategory()
+        {
+            var hasCate =await _db.Categories.CountAsync();
+            if(hasCate == 0)
             {
-                System.IO.Directory.CreateDirectory(webHost.WebRootPath + "\\md");
-                string introDirPath = Path.Combine(webHost.WebRootPath, "md\\intro");
-                string actDirPath = Path.Combine(webHost.WebRootPath, "md\\activity");
-                string otherDirPath = Path.Combine(webHost.WebRootPath, "md\\others");
-                System.IO.Directory.CreateDirectory(introDirPath);
-                System.IO.Directory.CreateDirectory(actDirPath);
-                System.IO.Directory.CreateDirectory(otherDirPath);
+                var intro = new Category() { Id = Guid.NewGuid(), CategoryName = "intro" };
+                var activity = new Category() { Id = Guid.NewGuid(), CategoryName = "activity" };
+                var others = new Category() { Id = Guid.NewGuid(), CategoryName = "others" };
+                _db.Add(intro); _db.Add(activity); _db.Add(others);
+                await _db.SaveChangesAsync();
             }
         }
+
         //get请求
         //Article/Introduction
         //article/activities
