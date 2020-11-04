@@ -23,14 +23,19 @@ namespace Heyday_Website.Controllers
             _userManager = userManager;
         }
         [Authorize]
-        public IActionResult BugGeneral(int? id)
+        public IActionResult BugGeneral(int pageIndex)
         {
-            if (!id.HasValue || id == 0)
-                id = 1;
-            var bugs = _db.Bugs.OrderByDescending(bug=>bug.SubmitTime).AsEnumerable();
-            var bugList = new PagingList<Bug>(bugs,(int)id,10);
+            //var bugs = _db.Bugs.OrderByDescending(bug=>bug.SubmitTime).AsEnumerable();
+            var bugList = new MvcPagingList<AppDbContext, Bug>(_db,10);
+            var bugs = bugList.GetPageTableByDesc(pageIndex, b => b.SubmitTime);
+            var model = new BugGeneralDto
+            {
+                Bugs = bugs,
+                TotalPage = bugList.TotalPage,
+                PageIndex = pageIndex
+            };
             ViewBag.Title = "Heyday-Bug总览";
-            return View(bugList);
+            return View(model);
         }
         [Authorize]
         public IActionResult BugWrite()

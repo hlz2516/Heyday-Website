@@ -1,4 +1,4 @@
-﻿@model Heyday_Website.Tools.PagingList<Heyday_Website.Models.Bug>
+﻿@model Heyday_Website.ViewModels.BugGeneralDto
 
 @section scripts{
     <script>
@@ -28,9 +28,9 @@
 }
 @{ int i = 0;}
 <div class="container-fluid">
-    <form method="post" asp-controller="BugGeneral" asp-action="FindPage" id="form1">
+    @*<form method="post" asp-controller="BugGeneral" asp-action="FindPage" id="form1">*@
         <div class="accordion" id="accordionExample">
-            @foreach (var bug in Model)
+            @foreach (var bug in Model.Bugs)
             {
                 <div class="card">
                     <div class="card-header" id="heading@(i)">
@@ -92,22 +92,22 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     <li class="page-item">
-                        <a class="page-link" asp-controller="Bug" asp-action="BugGeneral" asp-route-id="0">首页</a>
+                        <a class="page-link" asp-controller="Bug" asp-action="BugGeneral" asp-route-pageIndex="1">首页</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" asp-controller="Bug" asp-action="BugGeneral" asp-route-id="@(Model.PageIndex-1)">上一页</a>
+                        <a class="page-link" asp-controller="Bug" asp-action="BugGeneral" asp-route-pageIndex="@(Model.PageIndex-1 < 1 ? 1 : Model.PageIndex-1)">上一页</a>
                     </li>
                     <li class="page-item ml-1 mr-1 mt-1">
-                        @Html.TextBox("pageIndex", Model.PageIndex, new { style = "width:30px;", id = "submit" })
+                        @*@Html.TextBox("pageIndex", Model.PageIndex, new { style = "width:30px;", id = "submit" })*@
                     </li>
                     <li class="page-item">
-                        <a class="page-link" asp-controller="Bug" asp-action="BugGeneral" asp-route-id="@(Model.PageIndex+1)">下一页</a>
+                        <a class="page-link" asp-controller="Bug" asp-action="BugGeneral" asp-route-pageIndex="@(Model.PageIndex+1 > Model.TotalPage ? Model.PageIndex : Model.PageIndex+1)">下一页</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" asp-controller="Bug" asp-action="BugGeneral" asp-route-id="@Model.TotalPages">尾页</a>
+                        <a class="page-link" asp-controller="Bug" asp-action="BugGeneral" asp-route-pageIndex="@Model.TotalPage">尾页</a>
                     </li>
                 </ul>
             </nav>
         </div>
-    </form>
+    @*</form>*@
 </div>
