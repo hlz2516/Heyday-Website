@@ -25,7 +25,6 @@ namespace Heyday_Website.Controllers
         [Authorize]
         public IActionResult BugGeneral(int pageIndex)
         {
-            //var bugs = _db.Bugs.OrderByDescending(bug=>bug.SubmitTime).AsEnumerable();
             var bugList = new MvcPagingList<AppDbContext, Bug>(_db,10);
             var bugs = bugList.GetPageTableByDesc(pageIndex, b => b.SubmitTime);
             var model = new BugGeneralDto

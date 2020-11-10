@@ -10,11 +10,11 @@
         "projectUniqueName": "D:\\MyProject\\Heyday-Website\\Heyday-Website\\Heyday-Website.csproj",
         "projectName": "Heyday-Website",
         "projectPath": "D:\\MyProject\\Heyday-Website\\Heyday-Website\\Heyday-Website.csproj",
-        "packagesPath": "C:\\Users\\hp\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\hlz\\.nuget\\packages\\",
         "outputPath": "D:\\MyProject\\Heyday-Website\\Heyday-Website\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\hp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\hlz\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

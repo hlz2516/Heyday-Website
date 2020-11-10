@@ -1,5 +1,18 @@
 ﻿@model Heyday_Website.ViewModels.BugGeneralDto
 
+@section csses{
+    <style>
+        ul {
+            padding:0px;
+        }
+        li {
+            display: inline-block;
+            margin-left: 2px;
+            margin-right: 2px;
+        }
+    </style>
+}
+
 @section scripts{
     <script>
         $('#submit').keydown(function (event) {
@@ -29,7 +42,14 @@
 @{ int i = 0;}
 <div class="container-fluid">
     @*<form method="post" asp-controller="BugGeneral" asp-action="FindPage" id="form1">*@
-        <div class="accordion" id="accordionExample">
+    <div style="height:10px"></div>
+    <ul>
+        <li><a class="btn btn-info" href="#">提交bug</a></li>
+        <li><a class="btn btn-info" href="#">我已提交的bug</a></li>
+        <li class="float-right"><a class="btn btn-info" href="#">搜素</a></li>
+        <li class="float-right"><input type="text" name="name" value="" style="height:38px;"></li>
+    </ul>
+        <div class="accordion mt-2" id="accordionExample">
             @foreach (var bug in Model.Bugs)
             {
                 <div class="card">

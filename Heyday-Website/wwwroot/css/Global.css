@@ -1,0 +1,11 @@
+﻿body {
+    font:16px/24px 'Microsoft Yahei';
+}
+
+.head {
+    width: 50px;
+    height:38px;
+    background-image: url('../images/head_portrait.svg');
+    background-repeat: no-repeat;
+    background-position: right center;
+}
