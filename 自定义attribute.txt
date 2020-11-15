@@ -1,0 +1,2 @@
+一般的需求，自定义attribute只需要继承自actionfilterattribute就可以了
+然后重写OnActionExcecuting方法

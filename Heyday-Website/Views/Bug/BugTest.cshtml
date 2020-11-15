@@ -1,0 +1,80 @@
+﻿@section csses {
+    <style>
+        .box {
+            width: 100%;
+            height:auto;
+            border:1px solid black;
+        }
+        .btnContainer {
+            height:80px;
+            margin: 0 12px;
+            list-style:none;
+        }
+        .btnContainer li {
+            display: inline-block;
+            width: 100px;
+        }
+        .btnContainer a {
+            line-height:80px;
+            text-align:center;
+        }
+        .btnContainer .left {
+            float:left;
+        }
+        .btnContainer .right {
+            float:right;
+        }
+        .ListContainer {
+            width: 96%;
+            height: 520px;
+            border:1px solid black;
+            margin :0 auto;
+        }
+        .pageListBtnContainer {
+            width: 400px;
+            height:60px;
+            margin: 10px auto;
+            border: 1px solid black;
+        }
+    </style>
+}
+
+<div class="box">
+    <ul class="btnContainer">
+        <li class="left"><a href="#">content</a></li>
+        <li class="right"><a href="#">content</a></li>
+        <li class="right"> <a href="#">content</a></li>
+    </ul>
+    <table class="ListContainer">
+        <thead>
+            <tr>
+                <th>BugID</th>
+                <th>标题</th>
+                <th>提交人</th>
+                <th>状态</th>
+                <th>提交时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < 10; i++)
+            {
+                <tr>
+                    <td>@(i)</td>
+                    <td>hello</td>
+                    <td>hlz2516</td>
+                    <td>处理中</td>
+                    <td>2020/11/15 14：51</td>
+                    <td>
+                        <a href="#">查看详细</a>
+                        <a href="#">编辑</a>
+                        <a href="#">删除</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="pageListBtnContainer">
+        
+    </div>
+</div>

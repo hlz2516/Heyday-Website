@@ -235,5 +235,10 @@ namespace Heyday_Website.Controllers
             await _db.SaveChangesAsync();
             return "OK";
         }
+
+        public IActionResult BugTest()
+        {
+            return View();
+        }
     }
 }

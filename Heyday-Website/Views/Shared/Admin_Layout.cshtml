@@ -17,6 +17,7 @@
     </style>
     <!-- Bootstrap CSS -->
     <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/Global.css" rel="stylesheet" />
     @RenderSection("csses", false)
 </head>
 <body class="text-center">
@@ -34,7 +35,7 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                             <a class="dropdown-item" asp-controller="Bug" asp-action="BugWrite">填写Bug</a>
-                            <a class="dropdown-item" asp-controller="Bug" asp-action="BugGeneral">Bug总览</a>
+                            <a class="dropdown-item" asp-controller="Bug" asp-action="BugGeneral" asp-route-pageIndex="1">Bug总览</a>
                             <a class="dropdown-item" asp-controller="Bug" asp-action="BugListOfUser">我提交的Bug</a>
                             <a class="dropdown-item" asp-controller="Bug" asp-action="CanTakeOverBugs">可接手的Bug</a>
                             <a class="dropdown-item" asp-controller="Bug" asp-action="BugFactory">修复Bug</a>
