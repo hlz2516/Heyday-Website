@@ -19,7 +19,7 @@ using Heyday_Website.ViewModels;
 #line default
 #line hidden
 #nullable disable
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"2e023dbe4e01080e6e29bcf73f54472e679d5f1b", @"/Views/Home/Index.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"2bd360c108bceb0183fcb77514d796c4ced9b5a5", @"/Views/Home/Index.cshtml")]
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"ed3150bbcd11dd7e2d49fe5a4f8045899aa7e3ff", @"/Views/_ViewImports.cshtml")]
     public class Views_Home_Index : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<IEnumerable<ArticlesOfIndexDto>>
     {
@@ -81,7 +81,23 @@ using Heyday_Website.ViewModels;
                 }
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
-                WriteLiteral("\r\n    <style>\r\n        .div1 {\r\n            display:flex;\r\n            align-items:center;\r\n            justify-content:center;\r\n        }\r\n        .img1{\r\n            width:100%;\r\n            height:auto;\r\n        }\r\n    </style>\r\n");
+                WriteLiteral(@"
+    <style>
+        .div1 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .img1{
+            width: 100%;
+            height: auto;
+        }
+        h1 {
+            font-weight: 400;
+            text-align:center;
+        }
+    </style>
+");
             }
             );
             WriteLiteral("\r\n");

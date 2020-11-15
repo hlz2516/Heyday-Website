@@ -59,6 +59,11 @@ using Heyday_Website.ViewModels;
         public async override global::System.Threading.Tasks.Task ExecuteAsync()
         {
             WriteLiteral("\r\n");
+            DefineSection("csses", async() => {
+                WriteLiteral("\r\n    <style>\r\n        ul {\r\n            padding:0px;\r\n        }\r\n        li {\r\n            display: inline-block;\r\n            margin-left: 2px;\r\n            margin-right: 2px;\r\n        }\r\n    </style>\r\n");
+            }
+            );
+            WriteLiteral("\r\n");
             DefineSection("scripts", async() => {
                 WriteLiteral(@"
     <script>

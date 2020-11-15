@@ -19,7 +19,7 @@ using Heyday_Website.ViewModels;
 #line default
 #line hidden
 #nullable disable
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"113a2fffb92c7755f3cd9b4612e6fafdc28c79ba", @"/Views/Account/Login.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"5301fc52d9b95c670eec1f0401ca25d4ae567451", @"/Views/Account/Login.cshtml")]
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"ed3150bbcd11dd7e2d49fe5a4f8045899aa7e3ff", @"/Views/_ViewImports.cshtml")]
     public class Views_Account_Login : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<Heyday_Website.ViewModels.LoginDto>
     {
@@ -98,7 +98,7 @@ using Heyday_Website.ViewModels;
             WriteLiteral("\r\n<div class=\"container\">\r\n    ");
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "113a2fffb92c7755f3cd9b4612e6fafdc28c79ba10127", async() => {
                 WriteLiteral("\r\n        <img class=\"mb-4\" src=\"/images/bootstrap-solid.svg\"");
-                BeginWriteAttribute("alt", " alt=\"", 351, "\"", 357, 0);
+                BeginWriteAttribute("alt", " alt=\"", 363, "\"", 369, 0);
                 EndWriteAttribute();
                 WriteLiteral(" width=\"72\" height=\"72\">\r\n        <h1 class=\"h3 mb-3 font-weight-normal\">Please sign in</h1>\r\n        ");
                 __tagHelperExecutionContext = __tagHelperScopeManager.Begin("label", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "113a2fffb92c7755f3cd9b4612e6fafdc28c79ba10709", async() => {

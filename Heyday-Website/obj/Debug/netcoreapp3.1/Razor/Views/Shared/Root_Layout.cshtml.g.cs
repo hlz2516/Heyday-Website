@@ -315,7 +315,17 @@ Write(RenderSection("csses", false));
                 }
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
-                WriteLiteral("\r\n                </li>\r\n                <li class=\"nav-item text-nowrap\">\r\n                    <label class=\"btn\" style=\"color:red\">");
+                WriteLiteral(@"
+                </li>
+            </ul>
+
+            <ul class=""navbar-nav ml-auto"">
+                <!--固定头像-->
+                <li class=""nav-item text-nowrap"">
+                    <h5 class=""head""></h5>
+                </li>
+                <li class=""nav-item text-nowrap"">
+                    <label class=""btn text-left text-danger pl-1"">");
 #nullable restore
 #line 59 "E:\Heyday-Website\Heyday-Website\Views\Shared\Root_Layout.cshtml"
                                                     Write(ViewBag.UserName);
