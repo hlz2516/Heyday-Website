@@ -1,66 +1,40 @@
 ﻿@section csses {
-    <style>
-        .box {
-            width: 100%;
-            height:auto;
-            border:1px solid black;
-        }
-        .btnContainer {
-            height:80px;
-            margin: 0 12px;
-            list-style:none;
-        }
-        .btnContainer li {
-            display: inline-block;
-            width: 100px;
-        }
-        .btnContainer a {
-            line-height:80px;
-            text-align:center;
-        }
-        .btnContainer .left {
-            float:left;
-        }
-        .btnContainer .right {
-            float:right;
-        }
-        .ListContainer {
-            width: 96%;
-            height: 520px;
-            border:1px solid black;
-            margin :0 auto;
-        }
-        .pageListBtnContainer {
-            width: 400px;
-            height:60px;
-            margin: 10px auto;
-            border: 1px solid black;
-        }
-    </style>
+    <link href="~/css/BugTest.css" rel="stylesheet" />
 }
 
 <div class="box">
     <ul class="btnContainer">
-        <li class="left"><a href="#">content</a></li>
-        <li class="right"><a href="#">content</a></li>
-        <li class="right"> <a href="#">content</a></li>
+        <li class="left"><a class="btn btn-success" href="#">新建</a></li>
+        <li class="right"> <a class="btn btn-success" href="#">搜索</a></li>
+        <li class="right search">
+            <div class="btn-group">
+                <input type="text" name="searchBug" id="searchBug" value="" />
+                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split selectBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">只查我的</a>
+                    <a class="dropdown-item" href="#">查询所有</a>
+                </div>
+            </div>
+        </li>
     </ul>
-    <table class="ListContainer">
+    <table class="ListContainer table table-hover">
         <thead>
             <tr>
-                <th>BugID</th>
-                <th>标题</th>
-                <th>提交人</th>
-                <th>状态</th>
-                <th>提交时间</th>
-                <th>操作</th>
+                <th scope="col">BugID</th>
+                <th scope="col">标题</th>
+                <th scope="col">提交人</th>
+                <th scope="col">状态</th>
+                <th scope="col">提交时间</th>
+                <th scope="col">操作</th>
             </tr>
         </thead>
         <tbody>
             @for (int i = 0; i < 10; i++)
             {
                 <tr>
-                    <td>@(i)</td>
+                    <th scope="row">@(i)</th>
                     <td>hello</td>
                     <td>hlz2516</td>
                     <td>处理中</td>
@@ -75,6 +49,12 @@
         </tbody>
     </table>
     <div class="pageListBtnContainer">
-        
+        <a class="btn btn-light pageListBtn" href="#">第一页</a>
+        <a class="btn btn-light pageListBtn" href="#">上一页</a>
+        <span class="pageListBtn">
+            <input class="pageIndex" type="text" name="name" value="" />/XX页
+        </span>
+        <a class="btn btn-light pageListBtn" href="#">下一页</a>
+        <a class="btn btn-light pageListBtn" href="#">最后页</a>
     </div>
 </div>
