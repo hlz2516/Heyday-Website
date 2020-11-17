@@ -34,7 +34,7 @@ namespace Heyday_Website.Controllers
                 PageIndex = pageIndex
             };
             ViewBag.Title = "Heyday-Bug总览";
-            return View(model);
+            return View("BugTest",model);
         }
         [Authorize]
         public IActionResult BugWrite()
@@ -237,7 +237,40 @@ namespace Heyday_Website.Controllers
 
         public IActionResult BugTest()
         {
-            return View();
+            var bugList = new MvcPagingList<AppDbContext, Bug>(_db, 10);
+            var bugs = bugList.GetPageTableByDesc(1, b => b.SubmitTime);
+            var model = new BugGeneralDto
+            {
+                Bugs = bugs,
+                TotalPage = bugList.TotalPage,
+                PageIndex = 1
+            };
+            ViewBag.Title = "Heyday-Bug总览";
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> NewBugWrite(BugWriteDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                var email = (await _userManager.FindByNameAsync(HttpContext.User.Identity.Name)).Email;
+                var bug = new Bug()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = model.Title,
+                    Content = model.Content,
+                    SubmitterEmail = email,
+                    BugState = BugState.pending,
+                    SubmitTime = model.SubmitTime
+                };
+                await _db.Bugs.AddAsync(bug);
+                await _db.SaveChangesAsync();
+                ViewBag.IsSubmitted = 1;
+                ViewBag.Title = "Heyday-Bug填写";
+                return Json(new { result="成功提交"});
+            }
+            return Json(new { result = "提交失败,请务必填写概述！" });
         }
     }
 }

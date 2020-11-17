@@ -50,7 +50,15 @@ namespace Heyday_Website
 
             services.AddAuthentication(o => {
                 o.DefaultScheme = IdentityConstants.ApplicationScheme;
-            }).AddIdentityCookies(o => { });
+            }).AddIdentityCookies(o => {
+                o.ApplicationCookie.Configure(
+                    config =>
+                    {
+                        config.LoginPath = "/Home/Index";
+                        config.LogoutPath = "/Home/Index";
+                        config.Cookie.Name = "Id";
+                    });
+            });
 
             services.AddDistributedMemoryCache();
             services.AddSession(opt =>

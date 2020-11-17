@@ -1,10 +1,53 @@
-﻿@section csses {
+﻿@model Heyday_Website.ViewModels.BugGeneralDto
+@section csses {
     <link href="~/css/BugTest.css" rel="stylesheet" />
 }
 
+@section scripts{
+    <script>
+        $(function () {
+            $('.pageIndex').keydown(function (event) {
+                //console.log(event.which);
+                if (event.which == 13) {
+                    var index = $('.pageIndex').val();
+                    //console.log(index);
+                    window.location.replace("/Bug/BugGeneral?pageIndex=" + index);
+                }
+            })
+        })
+
+        $(function () {
+            var index = @Model.PageIndex;
+            //console.log(index);
+            $('.pageIndex').val(index);
+        })
+
+        $(function () {
+            $('#bugSubmit').click(function () {
+                var title = $('#bugTitle').val();
+                var content = $('#bugContent').val();
+                //console.log(title, content);
+                //console.log("time:", now);
+                $.post("/Bug/NewBugWrite",
+                    {
+                        Title: title,
+                        Content: content,
+                        SubmitTime: '@(DateTime.Now)'
+                    },
+                    function (data,status) {
+                        if (status == 'success') {
+                            alert(data['result']);
+                        }
+                    }
+                )
+            })
+        })
+    </script>
+ }
+
 <div class="box">
     <ul class="btnContainer">
-        <li class="left"><a class="btn btn-success" href="#">新建</a></li>
+        <li class="left"><a class="btn btn-success" data-toggle="modal" data-target="#BugWriteModal">新建</a></li>
         <li class="right"> <a class="btn btn-success" href="#">搜索</a></li>
         <li class="right search">
             <div class="btn-group">
@@ -31,14 +74,29 @@
             </tr>
         </thead>
         <tbody>
+            @{ 
+                var bugs = Model.Bugs.ToList();
+            }
             @for (int i = 0; i < 10; i++)
             {
+                @if (bugs.Count < i+1)
+                {
+                    <tr>
+                        <th scope="row"></th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    continue;
+                }
                 <tr>
-                    <th scope="row">@(i)</th>
-                    <td>hello</td>
-                    <td>hlz2516</td>
-                    <td>处理中</td>
-                    <td>2020/11/15 14：51</td>
+                    <th scope="row">@bugs[i].Id</th>
+                    <td>@bugs[i].Title</td>
+                    <td>@bugs[i].SubmitterEmail</td>
+                    <td>@bugs[i].BugState</td>
+                    <td>@bugs[i].SubmitTime.ToString()</td>
                     <td>
                         <a href="#">查看详细</a>
                         <a href="#">编辑</a>
@@ -49,12 +107,41 @@
         </tbody>
     </table>
     <div class="pageListBtnContainer">
-        <a class="btn btn-light pageListBtn" href="#">第一页</a>
-        <a class="btn btn-light pageListBtn" href="#">上一页</a>
+        <a class="btn btn-light pageListBtn" asp-controller="Bug" asp-action="BugGeneral" asp-route-pageIndex="1">首页</a>
+        <a class="btn btn-light pageListBtn" asp-controller="Bug" asp-action="BugGeneral" asp-route-pageIndex="@(Model.PageIndex-1 < 1 ? 1 : Model.PageIndex-1)">上一页</a>
         <span class="pageListBtn">
-            <input class="pageIndex" type="text" name="name" value="" />/XX页
+            <input class="pageIndex" type="text" value="" />/@(Model.TotalPage)页
         </span>
-        <a class="btn btn-light pageListBtn" href="#">下一页</a>
-        <a class="btn btn-light pageListBtn" href="#">最后页</a>
+        <a class="btn btn-light pageListBtn" asp-controller="Bug" asp-action="BugGeneral" asp-route-pageIndex="@(Model.PageIndex+1 > Model.TotalPage ? Model.PageIndex : Model.PageIndex+1)">下一页</a>
+        <a class="btn btn-light pageListBtn" asp-controller="Bug" asp-action="BugGeneral" asp-route-pageIndex="@(Model.TotalPage)">尾页</a>
     </div>
+</div>
+
+<div class="modal fade" id="BugWriteModal" tabindex="-1" role="dialog" aria-labelledby="BugWriteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="BugWriteModalLabel">填写你要提交的bug</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label >Bug概述</label>
+                    <input type="text" class="form-control" id="bugTitle" placeholder="示例：世界高度64层以上无法倒岩浆桶">
+                    <span></span>
+                </div>
+                <div class="form-group">
+                    <label>详细描述</label>
+                    <textarea class="form-control" rows="3" id="bugContent" placeholder="示例：在世界高度64层以下用空桶取得岩浆后来到64层以上，右键岩浆桶无法倒出，系统给出提示'您的权限不够'"></textarea>
+                    <span></span>
+                </div>
+                <div class="form-group">
+                    <input type="hidden" id="submitTime" value="@DateTime.Now" />
+                </div>
+                <button type="submit" class="btn btn-primary" id="bugSubmit">提交</button>
+            </div>
+    </div>
+   </div>
 </div>

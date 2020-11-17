@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\MyProject\\Heyday-Website\\Heyday-Website\\Heyday-Website.csproj": {}
+    "E:\\Heyday-Website\\Heyday-Website\\Heyday-Website.csproj": {}
   },
   "projects": {
-    "D:\\MyProject\\Heyday-Website\\Heyday-Website\\Heyday-Website.csproj": {
+    "E:\\Heyday-Website\\Heyday-Website\\Heyday-Website.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MyProject\\Heyday-Website\\Heyday-Website\\Heyday-Website.csproj",
+        "projectUniqueName": "E:\\Heyday-Website\\Heyday-Website\\Heyday-Website.csproj",
         "projectName": "Heyday-Website",
-        "projectPath": "D:\\MyProject\\Heyday-Website\\Heyday-Website\\Heyday-Website.csproj",
-        "packagesPath": "C:\\Users\\hlz\\.nuget\\packages\\",
-        "outputPath": "D:\\MyProject\\Heyday-Website\\Heyday-Website\\obj\\",
+        "projectPath": "E:\\Heyday-Website\\Heyday-Website\\Heyday-Website.csproj",
+        "packagesPath": "C:\\Users\\71425\\.nuget\\packages\\",
+        "outputPath": "E:\\Heyday-Website\\Heyday-Website\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\hlz\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\71425\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -83,7 +86,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.403\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
         }
       }
     }

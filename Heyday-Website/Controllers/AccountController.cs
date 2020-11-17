@@ -212,7 +212,7 @@ namespace Heyday_Website.Controllers
         {
             await _signInManager.SignOutAsync();
             ViewBag.Title = "Heyday-注销";
-            return RedirectToAction("Login");
+            return RedirectToAction("Index","Home");
         }
         [AcceptVerbs("Get", "Post")]
         public async Task<JsonResult> IsSameEmail(string email)
