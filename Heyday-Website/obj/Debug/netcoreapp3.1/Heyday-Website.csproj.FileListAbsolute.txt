@@ -406,3 +406,4 @@ D:\MyProject\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\A
 E:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Account\DeleteUser.cshtml.g.cs
 E:\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Bug\BugTest.cshtml.g.cs
 D:\MyProject\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Bug\BugTest.cshtml.g.cs
+D:\MyProject\Heyday-Website\Heyday-Website\obj\Debug\netcoreapp3.1\Razor\Views\Test\PostModel.cshtml.g.cs

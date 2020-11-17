@@ -5,7 +5,9 @@
 @model Heyday_Website.ViewModels.RegisterDto
 
 @section csses{
-    <link href="~/css/center.css" rel="stylesheet" />
+    <style>
+
+    </style>
 }
 
 @section scripts{
@@ -36,46 +38,50 @@
     </script>
 }
 
-<div id="wrap" class="container-fluid">
-    <div id="subwrap">
-        <div id="content">
-            <form id="myform" asp-controller="Account" asp-action="Register" method="post">
-                <div class="form-group row">
-                    <label asp-for="Email" class="col-3 col-form-label"></label>
-                    <div class="col-9">
-                        <input type="email" id="email" class="form-control" asp-for="Email" placeholder="Email">
+<div class="container-fluid row">
+    <div class="col-2"></div>
+    <div class="col-8" style="margin-top:40px">
+        <form id="myform" asp-controller="Account" asp-action="Register" method="post">
+            <div class="form-group row">
+                <label asp-for="Email" class="col-3 col-form-label"></label>
+                <div class="col-9">
+                    <input type="email" id="email" class="form-control" asp-for="Email" placeholder="Email">
 
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
-                <div class="form-group row">
-                    <label asp-for="Name" class="col-3 col-form-label"></label>
-                    <div class="col-9">
-                        <input type="text" class="form-control" asp-for="Name" placeholder="Name">
+            </div>
+            <div class="form-group row">
+                <label asp-for="Name" class="col-3 col-form-label"></label>
+                <div class="col-9">
+                    <input type="text" class="form-control" asp-for="Name" placeholder="Name">
 
-                        <span asp-validation-for="Name" class="text-danger"></span>
-                    </div>
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
-                <div class="form-group row">
-                    <label asp-for="Password" class="col-3 col-form-label"></label>
-                    <div class="col-9">
-                        <input type="password" class="form-control" asp-for="Password" placeholder="Password">
+            </div>
+            <div class="form-group row">
+                <label asp-for="Password" class="col-3 col-form-label"></label>
+                <div class="col-9">
+                    <input type="password" class="form-control" asp-for="Password" placeholder="Password">
 
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
-                <div class="form-group text-right">
-                    <span id="1min"></span>
-                    <input asp-for="Code" type="text" placeholder="code" />
+            </div>
+            <div class="form-group text-right">
+                <span id="1min"></span>
+                <input asp-for="Code" type="text" placeholder="code" />
 
-                    <button type="button" id="sendmail">发送验证码</button>
-                </div>
-                <span asp-validation-for="Code" class="text-danger"></span>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary float-left ml-2">注册</button>
-                    <a asp-controller="Home" asp-action="Index" class="btn btn-primary float-lg-right">返回</a>
-                </div>
-            </form>
-        </div>
+                <button type="button" id="sendmail">发送验证码</button>
+            </div>
+            <span asp-validation-for="Code" class="text-danger"></span>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary float-left ml-2">注册</button>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-primary float-lg-right">返回</a>
+            </div>
+        </form>
     </div>
+    <div class="col-2"></div>
 </div>
+
+        
+
+

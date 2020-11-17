@@ -1,0 +1,15 @@
+﻿@section scripts{ 
+    <script>
+        $(function () {
+            $.post("/Test/PostModel",
+                {
+                    Name: "Jack",
+                    Age: 13
+                },
+                function (data, status) {
+                    console.log(data, status);
+                }
+            )
+        })
+    </script>
+}

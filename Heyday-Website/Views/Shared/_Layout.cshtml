@@ -28,14 +28,15 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
-
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/Account/Login">登录</a>
+                    <a class="btn btn-dark" data-toggle="modal" data-target="#LoginModal">登录</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/Account/Register">注册</a>
+                    <a href="/Account/Register" class="btn btn-dark">注册</a>
+                    @* 这个下次更 *@
+                    @*<a class="btn btn-dark" data-toggle="modal" data-target="#RegisterModal">注册</a>*@
                 </li>
             </ul>
         </div>
@@ -43,12 +44,129 @@
 
     @RenderBody()
 
+<div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="LoginModalLabel">登录</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-signin" method="post">
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label">邮箱地址</label>
+                        <div class="col-9">
+                            <input type="email" id="Login-EmailAddress" class="form-control" placeholder="Email address" required autofocus>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label">密码</label>
+                        <div class="col-9">
+                            <input type="password" id="Login-Password"  class="form-control" placeholder="Password" required>
+                        </div>
+                    </div>
+                    <div class="form-group checkbox mb-3">
+                        <label class="float-left">
+                            <input type="checkbox" id="rmbMe"> 记住我
+                        </label>
+                        <a class="float-right" href="/Account/EmailValidation">忘记密码</a>
+                    </div>
+                    <div class="form-group text-center">
+                        <span class="text-danger" id="validation"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-lg btn-primary btn-block" id="LoginBtn" type="button">登录</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="RegisterModal" tabindex="-2" role="dialog" aria-labelledby="RegisterModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="RegisterModalLabel">登录</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label">邮箱地址</label>
+                        <div class="col-9">
+                            <input type="email" id="email" class="form-control" placeholder="Email">
+                            <span class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label">用户名</label>
+                        <div class="col-9">
+                            <input type="text" class="form-control" placeholder="Name">
+                            <span class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label">密码</label>
+                        <div class="col-9">
+                            <input type="password" class="form-control" placeholder="Password">
+                            <span class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group text-right">
+                        <span id="1min"></span>
+                        <input type="text" placeholder="code" />
+                        <button type="button" id="sendmail">发送验证码</button>
+                    </div>
+                    <spa class="text-danger"></spa>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
+            </div>
+        </div>
+    </div>
+</div>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="~/lib/jquery/jquery.min.js"></script>
     @*<script src="~/lib/bootstrap/js/bootstrap.min.js"></script>*@
-    <script src="~/lib/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
     @RenderSection("scripts", false)
+    <script>
+        $(function () {
+            $('#LoginBtn').click(function () {
+                var email = $('#Login-EmailAddress').val();
+                var pwd = $('#Login-Password').val();
+                var isChecked = $('#rmbMe').prop('checked');
+                //console.log(email, pwd);
+                //console.log(isChecked);
+                $.post("/Account/NewLogin",
+                    {
+                        Email: email,
+                        Password: pwd,
+                        Remember: isChecked
+                    },
+                    function (data, status) {
+                        if (status == 'success') {
+                            //console.log(data['role']);
+                            var error = data['error'];
+                            if (error == 'None') {
+                                window.location.replace("/Home/AccountIndex");
+                            }
+                            else {
+                                console.log(error);
+                                $('#validation').get(0).innerHTML = error;
+                            }
+                        }
+                    }
+                )
+            })
+        })
+    </script>
 </body>
 </html>
 

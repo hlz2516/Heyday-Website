@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Heyday_Website.ViewModels;
 
 namespace Heyday_Website.Controllers
 {
@@ -27,6 +28,16 @@ namespace Heyday_Website.Controllers
             {
                 Console.WriteLine(i);
             }
+        }
+        public IActionResult PostModel()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public void PostModel(TestViewModel model)
+        {
+            
         }
     }
 }

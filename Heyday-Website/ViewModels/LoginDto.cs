@@ -15,6 +15,5 @@ namespace Heyday_Website.ViewModels
         [RegularExpression(@"^[a-zA-Z]\w{5,17}$", ErrorMessage = "正确格式：以字母开头，长度在6-18之间，只能包含字符，数字和下划线")]
         public string Password { get; set; }
         public bool Remember { get; set; }
-
     }
 }

@@ -312,5 +312,30 @@ namespace Heyday_Website.Controllers
             }
             return View("DeleteUser");
         }
+
+        public async Task<JsonResult> NewLogin(LoginDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    //var psdhash = new PasswordHasher<ApplicationUser>().
+                    //    HashPassword(user,model.Password);
+                    var res = await _signInManager.PasswordSignInAsync(user, model.Password,
+                        model.Remember, false);
+                    if (res.Succeeded)
+                    {
+                        return Json(new { error = "None" });
+                    }
+                    else
+                    {
+                        return Json(new { error = "密码不正确！" });
+                    }
+                }
+                else return Json(new { error = "邮箱地址不存在!" });
+            }
+            return Json(new { error = "格式错误！" });
+        }
     }
 }
