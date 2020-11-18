@@ -39,5 +39,19 @@ namespace Heyday_Website.Controllers
         {
             
         }
+
+        public IActionResult TestLocalStorage()
+        {
+            return View();
+        }
+
+        public IActionResult TestMultiAspRoute()
+        {
+            return View();
+        }
+        public IActionResult MultiAspRoute(string name,int age)
+        {
+            return View();
+        }
     }
 }

@@ -1,0 +1,21 @@
+﻿
+@section scripts {
+    <script>
+        $(function () {
+            $('#btn').click(function () {
+                var name = $('.name').val();
+                localStorage.setItem('name', name);
+                console.log(localStorage.getItem('name'));
+                var gender = $('input[name="gender"]:checked ').val();
+                localStorage.setItem('gender', gender);
+                console.log(localStorage.getItem('gender'));
+            })
+        })
+    </script>
+}
+
+<input type="text" class="name" value="" />
+<br />
+<input type="radio" name="gender" value="male" id="male" />男
+<input type="radio" name="gender" value="female" id="female" />女
+<input type="button" value="存储" id="btn" />

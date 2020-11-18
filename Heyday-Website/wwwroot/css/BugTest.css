@@ -10,7 +10,7 @@
     list-style: none;
 }
 
-    .btnContainer li {
+    .btnContainer>li {
         display: inline-block;
         width: 145px;
         height: 60px;

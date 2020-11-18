@@ -1,6 +1,19 @@
 ﻿@model Heyday_Website.ViewModels.BugGeneralDto
 @section csses {
     <link href="~/css/BugTest.css" rel="stylesheet" />
+    <style>
+        .dropdown-menu {
+            padding-top:2px;
+            text-align:center;
+            margin-top:1px;
+            line-height:30px;
+        }
+        .dropdown-menu>.dropdown-item {
+            width:150px;
+            height:30px;
+            padding:0;
+        }
+    </style>
 }
 
 @section scripts{
@@ -9,9 +22,11 @@
             $('.pageIndex').keydown(function (event) {
                 //console.log(event.which);
                 if (event.which == 13) {
-                    var index = $('.pageIndex').val();
+                    var index = $('#pageIndex').val();
                     //console.log(index);
-                    window.location.replace("/Bug/BugGeneral?pageIndex=" + index);
+                    if (index > 0 && index <= @Model.TotalPage) {
+                        window.location.replace("/Bug/BugGeneral?pageIndex=" + index);
+                    }
                 }
             })
         })
@@ -19,7 +34,7 @@
         $(function () {
             var index = @Model.PageIndex;
             //console.log(index);
-            $('.pageIndex').val(index);
+            $('#pageIndex').val(index);
         })
 
         $(function () {
@@ -42,13 +57,27 @@
                 )
             })
         })
+
+        $(function () {
+            $('#onlyMe').click(function () {
+                localStorage.setItem('option', "onlyMe");
+            })
+            $('#all').click(function () {
+                localStorage.setItem('option', "all");
+            })
+            $('#searchBtn').click(function () {
+                var searchStr = $('#searchBug').val();
+                localStorage.setItem('searchStr', searchStr);
+            })
+            
+        })
     </script>
  }
 
 <div class="box">
     <ul class="btnContainer">
         <li class="left"><a class="btn btn-success" data-toggle="modal" data-target="#BugWriteModal">新建</a></li>
-        <li class="right"> <a class="btn btn-success" href="#">搜索</a></li>
+        <li class="right"> <a class="btn btn-success" href="#" id="searchBtn">搜索</a></li>
         <li class="right search">
             <div class="btn-group">
                 <input type="text" name="searchBug" id="searchBug" value="" />
@@ -56,8 +85,8 @@
                     <span class="sr-only">Toggle Dropdown</span>
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">只查我的</a>
-                    <a class="dropdown-item" href="#">查询所有</a>
+                    <button class="dropdown-item" id="onlyMe">只查我的</button>
+                    <button class="dropdown-item" id="all">查询所有</button>
                 </div>
             </div>
         </li>
@@ -97,26 +126,29 @@
                     <td>@bugs[i].SubmitterEmail</td>
                     <td>@bugs[i].BugState</td>
                     <td>@bugs[i].SubmitTime.ToString()</td>
-                    <td>
+                    @* 这里根据你的搜索选项决定"编辑"和"删除"是否存在 *@
+                    <td class="operate">
                         <a href="#">查看详细</a>
-                        <a href="#">编辑</a>
-                        <a href="#">删除</a>
+                        <a href="#" class="onlyMeOnly">编辑</a>
+                        <a href="#" class="onlyMeOnly">删除</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+    @* 分页的按钮 *@
     <div class="pageListBtnContainer">
         <a class="btn btn-light pageListBtn" asp-controller="Bug" asp-action="BugGeneral" asp-route-pageIndex="1">首页</a>
         <a class="btn btn-light pageListBtn" asp-controller="Bug" asp-action="BugGeneral" asp-route-pageIndex="@(Model.PageIndex-1 < 1 ? 1 : Model.PageIndex-1)">上一页</a>
         <span class="pageListBtn">
-            <input class="pageIndex" type="text" value="" />/@(Model.TotalPage)页
+            <input id="pageIndex" type="text" value="" />/@(Model.TotalPage)页
         </span>
         <a class="btn btn-light pageListBtn" asp-controller="Bug" asp-action="BugGeneral" asp-route-pageIndex="@(Model.PageIndex+1 > Model.TotalPage ? Model.PageIndex : Model.PageIndex+1)">下一页</a>
         <a class="btn btn-light pageListBtn" asp-controller="Bug" asp-action="BugGeneral" asp-route-pageIndex="@(Model.TotalPage)">尾页</a>
     </div>
 </div>
 
+@*填写bug的模态框  *@
 <div class="modal fade" id="BugWriteModal" tabindex="-1" role="dialog" aria-labelledby="BugWriteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
