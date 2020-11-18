@@ -272,5 +272,50 @@ namespace Heyday_Website.Controllers
             }
             return Json(new { result = "提交失败,请务必填写概述！" });
         }
+        //外部option默认选择为all
+
+        public async Task<IActionResult> BugSearch(string searchStr,string option,int pageIndex)
+        {
+            //如果searchStr为空并且option为all，则直接执行BugGeneral方法
+            if ((searchStr == null || searchStr.Equals("") || searchStr == "null") && option.Equals("all"))
+            {
+                return RedirectToAction("BugGeneral", new { pageIndex = pageIndex});
+            }
+
+            BugGeneralDto model = null;
+            //先看是查询个人的还是所有
+            if (option == "onlyMe")
+            {
+                //先要知道我是谁
+                var email = (await _userManager.FindByNameAsync(HttpContext.User.Identity.Name)).Email;
+                var bugs = _db.Bugs.Where(b => b.SubmitterEmail == email).AsEnumerable();
+                  var pagedBugs  = bugs.OrderByDescending(b=>b.SubmitTime)
+                    .Skip((pageIndex - 1) * 10).Take(10);
+                var totalPages = (int)Math.Ceiling(bugs.Count() / (double)10);
+                model = new BugGeneralDto
+                {
+                    Bugs = pagedBugs,
+                    PageIndex = pageIndex,
+                    TotalPage = totalPages
+                };
+            }
+            else if (option == "all")
+            {
+                //筛选出所有带有searchStr的bug,返回对应的分页模型
+                var bugs = _db.Bugs.Where(b => b.Title.Contains(searchStr) || b.Content.Contains(searchStr))
+                    .AsEnumerable();
+                var pagedBugs = bugs.OrderByDescending(b => b.SubmitTime)
+                    .Skip((pageIndex - 1) * 10).Take(10);
+                var totalPages = (int)Math.Ceiling(bugs.Count() / (double)10);
+                model = new BugGeneralDto
+                {
+                    Bugs = pagedBugs,
+                    PageIndex = pageIndex,
+                    TotalPage = totalPages
+                };
+            }
+            //用bugTest的视图，但带的是这里的model
+            return View("bugTest", model);
+        }
     }
 }

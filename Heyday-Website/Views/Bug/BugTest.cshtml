@@ -18,8 +18,22 @@
 
 @section scripts{
     <script>
+        //从外部链接点进来就重置sessionStorage
+        //设置一个bool变量fromOut默认false并存入sessionStorage
+        //给外部链接添加事件，一旦点击则fromOut变为true
+        //这里的逻辑：
+        //如果fromOut为true，则清空sessionStorage，然后设置fromOut为false
         $(function () {
-            $('.pageIndex').keydown(function (event) {
+            var fromOut = sessionStorage.getItem('fromOut');
+            if (fromOut == 'true') {
+                sessionStorage.clear();
+                sessionStorage.setItem('fromOut', 'false');
+                console.log('fromOut');
+            }
+        })
+
+        $(function () {
+            $('#pageIndex').keydown(function (event) {
                 //console.log(event.which);
                 if (event.which == 13) {
                     var index = $('#pageIndex').val();
@@ -52,6 +66,7 @@
                     function (data,status) {
                         if (status == 'success') {
                             alert(data['result']);
+                            window.location.replace("/Bug/BugGeneral?pageIndex=1")
                         }
                     }
                 )
@@ -60,16 +75,57 @@
 
         $(function () {
             $('#onlyMe').click(function () {
-                localStorage.setItem('option', "onlyMe");
+                sessionStorage.setItem('option', "onlyMe");
             })
             $('#all').click(function () {
-                localStorage.setItem('option', "all");
+                sessionStorage.setItem('option', "all");
             })
+
+            var first = true;
+            var _searchStr = "null";
+            //设置默认的option为all
+            var _option = "all";
+            sessionStorage.setItem('option', _option);
             $('#searchBtn').click(function () {
                 var searchStr = $('#searchBug').val();
-                localStorage.setItem('searchStr', searchStr);
+                //这里要与上次的_searchStr比较，如果不同，则可以触发点击事件
+                if (searchStr != _searchStr) {
+                    _searchStr = searchStr;
+                    first = true;
+                    sessionStorage.setItem('searchStr', searchStr);
+                }
+                //同理对于option
+                var option = sessionStorage.getItem('option');
+                if (option != _option) {
+                    _option = option;
+                    first = true;
+                    //但由于sessionStorage之前在用户选择时就已经设过了所以这里不再设置
+                    //sessionStorage.setItem('option', option);
+                }
+
+                $(this).attr('href', "/Bug/BugSearch?searchStr=" + searchStr +
+                    "&option=" + option + "&pageIndex=1");
+                if (first) {
+                    $(this).trigger('click');
+                    first = !first;
+                }
             })
-            
+        })
+
+
+        //页面每次刷新都更新分页按钮的url
+        $(function () {
+            var searchStr = sessionStorage.getItem('searchStr');
+            var option = sessionStorage.getItem('option');
+            console.log(searchStr);
+            $('#firstPage').attr('href', '/Bug/BugSearch?searchStr=' + searchStr +
+                '&option=' + option + '&pageIndex=1');
+            $('#prevPage').attr('href', '/Bug/BugSearch?searchStr=' + searchStr +
+                '&option=' + option + '&pageIndex=@(Model.PageIndex-1>0? Model.PageIndex - 1:1)');
+            $('#nextPage').attr('href', '/Bug/BugSearch?searchStr=' + searchStr +
+                '&option=' + option + '&pageIndex=@(Model.PageIndex+1<=Model.TotalPage?Model.PageIndex+1:Model.TotalPage)');
+            $('#lastPage').attr('href', '/Bug/BugSearch?searchStr=' + searchStr +
+                '&option=' + option + '&pageIndex=@Model.TotalPage');
         })
     </script>
  }
@@ -77,7 +133,7 @@
 <div class="box">
     <ul class="btnContainer">
         <li class="left"><a class="btn btn-success" data-toggle="modal" data-target="#BugWriteModal">新建</a></li>
-        <li class="right"> <a class="btn btn-success" href="#" id="searchBtn">搜索</a></li>
+        <li class="right"> <a class="btn btn-success" id="searchBtn">搜索</a></li>
         <li class="right search">
             <div class="btn-group">
                 <input type="text" name="searchBug" id="searchBug" value="" />
@@ -138,13 +194,13 @@
     </table>
     @* 分页的按钮 *@
     <div class="pageListBtnContainer">
-        <a class="btn btn-light pageListBtn" asp-controller="Bug" asp-action="BugGeneral" asp-route-pageIndex="1">首页</a>
-        <a class="btn btn-light pageListBtn" asp-controller="Bug" asp-action="BugGeneral" asp-route-pageIndex="@(Model.PageIndex-1 < 1 ? 1 : Model.PageIndex-1)">上一页</a>
+        <a class="btn btn-light pageListBtn" id="firstPage">首页</a>
+        <a class="btn btn-light pageListBtn" id="prevPage">上一页</a>
         <span class="pageListBtn">
             <input id="pageIndex" type="text" value="" />/@(Model.TotalPage)页
         </span>
-        <a class="btn btn-light pageListBtn" asp-controller="Bug" asp-action="BugGeneral" asp-route-pageIndex="@(Model.PageIndex+1 > Model.TotalPage ? Model.PageIndex : Model.PageIndex+1)">下一页</a>
-        <a class="btn btn-light pageListBtn" asp-controller="Bug" asp-action="BugGeneral" asp-route-pageIndex="@(Model.TotalPage)">尾页</a>
+        <a class="btn btn-light pageListBtn" id="nextPage">下一页</a>
+        <a class="btn btn-light pageListBtn" id="lastPage">尾页</a>
     </div>
 </div>
 
@@ -168,9 +224,6 @@
                     <label>详细描述</label>
                     <textarea class="form-control" rows="3" id="bugContent" placeholder="示例：在世界高度64层以下用空桶取得岩浆后来到64层以上，右键岩浆桶无法倒出，系统给出提示'您的权限不够'"></textarea>
                     <span></span>
-                </div>
-                <div class="form-group">
-                    <input type="hidden" id="submitTime" value="@DateTime.Now" />
                 </div>
                 <button type="submit" class="btn btn-primary" id="bugSubmit">提交</button>
             </div>

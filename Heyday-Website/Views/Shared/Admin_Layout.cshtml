@@ -39,6 +39,7 @@
                             <a class="dropdown-item" asp-controller="Bug" asp-action="BugListOfUser">我提交的Bug</a>
                             <a class="dropdown-item" asp-controller="Bug" asp-action="CanTakeOverBugs">可接手的Bug</a>
                             <a class="dropdown-item" asp-controller="Bug" asp-action="BugFactory">修复Bug</a>
+                            <a class="dropdown-item" id="BugTest" href="/Bug/BugTest">BugTest</a>
                         </div>
                     </div>
                 </li>
@@ -67,5 +68,17 @@
     <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
     @RenderSection("scripts", false)
+    <script>
+        //设置fromOut
+        //$(function () {
+        //    sessionStorage.setItem('fromOut', false);
+        //})
+        //给a链接添加事件
+        $(function () {
+            $('#BugTest').click(function () {
+                sessionStorage.setItem('fromOut', 'true');
+            })
+        })
+    </script>
 </body>
 </html>
