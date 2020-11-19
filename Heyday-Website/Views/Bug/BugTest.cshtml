@@ -28,7 +28,17 @@
             if (fromOut == 'true') {
                 sessionStorage.clear();
                 sessionStorage.setItem('fromOut', 'false');
-                console.log('fromOut');
+                console.log('通过外部链接重置刷新页面');
+            }
+            console.log('内部刷新页面');
+        })
+
+        //根据option的状态决定操作列是否有编辑和删除
+        $(function () {
+            var option = sessionStorage.getItem('option');
+            if (option == 'onlyMe') {
+                $('.operate').append('<a href="#" class="onlyMeOnly">编辑 </a>');
+                $('.operate').append('<a href="#" class="onlyMeOnly">删除</a>');
             }
         })
 
@@ -80,12 +90,15 @@
             $('#all').click(function () {
                 sessionStorage.setItem('option', "all");
             })
+            //每次刷新页面时搜索框内容保留
+            var searchContent = sessionStorage.getItem('searchStr');
+            if (searchContent == 'null')
+                searchContent = '';
+            $('#searchBug').val(searchContent);
 
             var first = true;
             var _searchStr = "null";
-            //设置默认的option为all
             var _option = "all";
-            sessionStorage.setItem('option', _option);
             $('#searchBtn').click(function () {
                 var searchStr = $('#searchBug').val();
                 //这里要与上次的_searchStr比较，如果不同，则可以触发点击事件
@@ -94,12 +107,18 @@
                     first = true;
                     sessionStorage.setItem('searchStr', searchStr);
                 }
+
                 //同理对于option
                 var option = sessionStorage.getItem('option');
+                //console.log('option',option); null
+                //如果用户没有选择，则默认给option赋值为"all"
+                if (option == null || option == 'null') {
+                    option = 'all';
+                    sessionStorage.setItem('option', option);
+                }
                 if (option != _option) {
                     _option = option;
                     first = true;
-                    //但由于sessionStorage之前在用户选择时就已经设过了所以这里不再设置
                     //sessionStorage.setItem('option', option);
                 }
 
@@ -111,7 +130,6 @@
                 }
             })
         })
-
 
         //页面每次刷新都更新分页按钮的url
         $(function () {
@@ -126,6 +144,29 @@
                 '&option=' + option + '&pageIndex=@(Model.PageIndex+1<=Model.TotalPage?Model.PageIndex+1:Model.TotalPage)');
             $('#lastPage').attr('href', '/Bug/BugSearch?searchStr=' + searchStr +
                 '&option=' + option + '&pageIndex=@Model.TotalPage');
+        })
+
+        //给"查看详细"设置事件
+        $(function () {
+            //拿到所有的tr
+            var trs = $('tr');
+            for (var i = 1; i < trs.length; i++) {
+                //拿到id
+                let id = trs.get(i).cells[0].innerHTML;
+                //console.log(id);
+                //拿到该行的a,给a设置事件
+                var thisa = trs.get(i).cells[5].children[0];
+                //console.log(thisa);
+                $(thisa).click(function () {
+                    //alert(id);
+                    $.get('/Bug/GetTitleAndDetail?bugId=' + id, function (data, status) {
+                        if (status == 'success') {
+                            //console.log(data['detail']);
+                            $('#detail-content')[0].innerHTML = data['detail'];
+                        }
+                    })
+                })
+            }
         })
     </script>
  }
@@ -177,16 +218,16 @@
                     continue;
                 }
                 <tr>
-                    <th scope="row">@bugs[i].Id</th>
+                    <th scope="row" id="id@(i)">@bugs[i].Id</th>
                     <td>@bugs[i].Title</td>
                     <td>@bugs[i].SubmitterEmail</td>
                     <td>@bugs[i].BugState</td>
                     <td>@bugs[i].SubmitTime.ToString()</td>
                     @* 这里根据你的搜索选项决定"编辑"和"删除"是否存在 *@
                     <td class="operate">
-                        <a href="#">查看详细</a>
-                        <a href="#" class="onlyMeOnly">编辑</a>
-                        <a href="#" class="onlyMeOnly">删除</a>
+                        <a href="#" id="detail@(i)" data-toggle="modal" data-target="#DetailModal">查看详细</a>
+                        @*<a href="#" class="onlyMeOnly">编辑</a>
+                        <a href="#" class="onlyMeOnly">删除</a>*@
                     </td>
                 </tr>
             }
@@ -229,4 +270,21 @@
             </div>
     </div>
    </div>
+</div>
+
+@* 详细描述的模态框 *@
+<div class="modal fade" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="DetailModalLabel">详细描述</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="detail-content"></p>
+            </div>
+        </div>
+    </div>
 </div>

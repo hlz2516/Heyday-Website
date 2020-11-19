@@ -277,18 +277,23 @@ namespace Heyday_Website.Controllers
         public async Task<IActionResult> BugSearch(string searchStr,string option,int pageIndex)
         {
             //如果searchStr为空并且option为all，则直接执行BugGeneral方法
-            if ((searchStr == null || searchStr.Equals("") || searchStr == "null") && option.Equals("all"))
+            if ((searchStr == null || searchStr.Equals("") || searchStr == "null") 
+                && (option.Equals("null") || option.Equals("all")))
             {
                 return RedirectToAction("BugGeneral", new { pageIndex = pageIndex});
             }
-
+            if (searchStr == null || searchStr.Equals("null"))
+                searchStr = "";
             BugGeneralDto model = null;
             //先看是查询个人的还是所有
             if (option == "onlyMe")
             {
                 //先要知道我是谁
                 var email = (await _userManager.FindByNameAsync(HttpContext.User.Identity.Name)).Email;
-                var bugs = _db.Bugs.Where(b => b.SubmitterEmail == email).AsEnumerable();
+                //如果搜索字符串为空，不做筛选返回分页模型
+                var bugs = _db.Bugs.Where(b => b.SubmitterEmail == email)
+                    .Where(b=>b.Title.Contains(searchStr) || b.Content.Contains(searchStr))
+                    .AsEnumerable();
                   var pagedBugs  = bugs.OrderByDescending(b=>b.SubmitTime)
                     .Skip((pageIndex - 1) * 10).Take(10);
                 var totalPages = (int)Math.Ceiling(bugs.Count() / (double)10);
