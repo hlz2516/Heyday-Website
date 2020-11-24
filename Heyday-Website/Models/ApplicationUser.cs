@@ -8,9 +8,10 @@ namespace Heyday_Website.Models
 {
     public class ApplicationUser : IdentityUser
     {
+        public int Star { get; set; }
         public ApplicationUser() : base()
         {
-
+             
         }
 
         public ApplicationUser(string name) : base(name)

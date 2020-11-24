@@ -34,7 +34,7 @@ namespace Heyday_Website.Controllers
                 PageIndex = pageIndex
             };
             ViewBag.Title = "Heyday-Bug总览";
-            return View("BugTest",model);
+            return View("BugList", model);
         }
         [Authorize]
         public IActionResult BugWrite()
@@ -235,7 +235,7 @@ namespace Heyday_Website.Controllers
             return "OK";
         }
 
-        public IActionResult BugTest()
+        public IActionResult BugList()
         {
             var bugList = new MvcPagingList<AppDbContext, Bug>(_db, 10);
             var bugs = bugList.GetPageTableByDesc(1, b => b.SubmitTime);
@@ -320,7 +320,23 @@ namespace Heyday_Website.Controllers
                 };
             }
             //用bugTest的视图，但带的是这里的model
-            return View("bugTest", model);
+            return View("BugList", model);
+        }
+
+        public async Task EditBug(BugEditDto model)
+        {
+            var user =await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
+            var thisBug = _db.Bugs.Where(b => b.SubmitterEmail == user.Email)
+                .Where(b=>b.Id == model.Id)
+                .FirstOrDefault();
+            if(thisBug != null)
+            {
+                thisBug.Title = model.Title;
+                thisBug.Content = model.Content;
+                thisBug.SubmitTime = model.SubmitTime;
+                _db.Update(thisBug);
+                await _db.SaveChangesAsync();
+            }
         }
     }
 }

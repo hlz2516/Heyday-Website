@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Attribute\" />
-    <Folder Include="wwwroot\js\" />
     <Folder Include="wwwroot\lib\" />
     <Folder Include="wwwroot\md\" />
     <Folder Include="wwwroot\md\intro\" />

@@ -34,12 +34,9 @@
                             Bug管理
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                            <a class="dropdown-item" asp-controller="Bug" asp-action="BugWrite">填写Bug</a>
-                            <a class="dropdown-item" asp-controller="Bug" asp-action="BugGeneral" asp-route-pageIndex="1">Bug总览</a>
-                            <a class="dropdown-item" asp-controller="Bug" asp-action="BugListOfUser">我提交的Bug</a>
+                            <a class="dropdown-item" id="BugTest" href="/Bug/BugList">Bug列表</a>
                             <a class="dropdown-item" asp-controller="Bug" asp-action="CanTakeOverBugs">可接手的Bug</a>
                             <a class="dropdown-item" asp-controller="Bug" asp-action="BugFactory">修复Bug</a>
-                            <a class="dropdown-item" id="BugTest" href="/Bug/BugTest">BugTest</a>
                         </div>
                     </div>
                 </li>

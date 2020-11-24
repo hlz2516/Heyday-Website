@@ -3,45 +3,23 @@
     <link href="~/css/BugTest.css" rel="stylesheet" />
     <style>
         .dropdown-menu {
-            padding-top:2px;
-            text-align:center;
-            margin-top:1px;
-            line-height:30px;
+            padding-top: 2px;
+            text-align: center;
+            margin-top: 1px;
+            line-height: 30px;
         }
-        .dropdown-menu>.dropdown-item {
-            width:150px;
-            height:30px;
-            padding:0;
-        }
+
+            .dropdown-menu > .dropdown-item {
+                width: 150px;
+                height: 30px;
+                padding: 0;
+            }
     </style>
 }
 
 @section scripts{
+    <script src="~/js/BugList.js"></script>
     <script>
-        //从外部链接点进来就重置sessionStorage
-        //设置一个bool变量fromOut默认false并存入sessionStorage
-        //给外部链接添加事件，一旦点击则fromOut变为true
-        //这里的逻辑：
-        //如果fromOut为true，则清空sessionStorage，然后设置fromOut为false
-        $(function () {
-            var fromOut = sessionStorage.getItem('fromOut');
-            if (fromOut == 'true') {
-                sessionStorage.clear();
-                sessionStorage.setItem('fromOut', 'false');
-                console.log('通过外部链接重置刷新页面');
-            }
-            console.log('内部刷新页面');
-        })
-
-        //根据option的状态决定操作列是否有编辑和删除
-        $(function () {
-            var option = sessionStorage.getItem('option');
-            if (option == 'onlyMe') {
-                $('.operate').append('<a href="#" class="onlyMeOnly">编辑 </a>');
-                $('.operate').append('<a href="#" class="onlyMeOnly">删除</a>');
-            }
-        })
-
         $(function () {
             $('#pageIndex').keydown(function (event) {
                 //console.log(event.which);
@@ -65,8 +43,6 @@
             $('#bugSubmit').click(function () {
                 var title = $('#bugTitle').val();
                 var content = $('#bugContent').val();
-                //console.log(title, content);
-                //console.log("time:", now);
                 $.post("/Bug/NewBugWrite",
                     {
                         Title: title,
@@ -80,54 +56,6 @@
                         }
                     }
                 )
-            })
-        })
-
-        $(function () {
-            $('#onlyMe').click(function () {
-                sessionStorage.setItem('option', "onlyMe");
-            })
-            $('#all').click(function () {
-                sessionStorage.setItem('option', "all");
-            })
-            //每次刷新页面时搜索框内容保留
-            var searchContent = sessionStorage.getItem('searchStr');
-            if (searchContent == 'null')
-                searchContent = '';
-            $('#searchBug').val(searchContent);
-
-            var first = true;
-            var _searchStr = "null";
-            var _option = "all";
-            $('#searchBtn').click(function () {
-                var searchStr = $('#searchBug').val();
-                //这里要与上次的_searchStr比较，如果不同，则可以触发点击事件
-                if (searchStr != _searchStr) {
-                    _searchStr = searchStr;
-                    first = true;
-                    sessionStorage.setItem('searchStr', searchStr);
-                }
-
-                //同理对于option
-                var option = sessionStorage.getItem('option');
-                //console.log('option',option); null
-                //如果用户没有选择，则默认给option赋值为"all"
-                if (option == null || option == 'null') {
-                    option = 'all';
-                    sessionStorage.setItem('option', option);
-                }
-                if (option != _option) {
-                    _option = option;
-                    first = true;
-                    //sessionStorage.setItem('option', option);
-                }
-
-                $(this).attr('href', "/Bug/BugSearch?searchStr=" + searchStr +
-                    "&option=" + option + "&pageIndex=1");
-                if (first) {
-                    $(this).trigger('click');
-                    first = !first;
-                }
             })
         })
 
@@ -146,7 +74,8 @@
                 '&option=' + option + '&pageIndex=@Model.TotalPage');
         })
 
-        //给"查看详细"设置事件
+        var _id;
+
         $(function () {
             //拿到所有的tr
             var trs = $('tr');
@@ -154,10 +83,10 @@
                 //拿到id
                 let id = trs.get(i).cells[0].innerHTML;
                 //console.log(id);
-                //拿到该行的a,给a设置事件
-                var thisa = trs.get(i).cells[5].children[0];
+                //拿到该行的第一个a即"查看详细",给a设置事件
+                var details = trs.get(i).cells[5].children[0];
                 //console.log(thisa);
-                $(thisa).click(function () {
+                $(details).click(function () {
                     //alert(id);
                     $.get('/Bug/GetTitleAndDetail?bugId=' + id, function (data, status) {
                         if (status == 'success') {
@@ -166,10 +95,67 @@
                         }
                     })
                 })
+                //拿到该行的第二个a即"编辑"
+                var edit = trs.get(i).cells[5].children[1];
+                if (edit != null) {
+                    $(edit).click(function () {
+                        _id = id;
+                        $.get('/Bug/GetTitleAndDetail?bugId=' + id, function (data, status) {
+                            if (status == 'success') {
+                                //console.log(data['detail']);
+                                $('#bugTitleEdit').val(data['title']);
+                                $('#bugContentEdit')[0].innerHTML = data['detail'];
+                            }
+                        })
+                    })
+                }
+                //拿到该行的第三个a即"删除"
+                var del = trs.get(i).cells[5].children[2];
+                if (del != null) {
+                    $(del).click(function () {
+                        _id = id;
+                    })
+                }
             }
         })
+
+
+        function submitEdit() {
+            //console.log(_id);
+            var title = $('#bugTitleEdit').val();
+            var content = $('#bugContentEdit').val();
+            var now = '@DateTime.Now';
+            $.get('/Bug/EditBug?id=' + _id + '&title=' + title + '&content=' +
+                content + '&submittime=' + now,
+                function (data, status) {
+                    if (status == 'success') {
+                        alert('修改成功！');
+                        $('#EditModal').modal('hide');
+                        refresh();
+                    }
+                    else {
+                        alert('修改失败！');
+                    }
+                });
+        }
+
+        function submitDel() {
+            $.get('/bug/DeleteMyBug?bugId=' + _id,
+                function (data, status) {
+                    if (status == 'success') {
+                        if (data == 'OK') {
+                            alert('删除成功！');
+                            $('#DelModal').modal('hide');
+                            refresh();
+                        } else {
+                            alert('删除失败！');
+                        }
+                    }
+                }
+            )
+        }
     </script>
- }
+}
 
 <div class="box">
     <ul class="btnContainer">
@@ -200,12 +186,12 @@
             </tr>
         </thead>
         <tbody>
-            @{ 
+            @{
                 var bugs = Model.Bugs.ToList();
             }
             @for (int i = 0; i < 10; i++)
             {
-                @if (bugs.Count < i+1)
+                @if (bugs.Count < i + 1)
                 {
                     <tr>
                         <th scope="row"></th>
@@ -227,7 +213,7 @@
                     <td class="operate">
                         <a href="#" id="detail@(i)" data-toggle="modal" data-target="#DetailModal">查看详细</a>
                         @*<a href="#" class="onlyMeOnly">编辑</a>
-                        <a href="#" class="onlyMeOnly">删除</a>*@
+                            <a href="#" class="onlyMeOnly">删除</a>*@
                     </td>
                 </tr>
             }
@@ -257,7 +243,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label >Bug概述</label>
+                    <label>Bug概述</label>
                     <input type="text" class="form-control" id="bugTitle" placeholder="示例：世界高度64层以上无法倒岩浆桶">
                     <span></span>
                 </div>
@@ -268,8 +254,8 @@
                 </div>
                 <button type="submit" class="btn btn-primary" id="bugSubmit">提交</button>
             </div>
+        </div>
     </div>
-   </div>
 </div>
 
 @* 详细描述的模态框 *@
@@ -284,6 +270,52 @@
             </div>
             <div class="modal-body">
                 <p id="detail-content"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* 编辑的模态框 *@
+<div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="EditModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="EditModalLabel">编辑Bug</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Bug概述</label>
+                    <input type="text" class="form-control" id="bugTitleEdit">
+                    <span></span>
+                </div>
+                <div class="form-group">
+                    <label>详细描述</label>
+                    <textarea class="form-control" rows="3" id="bugContentEdit"></textarea>
+                    <span></span>
+                </div>
+                <button type="submit" class="btn btn-primary" id="bugEdit" onclick="submitEdit()">提交修改</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* 删除的模态框 *@
+<div class="modal fade" id="DelModal" tabindex="-1" role="dialog" aria-labelledby="DelModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="DelModal">温馨提示</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>您确定要删除该bug吗？</p>
+                <p class="text-danger">注意：删除后将无法恢复！</p>
+                <button type="button" class="btn btn-primary" id="bugDel" onclick="submitDel()">确定</button>
             </div>
         </div>
     </div>
